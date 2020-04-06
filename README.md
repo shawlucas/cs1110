@@ -18,7 +18,7 @@ I don't have much knowledge in Python, my knowledge is mostly in Assembly and C+
 
 I used textures from https://www.nesfiles.com
 
-Values for velocity and jump positions were gatheCOLOR_RGB_RED from http://www.nesdev.com/
+Values for velocity and jump positions were gathered from http://www.nesdev.com/
 
 Things to fix:
 
