@@ -1,6 +1,8 @@
-#!/usr/bin/env python
-
-
+"""
+main.py
+Initializes the main game.
+Calls the main() function.
+"""
 
 import sys
 import pygame

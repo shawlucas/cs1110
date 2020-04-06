@@ -2,10 +2,13 @@
 
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 
 
 class Digit(pygame.sprite.Sprite):
+    """
+    The digit class handles the digits that are drawn for the score.
+    """
     def __init__(self, image):
         super(Digit, self).__init__()
         self.image = image
@@ -13,6 +16,9 @@ class Digit(pygame.sprite.Sprite):
 
 
 class Score(object):
+    """
+    The Score class handles the small scores that appear when collecting a coin or powerup.
+    """
     def __init__(self, x, y, score, flag_pole=False):
         self.x = x
         self.y = y
@@ -21,24 +27,27 @@ class Score(object):
         else:
             self.y_vel = -3
         self.spr_sheet = setup.GFX['item_objects']
-        self.create_image_dict()
+        self.Score_CreateImageDictionary()
         self.score_string = str(score)
         self.create_digit_list()
         self.flag_pole_score = flag_pole
 
 
-    def create_image_dict(self):
+    def Score_CreateImageDictionary(self):
+        """
+        This function creates a dictionary of the images of all possible score values.
+        """
         self.image_dict = {}
 
-        image0 = self.imageGetter(1, 168, 3, 8)
-        image1 = self.imageGetter(5, 168, 3, 8)
-        image2 = self.imageGetter(8, 168, 4, 8)
-        image4 = self.imageGetter(12, 168, 4, 8)
-        image5 = self.imageGetter(16, 168, 5, 8)
-        image8 = self.imageGetter(20, 168, 4, 8)
-        image9 = self.imageGetter(32, 168, 5, 8)
-        image10 = self.imageGetter(37, 168, 6, 8)
-        image11 = self.imageGetter(43, 168, 5, 8)
+        image0 = self.getImage(1, 168, 3, 8)
+        image1 = self.getImage(5, 168, 3, 8)
+        image2 = self.getImage(8, 168, 4, 8)
+        image4 = self.getImage(12, 168, 4, 8)
+        image5 = self.getImage(16, 168, 5, 8)
+        image8 = self.getImage(20, 168, 4, 8)
+        image9 = self.getImage(32, 168, 5, 8)
+        image10 = self.getImage(37, 168, 6, 8)
+        image11 = self.getImage(43, 168, 5, 8)
 
         self.image_dict['0'] = image0
         self.image_dict['1'] = image1
@@ -51,15 +60,15 @@ class Score(object):
         self.image_dict['9'] = image11
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
         image = pygame.Surface([width, height]).convert()
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.BRICK_SIZE_MULTIPLIER),
-                                    int(rect.height*csts.BRICK_SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.BRICK_SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.BRICK_SIZE_MULTIPLIER)))
         return image
 
 

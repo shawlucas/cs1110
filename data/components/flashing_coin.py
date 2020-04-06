@@ -2,7 +2,7 @@
 
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 
 
 class Coin(pygame.sprite.Sprite):
@@ -25,21 +25,21 @@ class Coin(pygame.sprite.Sprite):
         self.frames = []
         self.frame_index = 0
 
-        self.frames.append(self.imageGetter(1, 160, 5, 8))
-        self.frames.append(self.imageGetter(9, 160, 5, 8))
-        self.frames.append(self.imageGetter(17, 160, 5, 8))
+        self.frames.append(self.getImage(1, 160, 5, 8))
+        self.frames.append(self.getImage(9, 160, 5, 8))
+        self.frames.append(self.getImage(17, 160, 5, 8))
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
 
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.BRICK_SIZE_MULTIPLIER),
-                                    int(rect.height*csts.BRICK_SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.BRICK_SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.BRICK_SIZE_MULTIPLIER)))
         return image
 
 

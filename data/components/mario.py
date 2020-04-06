@@ -2,12 +2,21 @@
 
 import pygame
 from .. import setup, tools
-from .. import csts
+from .. import gGameSettings
 from . import powerups
 
 
 class Mario(pygame.sprite.Sprite):
+    """
+    This is a class to create an instance of the PLAYER, or MARIO.
+    """
     def __init__(self):
+
+        """
+        The constructor for the Mario class.
+
+        Sets the sprite sheet to 'mario_bros', which is in the resource folder. This sprite sheet contains all animation frames for Mario.
+        """
         pygame.sprite.Sprite.__init__(self)
         self.spr_sheet = setup.GFX['mario_bros']
 
@@ -15,9 +24,9 @@ class Mario(pygame.sprite.Sprite):
         self.setup_state_booleans()
         self.setup_forces()
         self.counterSetup()
-        self.load_images_from_sheet()
+        self.Gfx_LoadSpriteSheet()
 
-        self.state = csts.WALK
+        self.state = gGameSettings.MARIO_STATE_WALK
         self.image = self.right_frames[self.frame_index]
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -26,7 +35,9 @@ class Mario(pygame.sprite.Sprite):
 
 
     def timerSetup(self):
-
+        """
+        This function sets all global timers to 0.
+        """
         self.walking_timer = 0
         self.invincible_animation_timer = 0
         self.invincible_start_timer = 0
@@ -40,32 +51,39 @@ class Mario(pygame.sprite.Sprite):
 
 
     def setup_state_booleans(self):
-
-        self.facing_right = True
-        self.allow_jump = True
-        self.dead = False
-        self.invincible = False
-        self.big = False
-        self.fire = False
+        """
+        This function sets all boolean values that Mario will have when he is spawned into the game.
+        """
+        self.facing_right = True # Mario is facing right at the start of the level
+        self.allow_jump = True # He is allowed to jump
+        self.dead = False # He is not dead
+        self.invincible = False # He is not invincible
+        self.big = False # He is small mario, as he has not gotten the magic mushroom yet.
+        self.fire = False #He is not fire mario, as he has not gotten the fire flower yet.
         self.allow_fireball = True
-        self.in_transition_state = False
-        self.hurt_invincible = False
-        self.in_castle = False
-        self.crouching = False
-        self.losing_invincibility = False
-
+        self.in_transition_state = False # He is not transitioning states
+        self.hurt_invincible = False # He is not hurt
+        self.in_castle = False # He is not in the castle
+        self.crouching = False # He is not crouching
+        self.losing_invincibility = False # He is not invinicble, so he cannot be in a state in which his invincibility is wearing off
 
     def setup_forces(self):
+        """
+        This function sets all forces that will be acting on Mario when he is spawned into the game. 
+        """
         self.x_vel = 0
         self.y_vel = 0
-        self.max_x_vel = csts.MAX_WALK_SPEED
-        self.max_y_vel = csts.MAX_Y_VEL
-        self.x_accel = csts.w_accel
-        self.jump_vel = csts.JUMP_VEL
-        self.gravity = csts.GRAVITY
+        self.max_x_vel = gGameSettings.MARIO_MAX_WALK_SPEED
+        self.max_y_vel = gGameSettings.MARIO_MAX_Y_VELOCITY
+        self.x_accel = gGameSettings.MARIO_WALK_ACCELERATION
+        self.jump_vel = gGameSettings.MARIO_JUMP_VELOCITY
+        self.gravity = gGameSettings.WORLD_GRAVITY
 
 
     def counterSetup(self):
+        """
+        This function sets all of Mario's internal counters to zero, clearing any previous values that they may have had.
+        """
         self.frame_index = 0
         self.invincible_index = 0
         self.fire_transition_index = 0
@@ -73,8 +91,12 @@ class Mario(pygame.sprite.Sprite):
         self.flag_pole_right = 0
 
 
-    def load_images_from_sheet(self):
+    def Gfx_LoadSpriteSheet(self):
 
+        """
+        This function loads sprite images needed for Mario's animation. It uses arrays for each set of animations, and uses the
+        getImage function with parameters (x, y, width, height) to access coordinates of the sprite sheet to use as an animation frame.
+        """
         self.right_frames = []
         self.left_frames = []
 
@@ -82,8 +104,8 @@ class Mario(pygame.sprite.Sprite):
         self.left_small_normal_frames = []
         self.right_small_green_frames = []
         self.left_small_green_frames = []
-        self.right_small_red_frames = []
-        self.left_small_red_frames = []
+        self.right_small_COLOR_RGB_RED_frames = []
+        self.left_small_COLOR_RGB_RED_frames = []
         self.right_small_black_frames = []
         self.left_small_black_frames = []
 
@@ -91,8 +113,8 @@ class Mario(pygame.sprite.Sprite):
         self.left_big_normal_frames = []
         self.right_big_green_frames = []
         self.left_big_green_frames = []
-        self.right_big_red_frames = []
-        self.left_big_red_frames = []
+        self.right_big_COLOR_RGB_RED_frames = []
+        self.left_big_COLOR_RGB_RED_frames = []
         self.right_big_black_frames = []
         self.left_big_black_frames = []
 
@@ -100,189 +122,188 @@ class Mario(pygame.sprite.Sprite):
         self.left_fire_frames = []
 
 
-        #Images for normal small mario#
+        # Images for normal small mario #
 
         self.right_small_normal_frames.append(
-            self.imageGetter(178, 32, 12, 16))  # Right [0]
+            self.getImage(178, 32, 12, 16))  # Right [0]
         self.right_small_normal_frames.append(
-            self.imageGetter(80,  32, 15, 16))  # Right walking 1 [1]
+            self.getImage(80,  32, 15, 16))  # Right walking 1 [1]
         self.right_small_normal_frames.append(
-            self.imageGetter(96,  32, 16, 16))  # Right walking 2 [2]
+            self.getImage(96,  32, 16, 16))  # Right walking 2 [2]
         self.right_small_normal_frames.append(
-            self.imageGetter(112,  32, 16, 16))  # Right walking 3 [3]
+            self.getImage(112,  32, 16, 16))  # Right walking 3 [3]
         self.right_small_normal_frames.append(
-            self.imageGetter(144, 32, 16, 16))  # Right jump [4]
+            self.getImage(144, 32, 16, 16))  # Right jump [4]
         self.right_small_normal_frames.append(
-            self.imageGetter(130, 32, 14, 16))  # Right skid [5]
+            self.getImage(130, 32, 14, 16))  # Right skid [5]
         self.right_small_normal_frames.append(
-            self.imageGetter(160, 32, 15, 16))  # Death frame [6]
+            self.getImage(160, 32, 15, 16))  # Death frame [6]
         self.right_small_normal_frames.append(
-            self.imageGetter(320, 8, 16, 24))  # Transition small to big [7]
+            self.getImage(320, 8, 16, 24))  # Transition small to big [7]
         self.right_small_normal_frames.append(
-            self.imageGetter(241, 33, 16, 16))  # Transition big to small [8]
+            self.getImage(241, 33, 16, 16))  # Transition big to small [8]
         self.right_small_normal_frames.append(
-            self.imageGetter(194, 32, 12, 16))  # Frame 1 of flag pole Slide [9]
+            self.getImage(194, 32, 12, 16))  # Frame 1 of flag pole Slide [9]
         self.right_small_normal_frames.append(
-            self.imageGetter(210, 33, 12, 16))  # Frame 2 of flag pole slide [10]
+            self.getImage(210, 33, 12, 16))  # Frame 2 of flag pole slide [10]
 
 
         #Images for small green mario (for invincible animation)#
 
         self.right_small_green_frames.append(
-            self.imageGetter(178, 224, 12, 16))  # Right standing [0]
+            self.getImage(178, 224, 12, 16))  # Right standing [0]
         self.right_small_green_frames.append(
-            self.imageGetter(80, 224, 15, 16))  # Right walking 1 [1]
+            self.getImage(80, 224, 15, 16))  # Right walking 1 [1]
         self.right_small_green_frames.append(
-            self.imageGetter(96, 224, 16, 16))  # Right walking 2 [2]
+            self.getImage(96, 224, 16, 16))  # Right walking 2 [2]
         self.right_small_green_frames.append(
-            self.imageGetter(112, 224, 15, 16))  # Right walking 3 [3]
+            self.getImage(112, 224, 15, 16))  # Right walking 3 [3]
         self.right_small_green_frames.append(
-            self.imageGetter(144, 224, 16, 16))  # Right jump [4]
+            self.getImage(144, 224, 16, 16))  # Right jump [4]
         self.right_small_green_frames.append(
-            self.imageGetter(130, 224, 14, 16))  # Right skid [5]
+            self.getImage(130, 224, 14, 16))  # Right skid [5]
 
-        #Images for red mario (for invincible animation)#
+        #Images for red mario (for invincible animation) #
 
-        self.right_small_red_frames.append(
-            self.imageGetter(178, 272, 12, 16))  # Right standing [0]
-        self.right_small_red_frames.append(
-            self.imageGetter(80, 272, 15, 16))  # Right walking 1 [1]
-        self.right_small_red_frames.append(
-            self.imageGetter(96, 272, 16, 16))  # Right walking 2 [2]
-        self.right_small_red_frames.append(
-            self.imageGetter(112, 272, 15, 16))  # Right walking 3 [3]
-        self.right_small_red_frames.append(
-            self.imageGetter(144, 272, 16, 16))  # Right jump [4]
-        self.right_small_red_frames.append(
-            self.imageGetter(130, 272, 14, 16))  # Right skid [5]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(178, 272, 12, 16))  # Right standing [0]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(80, 272, 15, 16))  # Right walking 1 [1]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(96, 272, 16, 16))  # Right walking 2 [2]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(112, 272, 15, 16))  # Right walking 3 [3]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(144, 272, 16, 16))  # Right jump [4]
+        self.right_small_COLOR_RGB_RED_frames.append(
+            self.getImage(130, 272, 14, 16))  # Right skid [5]
 
-        #Images for black mario (for invincible animation)#
+        #Images for black mario (for invincible animation) #
 
         self.right_small_black_frames.append(
-            self.imageGetter(178, 176, 12, 16))  # Right standing [0]
+            self.getImage(178, 176, 12, 16))  # Right standing [0]
         self.right_small_black_frames.append(
-            self.imageGetter(80, 176, 15, 16))  # Right walking 1 [1]
+            self.getImage(80, 176, 15, 16))  # Right walking 1 [1]
         self.right_small_black_frames.append(
-            self.imageGetter(96, 176, 16, 16))  # Right walking 2 [2]
+            self.getImage(96, 176, 16, 16))  # Right walking 2 [2]
         self.right_small_black_frames.append(
-            self.imageGetter(112, 176, 15, 16))  # Right walking 3 [3]
+            self.getImage(112, 176, 15, 16))  # Right walking 3 [3]
         self.right_small_black_frames.append(
-            self.imageGetter(144, 176, 16, 16))  # Right jump [4]
+            self.getImage(144, 176, 16, 16))  # Right jump [4]
         self.right_small_black_frames.append(
-            self.imageGetter(130, 176, 14, 16))  # Right skid [5]
+            self.getImage(130, 176, 14, 16))  # Right skid [5]
 
 
-        #Images for normal big Mario
+        # Images for normal big Mario #
 
         self.right_big_normal_frames.append(
-            self.imageGetter(176, 0, 16, 32))  # Right standing [0]
+            self.getImage(176, 0, 16, 32))  # Right standing [0]
         self.right_big_normal_frames.append(
-            self.imageGetter(81, 0, 16, 32))  # Right walking 1 [1]
+            self.getImage(81, 0, 16, 32))  # Right walking 1 [1]
         self.right_big_normal_frames.append(
-            self.imageGetter(97, 0, 15, 32))  # Right walking 2 [2]
+            self.getImage(97, 0, 15, 32))  # Right walking 2 [2]
         self.right_big_normal_frames.append(
-            self.imageGetter(113, 0, 15, 32))  # Right walking 3 [3]
+            self.getImage(113, 0, 15, 32))  # Right walking 3 [3]
         self.right_big_normal_frames.append(
-            self.imageGetter(144, 0, 16, 32))  # Right jump [4]
+            self.getImage(144, 0, 16, 32))  # Right jump [4]
         self.right_big_normal_frames.append(
-            self.imageGetter(128, 0, 16, 32))  # Right skid [5]
+            self.getImage(128, 0, 16, 32))  # Right skid [5]
         self.right_big_normal_frames.append(
-            self.imageGetter(336, 0, 16, 32))  # Right throwing [6]
+            self.getImage(336, 0, 16, 32))  # Right throwing [6]
         self.right_big_normal_frames.append(
-            self.imageGetter(160, 10, 16, 22))  # Right crouching [7]
+            self.getImage(160, 10, 16, 22))  # Right crouching [7]
         self.right_big_normal_frames.append(
-            self.imageGetter(272, 2, 16, 29))  # Transition big to small [8]
+            self.getImage(272, 2, 16, 29))  # Transition big to small [8]
         self.right_big_normal_frames.append(
-            self.imageGetter(193, 2, 16, 30))  # Frame 1 of flag pole slide [9]
+            self.getImage(193, 2, 16, 30))  # Frame 1 of flag pole slide [9]
         self.right_big_normal_frames.append(
-            self.imageGetter(209, 2, 16, 29))  # Frame 2 of flag pole slide [10]
+            self.getImage(209, 2, 16, 29))  # Frame 2 of flag pole slide [10]
 
-        #Images for green big Mario#
+        # Images for green  big Mario #
 
         self.right_big_green_frames.append(
-            self.imageGetter(176, 192, 16, 32))  # Right standing [0]
+            self.getImage(176, 192, 16, 32))  # Right standing [0]
         self.right_big_green_frames.append(
-            self.imageGetter(81, 192, 16, 32))  # Right walking 1 [1]
+            self.getImage(81, 192, 16, 32))  # Right walking 1 [1]
         self.right_big_green_frames.append(
-            self.imageGetter(97, 192, 15, 32))  # Right walking 2 [2]
+            self.getImage(97, 192, 15, 32))  # Right walking 2 [2]
         self.right_big_green_frames.append(
-            self.imageGetter(113, 192, 15, 32))  # Right walking 3 [3]
+            self.getImage(113, 192, 15, 32))  # Right walking 3 [3]
         self.right_big_green_frames.append(
-            self.imageGetter(144, 192, 16, 32))  # Right jump [4]
+            self.getImage(144, 192, 16, 32))  # Right jump [4]
         self.right_big_green_frames.append(
-            self.imageGetter(128, 192, 16, 32))  # Right skid [5]
+            self.getImage(128, 192, 16, 32))  # Right skid [5]
         self.right_big_green_frames.append(
-            self.imageGetter(336, 192, 16, 32))  # Right throwing [6]
+            self.getImage(336, 192, 16, 32))  # Right throwing [6]
         self.right_big_green_frames.append(
-            self.imageGetter(160, 202, 16, 22))  # Right Crouching [7]
+            self.getImage(160, 202, 16, 22))  # Right Crouching [7]
 
-        #Images for red big Mario#
+        # Images for red big Mario #
 
-        self.right_big_red_frames.append(
-            self.imageGetter(176, 240, 16, 32))  # Right standing [0]
-        self.right_big_red_frames.append(
-            self.imageGetter(81, 240, 16, 32))  # Right walking 1 [1]
-        self.right_big_red_frames.append(
-            self.imageGetter(97, 240, 15, 32))  # Right walking 2 [2]
-        self.right_big_red_frames.append(
-            self.imageGetter(113, 240, 15, 32))  # Right walking 3 [3]
-        self.right_big_red_frames.append(
-            self.imageGetter(144, 240, 16, 32))  # Right jump [4]
-        self.right_big_red_frames.append(
-            self.imageGetter(128, 240, 16, 32))  # Right skid [5]
-        self.right_big_red_frames.append(
-            self.imageGetter(336, 240, 16, 32))  # Right throwing [6]
-        self.right_big_red_frames.append(
-            self.imageGetter(160, 250, 16, 22))  # Right crouching [7]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(176, 240, 16, 32))  # Right standing [0]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(81, 240, 16, 32))  # Right walking 1 [1]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(97, 240, 15, 32))  # Right walking 2 [2]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(113, 240, 15, 32))  # Right walking 3 [3]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(144, 240, 16, 32))  # Right jump [4]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(128, 240, 16, 32))  # Right skid [5]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(336, 240, 16, 32))  # Right throwing [6]
+        self.right_big_COLOR_RGB_RED_frames.append(
+            self.getImage(160, 250, 16, 22))  # Right crouching [7]
 
-        #Images for black big Mario#
+        # Images for black big Mario #
 
         self.right_big_black_frames.append(
-            self.imageGetter(176, 144, 16, 32))  # Right standing [0]
+            self.getImage(176, 144, 16, 32))  # Right standing [0]
         self.right_big_black_frames.append(
-            self.imageGetter(81, 144, 16, 32))  # Right walking 1 [1]
+            self.getImage(81, 144, 16, 32))  # Right walking 1 [1]
         self.right_big_black_frames.append(
-            self.imageGetter(97, 144, 15, 32))  # Right walking 2 [2]
+            self.getImage(97, 144, 15, 32))  # Right walking 2 [2]
         self.right_big_black_frames.append(
-            self.imageGetter(113, 144, 15, 32))  # Right walking 3 [3]
+            self.getImage(113, 144, 15, 32))  # Right walking 3 [3]
         self.right_big_black_frames.append(
-            self.imageGetter(144, 144, 16, 32))  # Right jump [4]
+            self.getImage(144, 144, 16, 32))  # Right jump [4]
         self.right_big_black_frames.append(
-            self.imageGetter(128, 144, 16, 32))  # Right skid [5]
+            self.getImage(128, 144, 16, 32))  # Right skid [5]
         self.right_big_black_frames.append(
-            self.imageGetter(336, 144, 16, 32))  # Right throwing [6]
+            self.getImage(336, 144, 16, 32))  # Right throwing [6]
         self.right_big_black_frames.append(
-            self.imageGetter(160, 154, 16, 22))  # Right Crouching [7]
+            self.getImage(160, 154, 16, 22))  # Right Crouching [7]
 
 
-        #Images for Fire Mario#
+        # Images for Fire Mario #
 
         self.right_fire_frames.append(
-            self.imageGetter(176, 48, 16, 32))  # Right standing [0]
+            self.getImage(176, 48, 16, 32))  # Right standing [0]
         self.right_fire_frames.append(
-            self.imageGetter(81, 48, 16, 32))  # Right walking 1 [1]
+            self.getImage(81, 48, 16, 32))  # Right walking 1 [1]
         self.right_fire_frames.append(
-            self.imageGetter(97, 48, 15, 32))  # Right walking 2 [2]
+            self.getImage(97, 48, 15, 32))  # Right walking 2 [2]
         self.right_fire_frames.append(
-            self.imageGetter(113, 48, 15, 32))  # Right walking 3 [3]
+            self.getImage(113, 48, 15, 32))  # Right walking 3 [3]
         self.right_fire_frames.append(
-            self.imageGetter(144, 48, 16, 32))  # Right jump [4]
+            self.getImage(144, 48, 16, 32))  # Right jump [4]
         self.right_fire_frames.append(
-            self.imageGetter(128, 48, 16, 32))  # Right skid [5]
+            self.getImage(128, 48, 16, 32))  # Right skid [5]
         self.right_fire_frames.append(
-            self.imageGetter(336, 48, 16, 32))  # Right throwing [6]
+            self.getImage(336, 48, 16, 32))  # Right throwing [6]
         self.right_fire_frames.append(
-            self.imageGetter(160, 58, 16, 22))  # Right crouching [7]
+            self.getImage(160, 58, 16, 22))  # Right crouching [7]
         self.right_fire_frames.append(
-            self.imageGetter(0, 0, 0, 0))  # Place holder [8]
+            self.getImage(0, 0, 0, 0))  # Place holder [8]
         self.right_fire_frames.append(
-            self.imageGetter(193, 50, 16, 29))  # Frame 1 of flag pole slide [9]
+            self.getImage(193, 50, 16, 29))  # Frame 1 of flag pole slide [9]
         self.right_fire_frames.append(
-            self.imageGetter(209, 50, 16, 29))  # Frame 2 of flag pole slide [10]
+            self.getImage(209, 50, 16, 29))  # Frame 2 of flag pole slide [10]
 
 
-        #The left image frames are numbered the same as the right
-        #frames but are simply reversed.
+        # The left image frames are numbered the same as the right frames but are simply reversed. #
 
         for frame in self.right_small_normal_frames:
             new_image = pygame.transform.flip(frame, True, False)
@@ -292,9 +313,9 @@ class Mario(pygame.sprite.Sprite):
             new_image = pygame.transform.flip(frame, True, False)
             self.left_small_green_frames.append(new_image)
 
-        for frame in self.right_small_red_frames:
+        for frame in self.right_small_COLOR_RGB_RED_frames:
             new_image = pygame.transform.flip(frame, True, False)
-            self.left_small_red_frames.append(new_image)
+            self.left_small_COLOR_RGB_RED_frames.append(new_image)
 
         for frame in self.right_small_black_frames:
             new_image = pygame.transform.flip(frame, True, False)
@@ -308,9 +329,9 @@ class Mario(pygame.sprite.Sprite):
             new_image = pygame.transform.flip(frame, True, False)
             self.left_big_green_frames.append(new_image)
 
-        for frame in self.right_big_red_frames:
+        for frame in self.right_big_COLOR_RGB_RED_frames:
             new_image = pygame.transform.flip(frame, True, False)
-            self.left_big_red_frames.append(new_image)
+            self.left_big_COLOR_RGB_RED_frames.append(new_image)
 
         for frame in self.right_big_black_frames:
             new_image = pygame.transform.flip(frame, True, False)
@@ -327,8 +348,8 @@ class Mario(pygame.sprite.Sprite):
         self.green_small_frames = [self.right_small_green_frames,
                              self.left_small_green_frames]
 
-        self.red_small_frames = [self.right_small_red_frames,
-                           self.left_small_red_frames]
+        self.red_small_frames = [self.right_small_COLOR_RGB_RED_frames,
+                           self.left_small_COLOR_RGB_RED_frames]
 
         self.black_small_frames = [self.right_small_black_frames,
                              self.left_small_black_frames]
@@ -344,8 +365,8 @@ class Mario(pygame.sprite.Sprite):
         self.green_big_frames = [self.right_big_green_frames,
                                  self.left_big_green_frames]
 
-        self.red_big_frames = [self.right_big_red_frames,
-                               self.left_big_red_frames]
+        self.red_big_frames = [self.right_big_COLOR_RGB_RED_frames,
+                               self.left_big_COLOR_RGB_RED_frames]
 
         self.black_big_frames = [self.right_big_black_frames,
                                  self.left_big_black_frames]
@@ -360,18 +381,18 @@ class Mario(pygame.sprite.Sprite):
 
         self.all_images = [self.right_big_normal_frames,
                            self.right_big_black_frames,
-                           self.right_big_red_frames,
+                           self.right_big_COLOR_RGB_RED_frames,
                            self.right_big_green_frames,
                            self.right_small_normal_frames,
                            self.right_small_green_frames,
-                           self.right_small_red_frames,
+                           self.right_small_COLOR_RGB_RED_frames,
                            self.right_small_black_frames,
                            self.left_big_normal_frames,
                            self.left_big_black_frames,
-                           self.left_big_red_frames,
+                           self.left_big_COLOR_RGB_RED_frames,
                            self.left_big_green_frames,
                            self.left_small_normal_frames,
-                           self.left_small_red_frames,
+                           self.left_small_COLOR_RGB_RED_frames,
                            self.left_small_green_frames,
                            self.left_small_black_frames]
 
@@ -380,59 +401,93 @@ class Mario(pygame.sprite.Sprite):
         self.left_frames = self.normal_small_frames[1]
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
+        """
+        This functiion gets the surface, and then copies the spritesheet using the parameters given in order to return the correct
+        sprite for Mario's animation.
 
+        Parameters:
+            x (int): X coordinate of sprite in sheet
+            y (int): Y coordinate of sprite in sheet
+            width (int): Width of sprite in sheet
+            height (int): Height of sprite in sheet
+        
+        Returns:
+            Returns the image
+        """
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.SIZE_MULTIPLIER),
-                                    int(rect.height*csts.SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.SIZE_MULTIPLIER)))
         return image
 
 
-    def update(self, keys, ginfo, fire_group):
+    def update(self, keys, gGameInfo, fire_group):
+        """
+        This function updates Mario's animation every frame
 
-        self.current_time = ginfo[csts.CURRENT_TIME]
-        self.standHandler(keys, fire_group)
-        self.check_for_special_state()
-        self.animation()
-
-
-    def standHandler(self, keys, fire_group):
-
-        if self.state == csts.STAND:
-            self.standing(keys, fire_group)
-        elif self.state == csts.WALK:
-            self.walking(keys, fire_group)
-        elif self.state == csts.JUMP:
-            self.jumping(keys, fire_group)
-        elif self.state == csts.FALL:
-            self.falling(keys, fire_group)
-        elif self.state == csts.DEATH_JUMP:
-            self.jumping_to_death()
-        elif self.state == csts.SMALL_TO_BIG:
-            self.changing_to_big()
-        elif self.state == csts.BIG_TO_FIRE:
-            self.changing_to_fire()
-        elif self.state == csts.BIG_TO_SMALL:
-            self.changing_to_small()
-        elif self.state == csts.FLAGPOLE:
-            self.flag_pole_sliding()
-        elif self.state == csts.BOTTOM_OF_POLE:
-            self.sitting_at_bottom_of_pole()
-        elif self.state == csts.WALKING_TO_CASTLE:
-            self.walking_to_castle()
-        elif self.state == csts.END_OF_LEVEL_FALL:
-            self.falling_at_end_of_level()
+        Parameters:
+            keys: Dictionary key for Mario's state
+            gGameInfo: Global game info
+            fire_group: Check for fire mario.
+            
+        """
+        self.current_time = gGameInfo[gGameSettings.GLOBAL_TIME]
+        self.stateHandler(keys, fire_group)
+        self.Mario_StateCheckSpecial()
+        self.Mario_SetAnimationImage()
 
 
-    def standing(self, keys, fire_group):
+    def stateHandler(self, keys, fire_group):
 
-        self.check_to_allow_jump(keys)
-        self.check_to_allow_fireball(keys)
+        """
+        This function handles Mario's states depending on what he is doing at a particular moment.
+
+        Parameters:
+            keys: Dictionary key for Mario's state
+            gGameInfo: Global game info
+            fire_group: Check for fire mario.
+        """
+        if self.state == gGameSettings.MARIO_STATE_STANDING:
+            self.Mario_Standing(keys, fire_group)
+        elif self.state == gGameSettings.MARIO_STATE_WALK:
+            self.Mario_Walking(keys, fire_group)
+        elif self.state == gGameSettings.MARIO_STATE_JUMP:
+            self.Mario_Jumping(keys, fire_group)
+        elif self.state == gGameSettings.MARIO_STATE_FALL:
+            self.Mario_Falling(keys, fire_group)
+        elif self.state == gGameSettings.GOOMBA_STATE_DEATH:
+            self.Mario_JumpToDeath()
+        elif self.state == gGameSettings.MARIO_STATE_SMALL_TO_BIG:
+            self.Mario_ChangingToBig()
+        elif self.state == gGameSettings.MARIO_STATE_BIG_TO_FIRE:
+            self.Mario_ChangeToFire()
+        elif self.state == gGameSettings.MARIO_STATE_BIG_TO_SMALL:
+            self.Mario_ChangingToSmall()
+        elif self.state == gGameSettings.MARIO_STATE_ON_FLAGPOLE:
+            self.Mario_PoleSlide()
+        elif self.state == gGameSettings.FLAGSTATE_BOTTOM_OF_POLE:
+            self.Mario_BottomOfPole()
+        elif self.state == gGameSettings.MARIO_STATE_WALKING_TO_CASTLE:
+            self.Mario_WalkingToCastle()
+        elif self.state == gGameSettings.MARIO_STATE_END_OF_LEVEL:
+            self.Mario_FallAtEnd()
+
+
+    def Mario_Standing(self, keys, fire_group):
+        """
+        This function handles Mario's "Standing" state
+
+        Parameters:
+            keys: Dictionary key for Mario's state
+            fire_group: Check for fire mario
+        """
+        self.Mario_JumpCheck(keys)
+        self.Mario_FireballCheck(keys)
 
         self.frame_index = 0
         self.x_vel = 0
@@ -440,36 +495,38 @@ class Mario(pygame.sprite.Sprite):
 
         if keys[tools.keybinding['action']]:
             if self.fire and self.allow_fireball:
-                self.shoot_fireball(fire_group)
+                self.Mario_ShootFireball(fire_group)
 
         if keys[tools.keybinding['down']]:
             self.crouching = True
 
         if keys[tools.keybinding['left']]:
             self.facing_right = False
-            self.get_out_of_crouch()
-            self.state = csts.WALK
+            self.Mario_ExitCrouch()
+            self.state = gGameSettings.MARIO_STATE_WALK
         elif keys[tools.keybinding['right']]:
             self.facing_right = True
-            self.get_out_of_crouch()
-            self.state = csts.WALK
+            self.Mario_ExitCrouch()
+            self.state = gGameSettings.MARIO_STATE_WALK
         elif keys[tools.keybinding['jump']]:
             if self.allow_jump:
                 if self.big:
                     setup.SFX['big_jump'].play()
                 else:
                     setup.SFX['small_jump'].play()
-                self.state = csts.JUMP
-                self.y_vel = csts.JUMP_VEL
+                self.state = gGameSettings.MARIO_STATE_JUMP
+                self.y_vel = gGameSettings.MARIO_JUMP_VELOCITY
         else:
-            self.state = csts.STAND
+            self.state = gGameSettings.MARIO_STATE_STANDING
 
         if not keys[tools.keybinding['down']]:
-            self.get_out_of_crouch()
+            self.Mario_ExitCrouch()
 
 
-    def get_out_of_crouch(self):
-
+    def Mario_ExitCrouch(self):
+        """
+        This function changes Mario's collision box from crouch to leaving crouch.
+        """
         bottom = self.rect.bottom
         left = self.rect.x
         if self.facing_right:
@@ -482,27 +539,43 @@ class Mario(pygame.sprite.Sprite):
         self.crouching = False
 
 
-    def check_to_allow_jump(self, keys):
+    def Mario_JumpCheck(self, keys):
+        """
+        This function checks if Mario is allowed to jump. It prevents double jumps.
 
+        Parameters:
+            keys: Dictionary key for Mario's state.
+        """
         if not keys[tools.keybinding['jump']]:
             self.allow_jump = True
 
 
-    def check_to_allow_fireball(self, keys):
+    def Mario_FireballCheck(self, keys):
+        """
+        This function checks if Mario is allowed to use a fireball.
 
+        Parameters:
+            keys: Dictionary key for Mario's state.
+        
+        """
         if not keys[tools.keybinding['action']]:
             self.allow_fireball = True
 
 
-    def shoot_fireball(self, powerup_group):
-
+    def Mario_ShootFireball(self, powerups):
+        """
+        This function shoots a fireball from Mario's hand.
+        
+        Parameters:
+            powerups: Empty array that will be filled with fireball powerups. Used to prevent too many from being loaded on screen at once.
+        """
         setup.SFX['fireball'].play()
-        self.fireball_count = self.count_number_of_fireballs(powerup_group)
+        self.fireball_count = self.Mario_FireballCount(powerups)
 
         if (self.current_time - self.last_fireball_time) > 200:
             if self.fireball_count < 2:
                 self.allow_fireball = False
-                powerup_group.add(
+                powerups.add(
                     powerups.FireBall(self.rect.right, self.rect.y, self.facing_right))
                 self.last_fireball_time = self.current_time
 
@@ -513,29 +586,42 @@ class Mario(pygame.sprite.Sprite):
                     self.image = self.left_frames[self.frame_index]
 
 
-    def count_number_of_fireballs(self, powerup_group):
+    def Mario_FireballCount(self, powerups):
+        """
+        This function counts the number of fireballs in the fireball array at a time.
 
+        Parameters:
+            powerups: Array of fireball powerups. Used to prevent too many fireballs from being loaded on screen at once.
+        
+        Returns:
+            Length of fireball_list
+        """
         fireball_list = []
 
-        for powerup in powerup_group:
-            if powerup.name == csts.FIREBALL:
+        for powerup in powerups:
+            if powerup.name == gGameSettings.BRICK_CONTENTS_FIREBALL:
                 fireball_list.append(powerup)
 
         return len(fireball_list)
 
 
-    def walking(self, keys, fire_group):
+    def Mario_Walking(self, keys, fire_group):
+        """
+        This function handles Mario's "Walking" state.
 
-
-        self.check_to_allow_jump(keys)
-        self.check_to_allow_fireball(keys)
+        Parameters:
+            keys: Dictionary key for Mario's state.
+            fire_group: Check for fire mario.
+        """
+        self.Mario_JumpCheck(keys)
+        self.Mario_FireballCheck(keys)
 
         if self.frame_index == 0:
             self.frame_index += 1
             self.walking_timer = self.current_time
         else:
             if (self.current_time - self.walking_timer >
-                    self.calculate_animation_speed()):
+                    self.Mario_Math_CalcAnimationSpeed()):
                 if self.frame_index < 3:
                     self.frame_index += 1
                 else:
@@ -544,13 +630,13 @@ class Mario(pygame.sprite.Sprite):
                 self.walking_timer = self.current_time
 
         if keys[tools.keybinding['action']]:
-            self.max_x_vel = csts.MAX_RUN_SPEED
-            self.x_accel = csts.r_accel
+            self.max_x_vel = gGameSettings.MARIO_MAX_RUN_SPEED
+            self.x_accel = gGameSettings.MARIO_RUN_ACCELERATION
             if self.fire and self.allow_fireball:
-                self.shoot_fireball(fire_group)
+                self.Mario_ShootFireball(fire_group)
         else:
-            self.max_x_vel = csts.MAX_WALK_SPEED
-            self.x_accel = csts.w_accel
+            self.max_x_vel = gGameSettings.MARIO_MAX_WALK_SPEED
+            self.x_accel = gGameSettings.MARIO_WALK_ACCELERATION
 
         if keys[tools.keybinding['jump']]:
             if self.allow_jump:
@@ -558,21 +644,21 @@ class Mario(pygame.sprite.Sprite):
                     setup.SFX['big_jump'].play()
                 else:
                     setup.SFX['small_jump'].play()
-                self.state = csts.JUMP
+                self.state = gGameSettings.MARIO_STATE_JUMP
                 if self.x_vel > 4.5 or self.x_vel < -4.5:
-                    self.y_vel = csts.JUMP_VEL - .5
+                    self.y_vel = gGameSettings.MARIO_JUMP_VELOCITY - .5
                 else:
-                    self.y_vel = csts.JUMP_VEL
+                    self.y_vel = gGameSettings.MARIO_JUMP_VELOCITY
 
 
         if keys[tools.keybinding['left']]:
-            self.get_out_of_crouch()
+            self.Mario_ExitCrouch()
             self.facing_right = False
             if self.x_vel > 0:
                 self.frame_index = 5
-                self.x_accel = csts.SMALL_TURNAROUND
+                self.x_accel = gGameSettings.MARIO_SMALL_TURNAROUND_SPEED
             else:
-                self.x_accel = csts.w_accel
+                self.x_accel = gGameSettings.MARIO_WALK_ACCELERATION
 
             if self.x_vel > (self.max_x_vel * -1):
                 self.x_vel -= self.x_accel
@@ -582,13 +668,13 @@ class Mario(pygame.sprite.Sprite):
                 self.x_vel += self.x_accel
 
         elif keys[tools.keybinding['right']]:
-            self.get_out_of_crouch()
+            self.Mario_ExitCrouch()
             self.facing_right = True
             if self.x_vel < 0:
                 self.frame_index = 5
-                self.x_accel = csts.SMALL_TURNAROUND
+                self.x_accel = gGameSettings.MARIO_SMALL_TURNAROUND_SPEED
             else:
-                self.x_accel = csts.w_accel
+                self.x_accel = gGameSettings.MARIO_WALK_ACCELERATION
 
             if self.x_vel < self.max_x_vel:
                 self.x_vel += self.x_accel
@@ -603,17 +689,22 @@ class Mario(pygame.sprite.Sprite):
                     self.x_vel -= self.x_accel
                 else:
                     self.x_vel = 0
-                    self.state = csts.STAND
+                    self.state = gGameSettings.MARIO_STATE_STANDING
             else:
                 if self.x_vel < 0:
                     self.x_vel += self.x_accel
                 else:
                     self.x_vel = 0
-                    self.state = csts.STAND
+                    self.state = gGameSettings.MARIO_STATE_STANDING
 
 
-    def calculate_animation_speed(self):
+    def Mario_Math_CalcAnimationSpeed(self):
+        """
+        Calculates Mario's current Animation Speed
 
+        Returns:
+            animation_speed: current animation speed
+        """
         if self.x_vel == 0:
             animation_speed = 130
         elif self.x_vel > 0:
@@ -624,17 +715,23 @@ class Mario(pygame.sprite.Sprite):
         return animation_speed
 
 
-    def jumping(self, keys, fire_group):
+    def Mario_Jumping(self, keys, fire_group):
+        """
+        This function handles Mario's jumping state.
 
+        Parameters:
+            keys: Dictionary key for Mario's state.
+            fire_group: Check for fire mario.
+        """
         self.allow_jump = False
         self.frame_index = 4
-        self.gravity = csts.JUMP_GRAVITY
+        self.gravity = gGameSettings.MARIO_JUMP_GRAVITY
         self.y_vel += self.gravity
-        self.check_to_allow_fireball(keys)
+        self.Mario_FireballCheck(keys)
 
         if self.y_vel >= 0 and self.y_vel < self.max_y_vel:
-            self.gravity = csts.GRAVITY
-            self.state = csts.FALL
+            self.gravity = gGameSettings.WORLD_GRAVITY
+            self.state = gGameSettings.MARIO_STATE_FALL
 
         if keys[tools.keybinding['left']]:
             if self.x_vel > (self.max_x_vel * - 1):
@@ -645,18 +742,24 @@ class Mario(pygame.sprite.Sprite):
                 self.x_vel += self.x_accel
 
         if not keys[tools.keybinding['jump']]:
-            self.gravity = csts.GRAVITY
-            self.state = csts.FALL
+            self.gravity = gGameSettings.WORLD_GRAVITY
+            self.state = gGameSettings.MARIO_STATE_FALL
 
         if keys[tools.keybinding['action']]:
             if self.fire and self.allow_fireball:
-                self.shoot_fireball(fire_group)
+                self.Mario_ShootFireball(fire_group)
 
 
-    def falling(self, keys, fire_group):
+    def Mario_Falling(self, keys, fire_group):
+        """
+        This function handles Mario's falling state.
 
-        self.check_to_allow_fireball(keys)
-        if self.y_vel < csts.MAX_Y_VEL:
+        Parameters:
+            keys: Dictionary key for Mario's state.
+            fire_group: Check for fire mario.
+        """
+        self.Mario_FireballCheck(keys)
+        if self.y_vel < gGameSettings.MARIO_MAX_Y_VELOCITY:
             self.y_vel += self.gravity
 
         if keys[tools.keybinding['left']]:
@@ -669,11 +772,13 @@ class Mario(pygame.sprite.Sprite):
 
         if keys[tools.keybinding['action']]:
             if self.fire and self.allow_fireball:
-                self.shoot_fireball(fire_group)
+                self.Mario_ShootFireball(fire_group)
 
 
-    def jumping_to_death(self):
-
+    def Mario_JumpToDeath(self):
+        """
+        This function handles Mario's death jump state.
+        """
         if self.death_timer == 0:
             self.death_timer = self.current_time
         elif (self.current_time - self.death_timer) > 500:
@@ -681,61 +786,75 @@ class Mario(pygame.sprite.Sprite):
             self.y_vel += self.gravity
 
 
-    def start_death_jump(self, ginfo):
+    def InitializeDeathJump(self, gGameInfo):
+        """
+        This function sets Mario's velocity and initial parameters for his state when jumping down a bottomless pit.
 
+        Parameters:
+            gGameInfo: Global game variables
+        """
         self.dead = True
-        ginfo[csts.MARIO_DEAD] = True
+        gGameInfo[gGameSettings.MARIO_STATE_DEAD] = True
         self.y_vel = -11
         self.gravity = .5
         self.frame_index = 6
         self.image = self.right_frames[self.frame_index]
-        self.state = csts.DEATH_JUMP
+        self.state = gGameSettings.GOOMBA_STATE_DEATH
         self.in_transition_state = True
 
 
-    def changing_to_big(self):
-
+    def Mario_ChangingToBig(self):
+        """
+        This function handles Mario's animation and transition when transitioning to big Mario after eating a mushroom.
+        """
         self.in_transition_state = True
 
         if self.transition_timer == 0:
             self.transition_timer = self.current_time
-        elif self.timer_between_these_two_times(135, 200):
-            self.set_mario_to_middle_image()
-        elif self.timer_between_these_two_times(200, 365):
-            self.set_mario_to_small_image()
-        elif self.timer_between_these_two_times(365, 430):
-            self.set_mario_to_middle_image()
-        elif self.timer_between_these_two_times(430, 495):
-            self.set_mario_to_small_image()
-        elif self.timer_between_these_two_times(495, 560):
-            self.set_mario_to_middle_image()
-        elif self.timer_between_these_two_times(560, 625):
-            self.set_mario_to_big_image()
-        elif self.timer_between_these_two_times(625, 690):
-            self.set_mario_to_small_image()
-        elif self.timer_between_these_two_times(690, 755):
-            self.set_mario_to_middle_image()
-        elif self.timer_between_these_two_times(755, 820):
-            self.set_mario_to_big_image()
-        elif self.timer_between_these_two_times(820, 885):
-            self.set_mario_to_small_image()
-        elif self.timer_between_these_two_times(885, 950):
-            self.set_mario_to_big_image()
-            self.state = csts.WALK
+        elif self.Math_Time_Diff(135, 200):
+            self.Mario_SetMiddleTransitionAnimation()
+        elif self.Math_Time_Diff(200, 365):
+            self.Mario_SetSmallTransitionAnimation()
+        elif self.Math_Time_Diff(365, 430):
+            self.Mario_SetMiddleTransitionAnimation()
+        elif self.Math_Time_Diff(430, 495):
+            self.Mario_SetSmallTransitionAnimation()
+        elif self.Math_Time_Diff(495, 560):
+            self.Mario_SetMiddleTransitionAnimation()
+        elif self.Math_Time_Diff(560, 625):
+            self.Mario_SetBigTransitionAnimation()
+        elif self.Math_Time_Diff(625, 690):
+            self.Mario_SetSmallTransitionAnimation()
+        elif self.Math_Time_Diff(690, 755):
+            self.Mario_SetMiddleTransitionAnimation()
+        elif self.Math_Time_Diff(755, 820):
+            self.Mario_SetBigTransitionAnimation()
+        elif self.Math_Time_Diff(820, 885):
+            self.Mario_SetSmallTransitionAnimation()
+        elif self.Math_Time_Diff(885, 950):
+            self.Mario_SetBigTransitionAnimation()
+            self.state = gGameSettings.MARIO_STATE_WALK
             self.in_transition_state = False
             self.transition_timer = 0
-            self.become_big()
+            self.Mario_ChangeToBig()
 
 
-    def timer_between_these_two_times(self,start_time, end_time):
+    def Math_Time_Diff(self, start_time, end_time):
+        """
+        This function returns the difference between two transition times.
 
+        Returns:
+            True if (self.current_time - self.transition_timer) >= start_time and (self.current_time - self.transition_timer) < end_time
+        """
         if (self.current_time - self.transition_timer) >= start_time\
             and (self.current_time - self.transition_timer) < end_time:
             return True
 
 
-    def set_mario_to_middle_image(self):
-
+    def Mario_SetMiddleTransitionAnimation(self):
+        """
+        Sets Mario's animation image to the middle image during a transition.
+        """
         if self.facing_right:
             self.image = self.normal_small_frames[0][7]
         else:
@@ -747,8 +866,10 @@ class Mario(pygame.sprite.Sprite):
         self.rect.centerx = centerx
 
 
-    def set_mario_to_small_image(self):
-
+    def Mario_SetSmallTransitionAnimation(self):
+        """
+        Sets Mario's animation image to the small image during a transition.
+        """
         if self.facing_right:
             self.image = self.normal_small_frames[0][0]
         else:
@@ -760,8 +881,10 @@ class Mario(pygame.sprite.Sprite):
         self.rect.centerx = centerx
 
 
-    def set_mario_to_big_image(self):
-
+    def Mario_SetBigTransitionAnimation(self):
+        """
+        Sets Mario's animation image to the big image during a transition
+        """
         if self.facing_right:
             self.image = self.normal_big_frames[0][0]
         else:
@@ -773,7 +896,10 @@ class Mario(pygame.sprite.Sprite):
         self.rect.centerx = centerx
 
 
-    def become_big(self):
+    def Mario_ChangeToBig(self):
+        """
+        This function handles the transition period between when Mario is small to when he changes to big. 
+        """
         self.big = True
         self.right_frames = self.right_big_normal_frames
         self.left_frames = self.left_big_normal_frames
@@ -785,19 +911,21 @@ class Mario(pygame.sprite.Sprite):
         self.rect.x = left
 
 
-    def changing_to_fire(self):
-
+    def Mario_ChangeToFire(self):
+        """
+        This function handles the transition period when Mario is big and changing to fire flower Mario.
+        """
         self.in_transition_state = True
 
         if self.facing_right:
             frames = [self.right_fire_frames[3],
                       self.right_big_green_frames[3],
-                      self.right_big_red_frames[3],
+                      self.right_big_COLOR_RGB_RED_frames[3],
                       self.right_big_black_frames[3]]
         else:
             frames = [self.left_fire_frames[3],
                       self.left_big_green_frames[3],
-                      self.left_big_red_frames[3],
+                      self.left_big_COLOR_RGB_RED_frames[3],
                       self.left_big_black_frames[3]]
 
         if self.fire_transition_timer == 0:
@@ -834,15 +962,17 @@ class Mario(pygame.sprite.Sprite):
             self.image = frames[2]
             self.fire = True
             self.in_transition_state = False
-            self.state = csts.WALK
+            self.state = gGameSettings.MARIO_STATE_WALK
             self.transition_timer = 0
 
 
-    def changing_to_small(self):
-
+    def Mario_ChangingToSmall(self):
+        """
+        This function handles Mario's animation and transition when transitioning to small Mario after getting hit by an enemy or dying.
+        """
         self.in_transition_state = True
         self.hurt_invincible = True
-        self.state = csts.BIG_TO_SMALL
+        self.state = gGameSettings.MARIO_STATE_BIG_TO_SMALL
 
         if self.facing_right:
             frames = [self.right_big_normal_frames[4],
@@ -859,57 +989,59 @@ class Mario(pygame.sprite.Sprite):
             self.transition_timer = self.current_time
         elif (self.current_time - self.transition_timer) < 265:
             self.image = frames[0]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 330:
             self.image = frames[1]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 395:
             self.image = frames[2]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 460:
             self.image = frames[1]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 525:
             self.image = frames[2]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 590:
             self.image = frames[1]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 655:
             self.image = frames[2]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 720:
             self.image = frames[1]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 785:
             self.image = frames[2]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 850:
             self.image = frames[1]
-            self.hurt_invincible_check()
-            self.adjust_rect()
+            self.Mario_SetInvincibility()
+            self.Mario_AdjustCollision()
         elif (self.current_time - self.transition_timer) < 915:
             self.image = frames[2]
-            self.adjust_rect()
+            self.Mario_AdjustCollision()
             self.in_transition_state = False
-            self.state = csts.WALK
+            self.state = gGameSettings.MARIO_STATE_WALK
             self.big = False
             self.transition_timer = 0
             self.hurt_invisible_timer = 0
-            self.become_small()
+            self.Mario_ChangeToSmall()
 
 
-    def adjust_rect(self):
-
+    def Mario_AdjustCollision(self):
+        """
+        This function is used when Mario's size changes, in order to adjust his collision appropriately.
+        """
         x = self.rect.x
         bottom = self.rect.bottom
         self.rect = self.image.get_rect()
@@ -917,7 +1049,10 @@ class Mario(pygame.sprite.Sprite):
         self.rect.bottom = bottom
 
 
-    def become_small(self):
+    def Mario_ChangeToSmall(self):
+        """
+        This function handles the transition period when Mario changes to small mario after being hit. 
+        """
         self.big = False
         self.right_frames = self.right_small_normal_frames
         self.left_frames = self.left_small_normal_frames
@@ -928,10 +1063,11 @@ class Mario(pygame.sprite.Sprite):
         self.rect.bottom = bottom
         self.rect.x = left
 
-
-    def flag_pole_sliding(self):
-
-        self.state = csts.FLAGPOLE
+    def Mario_PoleSlide(self):
+        """
+        This function handles the game state in which Mario slide down the flagpole at the end of the level.
+        """
+        self.state = gGameSettings.MARIO_STATE_ON_FLAGPOLE
         self.in_transition_state = True
         self.x_vel = 0
         self.y_vel = 0
@@ -957,8 +1093,10 @@ class Mario(pygame.sprite.Sprite):
             self.image = self.right_frames[10]
 
 
-    def sitting_at_bottom_of_pole(self):
-
+    def Mario_BottomOfPole(self):
+        """
+        This function handles the animation where Mario sits at the bottom of the flagpole before being brought to the castle.
+        """
         if self.flag_pole_timer == 0:
             self.flag_pole_timer = self.current_time
             self.image = self.left_frames[10]
@@ -967,13 +1105,15 @@ class Mario(pygame.sprite.Sprite):
         else:
             self.in_transition_state = False
             if self.rect.bottom < 485:
-                self.state = csts.END_OF_LEVEL_FALL
+                self.state = gGameSettings.MARIO_STATE_END_OF_LEVEL
             else:
-                self.state = csts.WALKING_TO_CASTLE
+                self.state = gGameSettings.MARIO_STATE_WALKING_TO_CASTLE
 
 
-    def set_state_to_bottom_of_pole(self):
-
+    def Mario_BottomOfPoleState(self):
+        """
+        This function handles the gamestate and animation for when Mario is sitting at the bottom of the flagpole at the end of a level.
+        """
         self.image = self.left_frames[9]
         right = self.rect.right
         #self.rect.bottom = 493
@@ -981,13 +1121,15 @@ class Mario(pygame.sprite.Sprite):
         if self.big:
             self.rect.x -= 10
         self.flag_pole_timer = 0
-        self.state = csts.BOTTOM_OF_POLE
+        self.state = gGameSettings.FLAGSTATE_BOTTOM_OF_POLE
 
 
-    def walking_to_castle(self):
-
+    def Mario_WalkingToCastle(self):
+        """
+        This function handles the gamestate and animation for when Mario walks to the castle at the end of a level.
+        """
         self.max_x_vel = 5
-        self.x_accel = csts.w_accel
+        self.x_accel = gGameSettings.MARIO_WALK_ACCELERATION
 
         if self.x_vel < self.max_x_vel:
             self.x_vel += self.x_accel
@@ -996,7 +1138,7 @@ class Mario(pygame.sprite.Sprite):
             self.walking_timer = self.current_time
 
         elif (self.current_time - self.walking_timer) > \
-                self.calculate_animation_speed():
+                self.Mario_Math_CalcAnimationSpeed():
             if self.frame_index < 3:
                 self.frame_index += 1
             else:
@@ -1004,28 +1146,35 @@ class Mario(pygame.sprite.Sprite):
             self.walking_timer = self.current_time
 
 
-    def falling_at_end_of_level(self, *args):
-
-        self.y_vel += csts.GRAVITY
-
-
-
-    def check_for_special_state(self):
-
-        self.check_if_invincible()
-        self.check_if_fire()
-        self.check_if_hurt_invincible()
-        self.check_if_crouching()
+    def Mario_FallAtEnd(self, *args):
+        """
+        This function sets Mario's y velocity to the gravity of the world in order to send the player flying and give the player a game over, thus restarting the level.
+        """
+        self.y_vel += gGameSettings.WORLD_GRAVITY
 
 
-    def check_if_invincible(self):
+
+    def Mario_StateCheckSpecial(self):
+        """
+        This function checks if Mario's state is one of the four "special" states.
+        """
+        self.Mario_CheckIfInvicible()
+        self.Mario_CheckIfFire()
+        self.Mario_InvincibilityHurtCheck()
+        self.Mario_CrouchCheck()
+
+
+    def Mario_CheckIfInvicible(self):
+        """
+        This function checks if Mario is invincible. If he is, then set his losing_invincibility value to True and start a frame countdown.
+        """
         if self.invincible:
             if ((self.current_time - self.invincible_start_timer) < 10000):
                 self.losing_invincibility = False
-                self.change_frame_list(30)
+                self.Mario_ChangeFrameList(30)
             elif ((self.current_time - self.invincible_start_timer) < 12000):
                 self.losing_invincibility = True
-                self.change_frame_list(100)
+                self.Mario_ChangeFrameList(100)
             else:
                 self.losing_invincibility = False
                 self.invincible = False
@@ -1038,7 +1187,7 @@ class Mario(pygame.sprite.Sprite):
                 self.left_frames = self.invincible_small_frames_list[0][1]
 
 
-    def change_frame_list(self, frame_switch_speed):
+    def Mario_ChangeFrameList(self, frame_switch_speed):
         if (self.current_time - self.invincible_animation_timer) > frame_switch_speed:
             if self.invincible_index < (len(self.invincible_small_frames_list) - 1):
                 self.invincible_index += 1
@@ -1056,19 +1205,21 @@ class Mario(pygame.sprite.Sprite):
             self.invincible_animation_timer = self.current_time
 
 
-    def check_if_fire(self):
+    def Mario_CheckIfFire(self):
         if self.fire and self.invincible == False:
             self.right_frames = self.fire_frames[0]
             self.left_frames = self.fire_frames[1]
 
 
-    def check_if_hurt_invincible(self):
-
-        if self.hurt_invincible and self.state != csts.BIG_TO_SMALL:
+    def Mario_InvincibilityHurtCheck(self):
+        """
+        This function checks if Mario is hurt during the cooldown period after getting hit.
+        """
+        if self.hurt_invincible and self.state != gGameSettings.MARIO_STATE_BIG_TO_SMALL:
             if self.hurt_invisible_timer2 == 0:
                 self.hurt_invisible_timer2 = self.current_time
             elif (self.current_time - self.hurt_invisible_timer2) < 2000:
-                self.hurt_invincible_check()
+                self.Mario_SetInvincibility()
             else:
                 self.hurt_invincible = False
                 self.hurt_invisible_timer = 0
@@ -1078,8 +1229,10 @@ class Mario(pygame.sprite.Sprite):
                         image.set_alpha(255)
 
 
-    def hurt_invincible_check(self):
-
+    def Mario_SetInvincibility(self):
+        """
+        This function makes mario invicible on a certain time interval after getting hit by an enemy.
+        """
         if self.hurt_invisible_timer == 0:
             self.hurt_invisible_timer = self.current_time
         elif (self.current_time - self.hurt_invisible_timer) < 35:
@@ -1089,8 +1242,10 @@ class Mario(pygame.sprite.Sprite):
             self.hurt_invisible_timer = self.current_time
 
 
-    def check_if_crouching(self):
-
+    def Mario_CrouchCheck(self):
+        """
+        This function checks if Mario is crouching. If he is, set animation to crouch and change collision.
+        """
         if self.crouching and self.big:
             bottom = self.rect.bottom
             left = self.rect.x
@@ -1103,14 +1258,16 @@ class Mario(pygame.sprite.Sprite):
             self.rect.x = left
 
 
-    def animation(self):
-    
-        if self.state == csts.DEATH_JUMP \
-            or self.state == csts.SMALL_TO_BIG \
-            or self.state == csts.BIG_TO_FIRE \
-            or self.state == csts.BIG_TO_SMALL \
-            or self.state == csts.FLAGPOLE \
-            or self.state == csts.BOTTOM_OF_POLE \
+    def Mario_SetAnimationImage(self):
+        """
+        This function adjusts Mario's image for his animation depending on what his state value is.
+        """
+        if self.state == gGameSettings.GOOMBA_STATE_DEATH \
+            or self.state == gGameSettings.MARIO_STATE_SMALL_TO_BIG \
+            or self.state == gGameSettings.MARIO_STATE_BIG_TO_FIRE \
+            or self.state == gGameSettings.MARIO_STATE_BIG_TO_SMALL \
+            or self.state == gGameSettings.MARIO_STATE_ON_FLAGPOLE \
+            or self.state == gGameSettings.FLAGSTATE_BOTTOM_OF_POLE \
             or self.crouching:
             pass
         elif self.facing_right:

@@ -2,7 +2,7 @@
 
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 
 class Flag(pygame.sprite.Sprite):
 
@@ -14,7 +14,7 @@ class Flag(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.right = x
         self.rect.y = y
-        self.state = csts.TOP_OF_POLE
+        self.state = gGameSettings.FLAGSTATE_TOP_OF_POLE
 
 
     def setup_images(self):
@@ -22,34 +22,34 @@ class Flag(pygame.sprite.Sprite):
         self.frames = []
 
         self.frames.append(
-            self.imageGetter(128, 32, 16, 16))
+            self.getImage(128, 32, 16, 16))
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
 
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.BRICK_SIZE_MULTIPLIER),
-                                    int(rect.height*csts.BRICK_SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.BRICK_SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.BRICK_SIZE_MULTIPLIER)))
         return image
 
 
     def update(self, *args):
 
-        self.standHandler()
+        self.stateHandler()
 
 
-    def standHandler(self):
+    def stateHandler(self):
 
-        if self.state == csts.TOP_OF_POLE:
+        if self.state == gGameSettings.FLAGSTATE_TOP_OF_POLE:
             self.image = self.frames[0]
-        elif self.state == csts.SLIDE_DOWN:
+        elif self.state == gGameSettings.FLAGSTATE_SLIDE_DOWN:
             self.sliding_down()
-        elif self.state == csts.BOTTOM_OF_POLE:
+        elif self.state == gGameSettings.FLAGSTATE_BOTTOM_OF_POLE:
             self.image = self.frames[0]
 
 
@@ -59,7 +59,7 @@ class Flag(pygame.sprite.Sprite):
         self.rect.y += self.y_vel
 
         if self.rect.bottom >= 485:
-            self.state = csts.BOTTOM_OF_POLE
+            self.state = gGameSettings.FLAGSTATE_BOTTOM_OF_POLE
 
 
 class Pole(pygame.sprite.Sprite):
@@ -79,19 +79,19 @@ class Pole(pygame.sprite.Sprite):
         self.frames = []
 
         self.frames.append(
-            self.imageGetter(263, 144, 2, 16))
+            self.getImage(263, 144, 2, 16))
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
 
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.BRICK_SIZE_MULTIPLIER),
-                                    int(rect.height*csts.BRICK_SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.BRICK_SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.BRICK_SIZE_MULTIPLIER)))
         return image
 
 
@@ -117,19 +117,19 @@ class Finial(pygame.sprite.Sprite):
         self.frames = []
 
         self.frames.append(
-            self.imageGetter(228, 120, 8, 8))
+            self.getImage(228, 120, 8, 8))
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
     
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.SIZE_MULTIPLIER),
-                                    int(rect.height*csts.SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.SIZE_MULTIPLIER)))
         return image
 
 

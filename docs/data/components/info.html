@@ -1,0 +1,1611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>data.components.info API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>data.components.info</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import pygame
+from .. import setup
+from .. import gGameSettings
+from . import flashing_coin
+
+
+class Character(pygame.sprite.Sprite):
+    &#34;&#34;&#34;
+    This class handles the large character (CHR) sprites that appear in the game&#39;s header, displaying the player name, score, coin count, and time remaining.
+    &#34;&#34;&#34;
+    def __init__(self, image):
+        super(Character, self).__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+
+
+class HeaderInfo(object):
+    &#34;&#34;&#34;
+    The HeaderInfo class stores level information such as coin total, player score, and remaining time on the clock.
+    &#34;&#34;&#34;
+    def __init__(self, gGameInfo, state):
+        self.spr_sheet = setup.GFX[&#39;text_images&#39;]
+        self.coin_total = gGameInfo[gGameSettings.GLOBAL_COIN_TOTAL]
+        self.time = 401
+        self.current_time = 0
+        self.total_lives = gGameInfo[gGameSettings.GLOBAL_LIVES]
+        self.top_score = gGameInfo[gGameSettings.GLOBAL_TOP_SCORE]
+        self.state = state
+        self.special_state = None
+        self.gGameInfo = gGameInfo
+
+        self.HeaderInfo_CreateImageDictionary()
+        self.create_score_group()
+        self.create_info_labels()
+        self.create_load_screen_labels()
+        self.create_countdown_clock()
+        self.create_coin_counter()
+        self.create_flashing_coin()
+        self.create_mario_image()
+        self.create_game_over_label()
+        self.create_time_out_label()
+        self.create_main_menu_labels()
+
+
+    def HeaderInfo_CreateImageDictionary(self):
+        &#34;&#34;&#34;
+        This function creates a dictionary of all possible header info values.
+        &#34;&#34;&#34;
+        self.image_dict = {}
+        image_list = []
+
+        image_list.append(self.getImage(3, 230, 7, 7))
+        image_list.append(self.getImage(12, 230, 7, 7))
+        image_list.append(self.getImage(19, 230, 7, 7))
+        image_list.append(self.getImage(27, 230, 7, 7))
+        image_list.append(self.getImage(35, 230, 7, 7))
+        image_list.append(self.getImage(43, 230, 7, 7))
+        image_list.append(self.getImage(51, 230, 7, 7))
+        image_list.append(self.getImage(59, 230, 7, 7))
+        image_list.append(self.getImage(67, 230, 7, 7))
+        image_list.append(self.getImage(75, 230, 7, 7))
+
+        image_list.append(self.getImage(83, 230, 7, 7))
+        image_list.append(self.getImage(91, 230, 7, 7))
+        image_list.append(self.getImage(99, 230, 7, 7))
+        image_list.append(self.getImage(107, 230, 7, 7))
+        image_list.append(self.getImage(115, 230, 7, 7))
+        image_list.append(self.getImage(123, 230, 7, 7))
+        image_list.append(self.getImage(3, 238, 7, 7))
+        image_list.append(self.getImage(11, 238, 7, 7))
+        image_list.append(self.getImage(20, 238, 7, 7))
+        image_list.append(self.getImage(27, 238, 7, 7))
+        image_list.append(self.getImage(35, 238, 7, 7))
+        image_list.append(self.getImage(44, 238, 7, 7))
+        image_list.append(self.getImage(51, 238, 7, 7))
+        image_list.append(self.getImage(59, 238, 7, 7))
+        image_list.append(self.getImage(67, 238, 7, 7))
+        image_list.append(self.getImage(75, 238, 7, 7))
+        image_list.append(self.getImage(83, 238, 7, 7))
+        image_list.append(self.getImage(91, 238, 7, 7))
+        image_list.append(self.getImage(99, 238, 7, 7))
+        image_list.append(self.getImage(108, 238, 7, 7))
+        image_list.append(self.getImage(115, 238, 7, 7))
+        image_list.append(self.getImage(123, 238, 7, 7))
+        image_list.append(self.getImage(3, 246, 7, 7))
+        image_list.append(self.getImage(11, 246, 7, 7))
+        image_list.append(self.getImage(20, 246, 7, 7))
+        image_list.append(self.getImage(27, 246, 7, 7))
+        image_list.append(self.getImage(48, 248, 7, 7))
+
+        image_list.append(self.getImage(68, 249, 6, 2))
+        image_list.append(self.getImage(75, 247, 6, 6))
+
+
+
+        character_string = &#39;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ -*&#39;
+
+        for character, image in zip(character_string, image_list):
+            self.image_dict[character] = image
+
+
+    def getImage(self, x, y, width, height):
+        image = pygame.Surface([width, height])
+        rect = image.get_rect()
+
+        image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
+        image.set_colorkey((92, 148, 252))
+        image = pygame.transform.scale(image,
+                                   (int(rect.width*2.9),
+                                    int(rect.height*2.9)))
+        return image
+
+
+    def create_score_group(self):
+        self.score_images = []
+        self.create_label(self.score_images, &#39;000000&#39;, 75, 55)
+
+
+    def create_info_labels(self):
+        self.mario_label = []
+        self.world_label = []
+        self.time_label = []
+        self.stage_label = []
+
+
+        self.create_label(self.mario_label, &#39;MARIO&#39;, 75, 30)
+        self.create_label(self.world_label, &#39;WORLD&#39;, 450, 30)
+        self.create_label(self.time_label, &#39;TIME&#39;, 625, 30)
+        self.create_label(self.stage_label, &#39;1-1&#39;, 472, 55)
+
+        self.label_list = [self.mario_label,
+                           self.world_label,
+                           self.time_label,
+                           self.stage_label]
+
+
+    def create_load_screen_labels(self):
+        world_label = []
+        number_label = []
+
+        self.create_label(world_label, &#39;WORLD&#39;, 280, 200)
+        self.create_label(number_label, &#39;1-1&#39;, 430, 200)
+
+        self.center_labels = [world_label, number_label]
+
+
+    def create_countdown_clock(self):
+        self.count_down_images = []
+        self.create_label(self.count_down_images, str(self.time), 645, 55)
+
+
+    def create_label(self, label_list, string, x, y):
+        for letter in string:
+            label_list.append(Character(self.image_dict[letter]))
+
+        self.set_label_rects(label_list, x, y)
+
+
+    def set_label_rects(self, label_list, x, y):
+        for i, letter in enumerate(label_list):
+            letter.rect.x = x + ((letter.rect.width + 3) * i)
+            letter.rect.y = y
+            if letter.image == self.image_dict[&#39;-&#39;]:
+                letter.rect.y += 7
+                letter.rect.x += 2
+
+
+    def create_coin_counter(self):
+        self.coin_count_images = []
+        self.create_label(self.coin_count_images, &#39;*00&#39;, 300, 55)
+
+
+    def create_flashing_coin(self):
+        self.flashing_coin = flashing_coin.Coin(280, 53)
+
+
+    def create_mario_image(self):
+        self.life_times_image = self.getImage(75, 247, 6, 6)
+        self.life_times_rect = self.life_times_image.get_rect(center=(378, 295))
+        self.life_total_label = []
+        self.create_label(self.life_total_label, str(self.total_lives),
+                          450, 285)
+
+        self.spr_sheet = setup.GFX[&#39;mario_bros&#39;]
+        self.mario_image = self.getImage(178, 32, 12, 16)
+        self.mario_rect = self.mario_image.get_rect(center=(320, 290))
+
+
+    def create_game_over_label(self):
+        game_label = []
+        over_label = []
+
+        self.create_label(game_label, &#39;GAME&#39;, 280, 300)
+        self.create_label(over_label, &#39;OVER&#39;, 400, 300)
+
+        self.game_over_label = [game_label, over_label]
+
+
+    def create_time_out_label(self):
+        time_out_label = []
+
+        self.create_label(time_out_label, &#39;TIME OUT&#39;, 290, 310)
+        self.time_out_label = [time_out_label]
+
+
+    def create_main_menu_labels(self):
+        player_one_game = []
+        player_two_game = []
+        top = []
+        top_score = []
+
+        self.create_label(player_one_game, &#39;1 PLAYER GAME&#39;, 272, 360)
+        self.create_label(player_two_game, &#39;2 PLAYER GAME&#39;, 272, 405)
+        self.create_label(top, &#39;TOP - &#39;, 290, 465)
+        self.create_label(top_score, &#39;000000&#39;, 400, 465)
+
+        self.main_menu_labels = [player_one_game, player_two_game,
+                                 top, top_score]
+
+
+    def update(self, level_info, mario=None):
+        self.mario = mario
+        self.handle_level_state(level_info)
+
+
+    def handle_level_state(self, level_info):
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_score_images(self.main_menu_labels[3], self.top_score)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            if level_info[gGameSettings.GLOBAL_LEVEL_STATE] != gGameSettings.GLOBALSTATE_PAUSED \
+                    and self.mario.state != gGameSettings.MARIO_STATE_WALKING_TO_CASTLE \
+                    and self.mario.state != gGameSettings.MARIO_STATE_END_OF_LEVEL \
+                    and not self.mario.dead:
+                self.update_count_down_clock(level_info)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            level_info[gGameSettings.GLOBAL_SCORE] += 50
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_count_down_clock(level_info)
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+            if self.time == 0:
+                self.state = gGameSettings.GLOBAL_END_OF_LEVEL
+
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+
+    def update_score_images(self, images, score):
+        index = len(images) - 1
+
+        for digit in reversed(str(score)):
+            rect = images[index].rect
+            images[index] = Character(self.image_dict[digit])
+            images[index].rect = rect
+            index -= 1
+
+
+    def update_count_down_clock(self, level_info):
+        if self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            self.time -= 1
+
+        elif (level_info[gGameSettings.GLOBAL_TIME] - self.current_time) &gt; 400:
+            self.current_time = level_info[gGameSettings.GLOBAL_TIME]
+            self.time -= 1
+        self.count_down_images = []
+        self.create_label(self.count_down_images, str(self.time), 645, 55)
+        if len(self.count_down_images) &lt; 2:
+            for i in range(2):
+                self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+            self.set_label_rects(self.count_down_images, 645, 55)
+        elif len(self.count_down_images) &lt; 3:
+            self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+            self.set_label_rects(self.count_down_images, 645, 55)
+
+
+    def update_coin_total(self, level_info):
+        self.coin_total = level_info[gGameSettings.GLOBAL_COIN_TOTAL]
+
+        coin_string = str(self.coin_total)
+        if len(coin_string) &lt; 2:
+            coin_string = &#39;*0&#39; + coin_string
+        elif len(coin_string) &gt; 2:
+            coin_string = &#39;*00&#39;
+        else:
+            coin_string = &#39;*&#39; + coin_string
+
+        x = self.coin_count_images[0].rect.x
+        y = self.coin_count_images[0].rect.y
+
+        self.coin_count_images = []
+
+        self.create_label(self.coin_count_images, coin_string, x, y)
+
+
+    def draw(self, surface):
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+            self.draw_main_menu_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+            self.draw_loading_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+            self.draw_game_over_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+            self.draw_time_out_screen_info(surface)
+        else:
+            pass
+
+
+
+    def draw_main_menu_info(self, surface):
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for label in self.main_menu_labels:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_loading_screen_info(self, surface):
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.center_labels:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for word in self.life_total_label:
+            surface.blit(word.image, word.rect)
+
+        surface.blit(self.mario_image, self.mario_rect)
+        surface.blit(self.life_times_image, self.life_times_rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_level_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for digit in self.count_down_images:
+                surface.blit(digit.image, digit.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_game_over_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.game_over_label:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_time_out_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.time_out_label:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="data.components.info.Character"><code class="flex name class">
+<span>class <span class="ident">Character</span></span>
+<span>(</span><span>image)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This class handles the large character (CHR) sprites that appear in the game's header, displaying the player name, score, coin count, and time remaining.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Character(pygame.sprite.Sprite):
+    &#34;&#34;&#34;
+    This class handles the large character (CHR) sprites that appear in the game&#39;s header, displaying the player name, score, coin count, and time remaining.
+    &#34;&#34;&#34;
+    def __init__(self, image):
+        super(Character, self).__init__()
+        self.image = image
+        self.rect = self.image.get_rect()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>pygame.sprite.Sprite</li>
+</ul>
+</dd>
+<dt id="data.components.info.HeaderInfo"><code class="flex name class">
+<span>class <span class="ident">HeaderInfo</span></span>
+<span>(</span><span>gGameInfo, state)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The HeaderInfo class stores level information such as coin total, player score, and remaining time on the clock.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HeaderInfo(object):
+    &#34;&#34;&#34;
+    The HeaderInfo class stores level information such as coin total, player score, and remaining time on the clock.
+    &#34;&#34;&#34;
+    def __init__(self, gGameInfo, state):
+        self.spr_sheet = setup.GFX[&#39;text_images&#39;]
+        self.coin_total = gGameInfo[gGameSettings.GLOBAL_COIN_TOTAL]
+        self.time = 401
+        self.current_time = 0
+        self.total_lives = gGameInfo[gGameSettings.GLOBAL_LIVES]
+        self.top_score = gGameInfo[gGameSettings.GLOBAL_TOP_SCORE]
+        self.state = state
+        self.special_state = None
+        self.gGameInfo = gGameInfo
+
+        self.HeaderInfo_CreateImageDictionary()
+        self.create_score_group()
+        self.create_info_labels()
+        self.create_load_screen_labels()
+        self.create_countdown_clock()
+        self.create_coin_counter()
+        self.create_flashing_coin()
+        self.create_mario_image()
+        self.create_game_over_label()
+        self.create_time_out_label()
+        self.create_main_menu_labels()
+
+
+    def HeaderInfo_CreateImageDictionary(self):
+        &#34;&#34;&#34;
+        This function creates a dictionary of all possible header info values.
+        &#34;&#34;&#34;
+        self.image_dict = {}
+        image_list = []
+
+        image_list.append(self.getImage(3, 230, 7, 7))
+        image_list.append(self.getImage(12, 230, 7, 7))
+        image_list.append(self.getImage(19, 230, 7, 7))
+        image_list.append(self.getImage(27, 230, 7, 7))
+        image_list.append(self.getImage(35, 230, 7, 7))
+        image_list.append(self.getImage(43, 230, 7, 7))
+        image_list.append(self.getImage(51, 230, 7, 7))
+        image_list.append(self.getImage(59, 230, 7, 7))
+        image_list.append(self.getImage(67, 230, 7, 7))
+        image_list.append(self.getImage(75, 230, 7, 7))
+
+        image_list.append(self.getImage(83, 230, 7, 7))
+        image_list.append(self.getImage(91, 230, 7, 7))
+        image_list.append(self.getImage(99, 230, 7, 7))
+        image_list.append(self.getImage(107, 230, 7, 7))
+        image_list.append(self.getImage(115, 230, 7, 7))
+        image_list.append(self.getImage(123, 230, 7, 7))
+        image_list.append(self.getImage(3, 238, 7, 7))
+        image_list.append(self.getImage(11, 238, 7, 7))
+        image_list.append(self.getImage(20, 238, 7, 7))
+        image_list.append(self.getImage(27, 238, 7, 7))
+        image_list.append(self.getImage(35, 238, 7, 7))
+        image_list.append(self.getImage(44, 238, 7, 7))
+        image_list.append(self.getImage(51, 238, 7, 7))
+        image_list.append(self.getImage(59, 238, 7, 7))
+        image_list.append(self.getImage(67, 238, 7, 7))
+        image_list.append(self.getImage(75, 238, 7, 7))
+        image_list.append(self.getImage(83, 238, 7, 7))
+        image_list.append(self.getImage(91, 238, 7, 7))
+        image_list.append(self.getImage(99, 238, 7, 7))
+        image_list.append(self.getImage(108, 238, 7, 7))
+        image_list.append(self.getImage(115, 238, 7, 7))
+        image_list.append(self.getImage(123, 238, 7, 7))
+        image_list.append(self.getImage(3, 246, 7, 7))
+        image_list.append(self.getImage(11, 246, 7, 7))
+        image_list.append(self.getImage(20, 246, 7, 7))
+        image_list.append(self.getImage(27, 246, 7, 7))
+        image_list.append(self.getImage(48, 248, 7, 7))
+
+        image_list.append(self.getImage(68, 249, 6, 2))
+        image_list.append(self.getImage(75, 247, 6, 6))
+
+
+
+        character_string = &#39;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ -*&#39;
+
+        for character, image in zip(character_string, image_list):
+            self.image_dict[character] = image
+
+
+    def getImage(self, x, y, width, height):
+        image = pygame.Surface([width, height])
+        rect = image.get_rect()
+
+        image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
+        image.set_colorkey((92, 148, 252))
+        image = pygame.transform.scale(image,
+                                   (int(rect.width*2.9),
+                                    int(rect.height*2.9)))
+        return image
+
+
+    def create_score_group(self):
+        self.score_images = []
+        self.create_label(self.score_images, &#39;000000&#39;, 75, 55)
+
+
+    def create_info_labels(self):
+        self.mario_label = []
+        self.world_label = []
+        self.time_label = []
+        self.stage_label = []
+
+
+        self.create_label(self.mario_label, &#39;MARIO&#39;, 75, 30)
+        self.create_label(self.world_label, &#39;WORLD&#39;, 450, 30)
+        self.create_label(self.time_label, &#39;TIME&#39;, 625, 30)
+        self.create_label(self.stage_label, &#39;1-1&#39;, 472, 55)
+
+        self.label_list = [self.mario_label,
+                           self.world_label,
+                           self.time_label,
+                           self.stage_label]
+
+
+    def create_load_screen_labels(self):
+        world_label = []
+        number_label = []
+
+        self.create_label(world_label, &#39;WORLD&#39;, 280, 200)
+        self.create_label(number_label, &#39;1-1&#39;, 430, 200)
+
+        self.center_labels = [world_label, number_label]
+
+
+    def create_countdown_clock(self):
+        self.count_down_images = []
+        self.create_label(self.count_down_images, str(self.time), 645, 55)
+
+
+    def create_label(self, label_list, string, x, y):
+        for letter in string:
+            label_list.append(Character(self.image_dict[letter]))
+
+        self.set_label_rects(label_list, x, y)
+
+
+    def set_label_rects(self, label_list, x, y):
+        for i, letter in enumerate(label_list):
+            letter.rect.x = x + ((letter.rect.width + 3) * i)
+            letter.rect.y = y
+            if letter.image == self.image_dict[&#39;-&#39;]:
+                letter.rect.y += 7
+                letter.rect.x += 2
+
+
+    def create_coin_counter(self):
+        self.coin_count_images = []
+        self.create_label(self.coin_count_images, &#39;*00&#39;, 300, 55)
+
+
+    def create_flashing_coin(self):
+        self.flashing_coin = flashing_coin.Coin(280, 53)
+
+
+    def create_mario_image(self):
+        self.life_times_image = self.getImage(75, 247, 6, 6)
+        self.life_times_rect = self.life_times_image.get_rect(center=(378, 295))
+        self.life_total_label = []
+        self.create_label(self.life_total_label, str(self.total_lives),
+                          450, 285)
+
+        self.spr_sheet = setup.GFX[&#39;mario_bros&#39;]
+        self.mario_image = self.getImage(178, 32, 12, 16)
+        self.mario_rect = self.mario_image.get_rect(center=(320, 290))
+
+
+    def create_game_over_label(self):
+        game_label = []
+        over_label = []
+
+        self.create_label(game_label, &#39;GAME&#39;, 280, 300)
+        self.create_label(over_label, &#39;OVER&#39;, 400, 300)
+
+        self.game_over_label = [game_label, over_label]
+
+
+    def create_time_out_label(self):
+        time_out_label = []
+
+        self.create_label(time_out_label, &#39;TIME OUT&#39;, 290, 310)
+        self.time_out_label = [time_out_label]
+
+
+    def create_main_menu_labels(self):
+        player_one_game = []
+        player_two_game = []
+        top = []
+        top_score = []
+
+        self.create_label(player_one_game, &#39;1 PLAYER GAME&#39;, 272, 360)
+        self.create_label(player_two_game, &#39;2 PLAYER GAME&#39;, 272, 405)
+        self.create_label(top, &#39;TOP - &#39;, 290, 465)
+        self.create_label(top_score, &#39;000000&#39;, 400, 465)
+
+        self.main_menu_labels = [player_one_game, player_two_game,
+                                 top, top_score]
+
+
+    def update(self, level_info, mario=None):
+        self.mario = mario
+        self.handle_level_state(level_info)
+
+
+    def handle_level_state(self, level_info):
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_score_images(self.main_menu_labels[3], self.top_score)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            if level_info[gGameSettings.GLOBAL_LEVEL_STATE] != gGameSettings.GLOBALSTATE_PAUSED \
+                    and self.mario.state != gGameSettings.MARIO_STATE_WALKING_TO_CASTLE \
+                    and self.mario.state != gGameSettings.MARIO_STATE_END_OF_LEVEL \
+                    and not self.mario.dead:
+                self.update_count_down_clock(level_info)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            level_info[gGameSettings.GLOBAL_SCORE] += 50
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
+            self.update_count_down_clock(level_info)
+            self.update_score_images(self.score_images, self.score)
+            self.update_coin_total(level_info)
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+            if self.time == 0:
+                self.state = gGameSettings.GLOBAL_END_OF_LEVEL
+
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+
+    def update_score_images(self, images, score):
+        index = len(images) - 1
+
+        for digit in reversed(str(score)):
+            rect = images[index].rect
+            images[index] = Character(self.image_dict[digit])
+            images[index].rect = rect
+            index -= 1
+
+
+    def update_count_down_clock(self, level_info):
+        if self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            self.time -= 1
+
+        elif (level_info[gGameSettings.GLOBAL_TIME] - self.current_time) &gt; 400:
+            self.current_time = level_info[gGameSettings.GLOBAL_TIME]
+            self.time -= 1
+        self.count_down_images = []
+        self.create_label(self.count_down_images, str(self.time), 645, 55)
+        if len(self.count_down_images) &lt; 2:
+            for i in range(2):
+                self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+            self.set_label_rects(self.count_down_images, 645, 55)
+        elif len(self.count_down_images) &lt; 3:
+            self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+            self.set_label_rects(self.count_down_images, 645, 55)
+
+
+    def update_coin_total(self, level_info):
+        self.coin_total = level_info[gGameSettings.GLOBAL_COIN_TOTAL]
+
+        coin_string = str(self.coin_total)
+        if len(coin_string) &lt; 2:
+            coin_string = &#39;*0&#39; + coin_string
+        elif len(coin_string) &gt; 2:
+            coin_string = &#39;*00&#39;
+        else:
+            coin_string = &#39;*&#39; + coin_string
+
+        x = self.coin_count_images[0].rect.x
+        y = self.coin_count_images[0].rect.y
+
+        self.coin_count_images = []
+
+        self.create_label(self.coin_count_images, coin_string, x, y)
+
+
+    def draw(self, surface):
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+            self.draw_main_menu_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+            self.draw_loading_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+            self.draw_game_over_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.draw_level_screen_info(surface)
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+            self.draw_time_out_screen_info(surface)
+        else:
+            pass
+
+
+
+    def draw_main_menu_info(self, surface):
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for label in self.main_menu_labels:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_loading_screen_info(self, surface):
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.center_labels:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for word in self.life_total_label:
+            surface.blit(word.image, word.rect)
+
+        surface.blit(self.mario_image, self.mario_rect)
+        surface.blit(self.life_times_image, self.life_times_rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_level_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for digit in self.count_down_images:
+                surface.blit(digit.image, digit.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_game_over_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.game_over_label:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)
+
+
+    def draw_time_out_screen_info(self, surface):
+
+        for info in self.score_images:
+            surface.blit(info.image, info.rect)
+
+        for word in self.time_out_label:
+            for letter in word:
+                surface.blit(letter.image, letter.rect)
+
+        for character in self.coin_count_images:
+            surface.blit(character.image, character.rect)
+
+        for label in self.label_list:
+            for letter in label:
+                surface.blit(letter.image, letter.rect)
+
+        surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="data.components.info.HeaderInfo.HeaderInfo_CreateImageDictionary"><code class="name flex">
+<span>def <span class="ident">HeaderInfo_CreateImageDictionary</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This function creates a dictionary of all possible header info values.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def HeaderInfo_CreateImageDictionary(self):
+    &#34;&#34;&#34;
+    This function creates a dictionary of all possible header info values.
+    &#34;&#34;&#34;
+    self.image_dict = {}
+    image_list = []
+
+    image_list.append(self.getImage(3, 230, 7, 7))
+    image_list.append(self.getImage(12, 230, 7, 7))
+    image_list.append(self.getImage(19, 230, 7, 7))
+    image_list.append(self.getImage(27, 230, 7, 7))
+    image_list.append(self.getImage(35, 230, 7, 7))
+    image_list.append(self.getImage(43, 230, 7, 7))
+    image_list.append(self.getImage(51, 230, 7, 7))
+    image_list.append(self.getImage(59, 230, 7, 7))
+    image_list.append(self.getImage(67, 230, 7, 7))
+    image_list.append(self.getImage(75, 230, 7, 7))
+
+    image_list.append(self.getImage(83, 230, 7, 7))
+    image_list.append(self.getImage(91, 230, 7, 7))
+    image_list.append(self.getImage(99, 230, 7, 7))
+    image_list.append(self.getImage(107, 230, 7, 7))
+    image_list.append(self.getImage(115, 230, 7, 7))
+    image_list.append(self.getImage(123, 230, 7, 7))
+    image_list.append(self.getImage(3, 238, 7, 7))
+    image_list.append(self.getImage(11, 238, 7, 7))
+    image_list.append(self.getImage(20, 238, 7, 7))
+    image_list.append(self.getImage(27, 238, 7, 7))
+    image_list.append(self.getImage(35, 238, 7, 7))
+    image_list.append(self.getImage(44, 238, 7, 7))
+    image_list.append(self.getImage(51, 238, 7, 7))
+    image_list.append(self.getImage(59, 238, 7, 7))
+    image_list.append(self.getImage(67, 238, 7, 7))
+    image_list.append(self.getImage(75, 238, 7, 7))
+    image_list.append(self.getImage(83, 238, 7, 7))
+    image_list.append(self.getImage(91, 238, 7, 7))
+    image_list.append(self.getImage(99, 238, 7, 7))
+    image_list.append(self.getImage(108, 238, 7, 7))
+    image_list.append(self.getImage(115, 238, 7, 7))
+    image_list.append(self.getImage(123, 238, 7, 7))
+    image_list.append(self.getImage(3, 246, 7, 7))
+    image_list.append(self.getImage(11, 246, 7, 7))
+    image_list.append(self.getImage(20, 246, 7, 7))
+    image_list.append(self.getImage(27, 246, 7, 7))
+    image_list.append(self.getImage(48, 248, 7, 7))
+
+    image_list.append(self.getImage(68, 249, 6, 2))
+    image_list.append(self.getImage(75, 247, 6, 6))
+
+
+
+    character_string = &#39;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ -*&#39;
+
+    for character, image in zip(character_string, image_list):
+        self.image_dict[character] = image</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_coin_counter"><code class="name flex">
+<span>def <span class="ident">create_coin_counter</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_coin_counter(self):
+    self.coin_count_images = []
+    self.create_label(self.coin_count_images, &#39;*00&#39;, 300, 55)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_countdown_clock"><code class="name flex">
+<span>def <span class="ident">create_countdown_clock</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_countdown_clock(self):
+    self.count_down_images = []
+    self.create_label(self.count_down_images, str(self.time), 645, 55)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_flashing_coin"><code class="name flex">
+<span>def <span class="ident">create_flashing_coin</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_flashing_coin(self):
+    self.flashing_coin = flashing_coin.Coin(280, 53)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_game_over_label"><code class="name flex">
+<span>def <span class="ident">create_game_over_label</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_game_over_label(self):
+    game_label = []
+    over_label = []
+
+    self.create_label(game_label, &#39;GAME&#39;, 280, 300)
+    self.create_label(over_label, &#39;OVER&#39;, 400, 300)
+
+    self.game_over_label = [game_label, over_label]</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_info_labels"><code class="name flex">
+<span>def <span class="ident">create_info_labels</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_info_labels(self):
+    self.mario_label = []
+    self.world_label = []
+    self.time_label = []
+    self.stage_label = []
+
+
+    self.create_label(self.mario_label, &#39;MARIO&#39;, 75, 30)
+    self.create_label(self.world_label, &#39;WORLD&#39;, 450, 30)
+    self.create_label(self.time_label, &#39;TIME&#39;, 625, 30)
+    self.create_label(self.stage_label, &#39;1-1&#39;, 472, 55)
+
+    self.label_list = [self.mario_label,
+                       self.world_label,
+                       self.time_label,
+                       self.stage_label]</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_label"><code class="name flex">
+<span>def <span class="ident">create_label</span></span>(<span>self, label_list, string, x, y)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_label(self, label_list, string, x, y):
+    for letter in string:
+        label_list.append(Character(self.image_dict[letter]))
+
+    self.set_label_rects(label_list, x, y)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_load_screen_labels"><code class="name flex">
+<span>def <span class="ident">create_load_screen_labels</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_load_screen_labels(self):
+    world_label = []
+    number_label = []
+
+    self.create_label(world_label, &#39;WORLD&#39;, 280, 200)
+    self.create_label(number_label, &#39;1-1&#39;, 430, 200)
+
+    self.center_labels = [world_label, number_label]</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_main_menu_labels"><code class="name flex">
+<span>def <span class="ident">create_main_menu_labels</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_main_menu_labels(self):
+    player_one_game = []
+    player_two_game = []
+    top = []
+    top_score = []
+
+    self.create_label(player_one_game, &#39;1 PLAYER GAME&#39;, 272, 360)
+    self.create_label(player_two_game, &#39;2 PLAYER GAME&#39;, 272, 405)
+    self.create_label(top, &#39;TOP - &#39;, 290, 465)
+    self.create_label(top_score, &#39;000000&#39;, 400, 465)
+
+    self.main_menu_labels = [player_one_game, player_two_game,
+                             top, top_score]</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_mario_image"><code class="name flex">
+<span>def <span class="ident">create_mario_image</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_mario_image(self):
+    self.life_times_image = self.getImage(75, 247, 6, 6)
+    self.life_times_rect = self.life_times_image.get_rect(center=(378, 295))
+    self.life_total_label = []
+    self.create_label(self.life_total_label, str(self.total_lives),
+                      450, 285)
+
+    self.spr_sheet = setup.GFX[&#39;mario_bros&#39;]
+    self.mario_image = self.getImage(178, 32, 12, 16)
+    self.mario_rect = self.mario_image.get_rect(center=(320, 290))</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_score_group"><code class="name flex">
+<span>def <span class="ident">create_score_group</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_score_group(self):
+    self.score_images = []
+    self.create_label(self.score_images, &#39;000000&#39;, 75, 55)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.create_time_out_label"><code class="name flex">
+<span>def <span class="ident">create_time_out_label</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_time_out_label(self):
+    time_out_label = []
+
+    self.create_label(time_out_label, &#39;TIME OUT&#39;, 290, 310)
+    self.time_out_label = [time_out_label]</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw(self, surface):
+    if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+        self.draw_main_menu_info(surface)
+    elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+        self.draw_loading_screen_info(surface)
+    elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+        self.draw_level_screen_info(surface)
+    elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+        self.draw_game_over_screen_info(surface)
+    elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+        self.draw_level_screen_info(surface)
+    elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+        self.draw_level_screen_info(surface)
+    elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+        self.draw_time_out_screen_info(surface)
+    else:
+        pass</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw_game_over_screen_info"><code class="name flex">
+<span>def <span class="ident">draw_game_over_screen_info</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_game_over_screen_info(self, surface):
+
+    for info in self.score_images:
+        surface.blit(info.image, info.rect)
+
+    for word in self.game_over_label:
+        for letter in word:
+            surface.blit(letter.image, letter.rect)
+
+    for character in self.coin_count_images:
+        surface.blit(character.image, character.rect)
+
+    for label in self.label_list:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw_level_screen_info"><code class="name flex">
+<span>def <span class="ident">draw_level_screen_info</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_level_screen_info(self, surface):
+
+    for info in self.score_images:
+        surface.blit(info.image, info.rect)
+
+    for digit in self.count_down_images:
+            surface.blit(digit.image, digit.rect)
+
+    for character in self.coin_count_images:
+        surface.blit(character.image, character.rect)
+
+    for label in self.label_list:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw_loading_screen_info"><code class="name flex">
+<span>def <span class="ident">draw_loading_screen_info</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_loading_screen_info(self, surface):
+    for info in self.score_images:
+        surface.blit(info.image, info.rect)
+
+    for word in self.center_labels:
+        for letter in word:
+            surface.blit(letter.image, letter.rect)
+
+    for word in self.life_total_label:
+        surface.blit(word.image, word.rect)
+
+    surface.blit(self.mario_image, self.mario_rect)
+    surface.blit(self.life_times_image, self.life_times_rect)
+
+    for character in self.coin_count_images:
+        surface.blit(character.image, character.rect)
+
+    for label in self.label_list:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw_main_menu_info"><code class="name flex">
+<span>def <span class="ident">draw_main_menu_info</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_main_menu_info(self, surface):
+    for info in self.score_images:
+        surface.blit(info.image, info.rect)
+
+    for label in self.main_menu_labels:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    for character in self.coin_count_images:
+        surface.blit(character.image, character.rect)
+
+    for label in self.label_list:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.draw_time_out_screen_info"><code class="name flex">
+<span>def <span class="ident">draw_time_out_screen_info</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_time_out_screen_info(self, surface):
+
+    for info in self.score_images:
+        surface.blit(info.image, info.rect)
+
+    for word in self.time_out_label:
+        for letter in word:
+            surface.blit(letter.image, letter.rect)
+
+    for character in self.coin_count_images:
+        surface.blit(character.image, character.rect)
+
+    for label in self.label_list:
+        for letter in label:
+            surface.blit(letter.image, letter.rect)
+
+    surface.blit(self.flashing_coin.image, self.flashing_coin.rect)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.getImage"><code class="name flex">
+<span>def <span class="ident">getImage</span></span>(<span>self, x, y, width, height)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getImage(self, x, y, width, height):
+    image = pygame.Surface([width, height])
+    rect = image.get_rect()
+
+    image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
+    image.set_colorkey((92, 148, 252))
+    image = pygame.transform.scale(image,
+                               (int(rect.width*2.9),
+                                int(rect.height*2.9)))
+    return image</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.handle_level_state"><code class="name flex">
+<span>def <span class="ident">handle_level_state</span></span>(<span>self, level_info)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_level_state(self, level_info):
+    if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_score_images(self.score_images, self.score)
+        self.update_score_images(self.main_menu_labels[3], self.top_score)
+        self.update_coin_total(level_info)
+        self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+    elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_score_images(self.score_images, self.score)
+        self.update_coin_total(level_info)
+
+    elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_score_images(self.score_images, self.score)
+        if level_info[gGameSettings.GLOBAL_LEVEL_STATE] != gGameSettings.GLOBALSTATE_PAUSED \
+                and self.mario.state != gGameSettings.MARIO_STATE_WALKING_TO_CASTLE \
+                and self.mario.state != gGameSettings.MARIO_STATE_END_OF_LEVEL \
+                and not self.mario.dead:
+            self.update_count_down_clock(level_info)
+        self.update_coin_total(level_info)
+        self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+
+    elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_score_images(self.score_images, self.score)
+        self.update_coin_total(level_info)
+
+    elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_score_images(self.score_images, self.score)
+        self.update_coin_total(level_info)
+
+    elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+        level_info[gGameSettings.GLOBAL_SCORE] += 50
+        self.score = level_info[gGameSettings.GLOBAL_SCORE]
+        self.update_count_down_clock(level_info)
+        self.update_score_images(self.score_images, self.score)
+        self.update_coin_total(level_info)
+        self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
+        if self.time == 0:
+            self.state = gGameSettings.GLOBAL_END_OF_LEVEL
+
+    elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+        self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.set_label_rects"><code class="name flex">
+<span>def <span class="ident">set_label_rects</span></span>(<span>self, label_list, x, y)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_label_rects(self, label_list, x, y):
+    for i, letter in enumerate(label_list):
+        letter.rect.x = x + ((letter.rect.width + 3) * i)
+        letter.rect.y = y
+        if letter.image == self.image_dict[&#39;-&#39;]:
+            letter.rect.y += 7
+            letter.rect.x += 2</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, level_info, mario=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, level_info, mario=None):
+    self.mario = mario
+    self.handle_level_state(level_info)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.update_coin_total"><code class="name flex">
+<span>def <span class="ident">update_coin_total</span></span>(<span>self, level_info)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_coin_total(self, level_info):
+    self.coin_total = level_info[gGameSettings.GLOBAL_COIN_TOTAL]
+
+    coin_string = str(self.coin_total)
+    if len(coin_string) &lt; 2:
+        coin_string = &#39;*0&#39; + coin_string
+    elif len(coin_string) &gt; 2:
+        coin_string = &#39;*00&#39;
+    else:
+        coin_string = &#39;*&#39; + coin_string
+
+    x = self.coin_count_images[0].rect.x
+    y = self.coin_count_images[0].rect.y
+
+    self.coin_count_images = []
+
+    self.create_label(self.coin_count_images, coin_string, x, y)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.update_count_down_clock"><code class="name flex">
+<span>def <span class="ident">update_count_down_clock</span></span>(<span>self, level_info)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_count_down_clock(self, level_info):
+    if self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+        self.time -= 1
+
+    elif (level_info[gGameSettings.GLOBAL_TIME] - self.current_time) &gt; 400:
+        self.current_time = level_info[gGameSettings.GLOBAL_TIME]
+        self.time -= 1
+    self.count_down_images = []
+    self.create_label(self.count_down_images, str(self.time), 645, 55)
+    if len(self.count_down_images) &lt; 2:
+        for i in range(2):
+            self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+        self.set_label_rects(self.count_down_images, 645, 55)
+    elif len(self.count_down_images) &lt; 3:
+        self.count_down_images.insert(0, Character(self.image_dict[&#39;0&#39;]))
+        self.set_label_rects(self.count_down_images, 645, 55)</code></pre>
+</details>
+</dd>
+<dt id="data.components.info.HeaderInfo.update_score_images"><code class="name flex">
+<span>def <span class="ident">update_score_images</span></span>(<span>self, images, score)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_score_images(self, images, score):
+    index = len(images) - 1
+
+    for digit in reversed(str(score)):
+        rect = images[index].rect
+        images[index] = Character(self.image_dict[digit])
+        images[index].rect = rect
+        index -= 1</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="data.components" href="index.html">data.components</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="data.components.info.Character" href="#data.components.info.Character">Character</a></code></h4>
+</li>
+<li>
+<h4><code><a title="data.components.info.HeaderInfo" href="#data.components.info.HeaderInfo">HeaderInfo</a></code></h4>
+<ul class="">
+<li><code><a title="data.components.info.HeaderInfo.HeaderInfo_CreateImageDictionary" href="#data.components.info.HeaderInfo.HeaderInfo_CreateImageDictionary">HeaderInfo_CreateImageDictionary</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_coin_counter" href="#data.components.info.HeaderInfo.create_coin_counter">create_coin_counter</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_countdown_clock" href="#data.components.info.HeaderInfo.create_countdown_clock">create_countdown_clock</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_flashing_coin" href="#data.components.info.HeaderInfo.create_flashing_coin">create_flashing_coin</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_game_over_label" href="#data.components.info.HeaderInfo.create_game_over_label">create_game_over_label</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_info_labels" href="#data.components.info.HeaderInfo.create_info_labels">create_info_labels</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_label" href="#data.components.info.HeaderInfo.create_label">create_label</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_load_screen_labels" href="#data.components.info.HeaderInfo.create_load_screen_labels">create_load_screen_labels</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_main_menu_labels" href="#data.components.info.HeaderInfo.create_main_menu_labels">create_main_menu_labels</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_mario_image" href="#data.components.info.HeaderInfo.create_mario_image">create_mario_image</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_score_group" href="#data.components.info.HeaderInfo.create_score_group">create_score_group</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.create_time_out_label" href="#data.components.info.HeaderInfo.create_time_out_label">create_time_out_label</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw" href="#data.components.info.HeaderInfo.draw">draw</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw_game_over_screen_info" href="#data.components.info.HeaderInfo.draw_game_over_screen_info">draw_game_over_screen_info</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw_level_screen_info" href="#data.components.info.HeaderInfo.draw_level_screen_info">draw_level_screen_info</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw_loading_screen_info" href="#data.components.info.HeaderInfo.draw_loading_screen_info">draw_loading_screen_info</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw_main_menu_info" href="#data.components.info.HeaderInfo.draw_main_menu_info">draw_main_menu_info</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.draw_time_out_screen_info" href="#data.components.info.HeaderInfo.draw_time_out_screen_info">draw_time_out_screen_info</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.getImage" href="#data.components.info.HeaderInfo.getImage">getImage</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.handle_level_state" href="#data.components.info.HeaderInfo.handle_level_state">handle_level_state</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.set_label_rects" href="#data.components.info.HeaderInfo.set_label_rects">set_label_rects</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.update" href="#data.components.info.HeaderInfo.update">update</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.update_coin_total" href="#data.components.info.HeaderInfo.update_coin_total">update_coin_total</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.update_count_down_clock" href="#data.components.info.HeaderInfo.update_count_down_clock">update_count_down_clock</a></code></li>
+<li><code><a title="data.components.info.HeaderInfo.update_score_images" href="#data.components.info.HeaderInfo.update_score_images">update_score_images</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

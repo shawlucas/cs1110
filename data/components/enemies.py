@@ -3,10 +3,19 @@
 
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 
 
 class Enemy(pygame.sprite.Sprite):
+    """ 
+    This class is a parent class that will encompass all enemies in the game.
+    Attributes:
+        x: initial x position
+        y: initial y position
+        direction: facing direction
+        name: enemy name
+        setup_frames: generic setup_frames function that are used in every enemy.
+    """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
@@ -18,7 +27,7 @@ class Enemy(pygame.sprite.Sprite):
         self.animate_timer = 0
         self.death_timer = 0
         self.gravity = 1.5
-        self.state = csts.WALK
+        self.state = gGameSettings.MARIO_STATE_WALK
 
         self.name = name
         self.direction = direction
@@ -32,7 +41,7 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def set_velocity(self):
-        if self.direction == csts.LEFT:
+        if self.direction == gGameSettings.GOOMBA_STATE_MOVING_LEFT:
             self.x_vel = -2
         else:
             self.x_vel = 2
@@ -40,30 +49,30 @@ class Enemy(pygame.sprite.Sprite):
         self.y_vel = 0
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
         image = pygame.Surface([width, height]).convert()
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
 
 
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.SIZE_MULTIPLIER),
-                                    int(rect.height*csts.SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.SIZE_MULTIPLIER)))
         return image
 
 
-    def standHandler(self):
-        if self.state == csts.WALK:
+    def stateHandler(self):
+        if self.state == gGameSettings.MARIO_STATE_WALK:
             self.walking()
-        elif self.state == csts.FALL:
+        elif self.state == gGameSettings.MARIO_STATE_FALL:
             self.falling()
-        elif self.state == csts.JUMPED_ON:
+        elif self.state == gGameSettings.GOOMBA_STATE_JUMPED:
             self.jumped_on()
-        elif self.state == csts.SHELL_SLIDE:
+        elif self.state == gGameSettings.KOOPA_STATE_SLIDING_SHELL:
             self.shell_sliding()
-        elif self.state == csts.DEATH_JUMP:
+        elif self.state == gGameSettings.GOOMBA_STATE_DEATH:
             self.death_jumping()
 
 
@@ -100,16 +109,16 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def start_death_jump(self, direction):
-        """Transitions enemy into a DEATH JUMP state"""
+        """Transitions enemy into a DEATH MARIO_STATE_JUMP state"""
         self.y_vel = -8
-        if direction == csts.RIGHT:
+        if direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
             self.x_vel = 2
         else:
             self.x_vel = -2
         self.gravity = .5
         self.frame_index = 3
         self.image = self.frames[self.frame_index]
-        self.state = csts.DEATH_JUMP
+        self.state = gGameSettings.GOOMBA_STATE_DEATH
 
 
     def animation(self):
@@ -117,18 +126,20 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.frames[self.frame_index]
 
 
-    def update(self, ginfo, *args):
+    def update(self, gGameInfo, *args):
         """Updates enemy behavior"""
-        self.current_time = ginfo[csts.CURRENT_TIME]
-        self.standHandler()
+        self.current_time = gGameInfo[gGameSettings.GLOBAL_TIME]
+        self.stateHandler()
         self.animation()
 
 
 
 
 class Goomba(Enemy):
-
-    def __init__(self, y=csts.gr_height, x=0, direction=csts.LEFT, name='goomba'):
+    """
+    This class handles the "Goomba" enemy.
+    """
+    def __init__(self, y=gGameSettings.gr_height, x=0, direction=gGameSettings.GOOMBA_STATE_MOVING_LEFT, name='goomba'):
         Enemy.__init__(self)
         self.enemySet(x, y, direction, name, self.setup_frames)
 
@@ -137,11 +148,11 @@ class Goomba(Enemy):
         """Put the image frames in a list to be animated"""
 
         self.frames.append(
-            self.imageGetter(0, 4, 16, 16))
+            self.getImage(0, 4, 16, 16))
         self.frames.append(
-            self.imageGetter(30, 4, 16, 16))
+            self.getImage(30, 4, 16, 16))
         self.frames.append(
-            self.imageGetter(61, 0, 16, 16))
+            self.getImage(61, 0, 16, 16))
         self.frames.append(pygame.transform.flip(self.frames[1], False, True))
 
 
@@ -155,8 +166,11 @@ class Goomba(Enemy):
 
 
 class Koopa(Enemy):
-
-    def __init__(self, y=csts.gr_height, x=0, direction=csts.LEFT, name='koopa'):
+    """
+    This class handles the "Koopa" enemy.
+    """
+    
+    def __init__(self, y=gGameSettings.gr_height, x=0, direction=gGameSettings.GOOMBA_STATE_MOVING_LEFT, name='koopa'):
         Enemy.__init__(self)
         self.enemySet(x, y, direction, name, self.setup_frames)
 
@@ -164,11 +178,11 @@ class Koopa(Enemy):
     def setup_frames(self):
         """Sets frame list"""
         self.frames.append(
-            self.imageGetter(150, 0, 16, 24))
+            self.getImage(150, 0, 16, 24))
         self.frames.append(
-            self.imageGetter(180, 0, 16, 24))
+            self.getImage(180, 0, 16, 24))
         self.frames.append(
-            self.imageGetter(360, 5, 16, 15))
+            self.getImage(360, 5, 16, 15))
         self.frames.append(pygame.transform.flip(self.frames[2], False, True))
 
 
@@ -185,7 +199,7 @@ class Koopa(Enemy):
 
     def shell_sliding(self):
         """When the koopa is sliding along the ground in his shell"""
-        if self.direction == csts.RIGHT:
+        if self.direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
             self.x_vel = 10
-        elif self.direction == csts.LEFT:
+        elif self.direction == gGameSettings.GOOMBA_STATE_MOVING_LEFT:
             self.x_vel = -10

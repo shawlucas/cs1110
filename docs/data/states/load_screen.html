@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>data.states.load_screen API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>data.states.load_screen</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .. import setup, tools
+from .. import gGameSettings
+from .. import game_sound
+from ..components import info
+
+
+class LoadScreen(tools.GameState_Initialize):
+    &#34;&#34;&#34;
+    This class contains the code needed to run the LoadScreen gamestate.
+    &#34;&#34;&#34;
+    def __init__(self):
+        tools.GameState_Initialize.__init__(self)
+
+    def startup(self, current_time, persist):
+        self.start_time = current_time
+        self.persist = persist
+        self.gGameInfo = self.persist
+        self.next = self.set_next_state()
+
+        info_state = self.set_overhead_info_state()
+
+        self.overhead_info = info.HeaderInfo(self.gGameInfo, info_state)
+        self.sound_manager = game_sound.Sound(self.overhead_info)
+
+
+    def set_next_state(self):
+
+        return gGameSettings.GLOBALSTATE_LEVEL1
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_LOAD_SCREEN
+
+
+    def update(self, surface, keys, current_time):
+
+        if (current_time - self.start_time) &lt; 2400:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+
+        elif (current_time - self.start_time) &lt; 2600:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+
+        elif (current_time - self.start_time) &lt; 2635:
+            surface.fill((106, 150, 252))
+
+        else:
+            self.done = True
+
+
+
+
+class GameOver(LoadScreen):
+
+    def __init__(self):
+        super(GameOver, self).__init__()
+
+
+    def set_next_state(self):
+
+        return gGameSettings.GLOBALSTATE_MAIN_MENU
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_GAME_OVER
+
+    def update(self, surface, keys, current_time):
+        self.current_time = current_time
+        self.sound_manager.update(self.persist, None)
+
+        if (self.current_time - self.start_time) &lt; 7000:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+        elif (self.current_time - self.start_time) &lt; 7200:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+        elif (self.current_time - self.start_time) &lt; 7235:
+            surface.fill((106, 150, 252))
+        else:
+            self.done = True
+
+
+class TimeOut(LoadScreen):
+
+    def __init__(self):
+        super(TimeOut, self).__init__()
+
+    def set_next_state(self):
+
+        if self.persist[gGameSettings.GLOBAL_LIVES] == 0:
+            return gGameSettings.GLOBALSTATE_GAME_OVER
+        else:
+            return gGameSettings.GLOBALSTATE_LOAD_SCREEN
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_TIME_OUT
+
+    def update(self, surface, keys, current_time):
+        self.current_time = current_time
+
+        if (self.current_time - self.start_time) &lt; 2400:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+        else:
+            self.done = True</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="data.states.load_screen.GameOver"><code class="flex name class">
+<span>class <span class="ident">GameOver</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>This class contains the code needed to run the LoadScreen gamestate.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameOver(LoadScreen):
+
+    def __init__(self):
+        super(GameOver, self).__init__()
+
+
+    def set_next_state(self):
+
+        return gGameSettings.GLOBALSTATE_MAIN_MENU
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_GAME_OVER
+
+    def update(self, surface, keys, current_time):
+        self.current_time = current_time
+        self.sound_manager.update(self.persist, None)
+
+        if (self.current_time - self.start_time) &lt; 7000:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+        elif (self.current_time - self.start_time) &lt; 7200:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+        elif (self.current_time - self.start_time) &lt; 7235:
+            surface.fill((106, 150, 252))
+        else:
+            self.done = True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="data.states.load_screen.LoadScreen" href="#data.states.load_screen.LoadScreen">LoadScreen</a></li>
+<li><a title="data.tools.GameState_Initialize" href="../tools.html#data.tools.GameState_Initialize">GameState_Initialize</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="data.states.load_screen.GameOver.set_next_state"><code class="name flex">
+<span>def <span class="ident">set_next_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_next_state(self):
+
+    return gGameSettings.GLOBALSTATE_MAIN_MENU</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.GameOver.set_overhead_info_state"><code class="name flex">
+<span>def <span class="ident">set_overhead_info_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_overhead_info_state(self):
+
+    return gGameSettings.GLOBALSTATE_GAME_OVER</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.GameOver.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, surface, keys, current_time)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, surface, keys, current_time):
+    self.current_time = current_time
+    self.sound_manager.update(self.persist, None)
+
+    if (self.current_time - self.start_time) &lt; 7000:
+        surface.fill(gGameSettings.COLOR_RGB_BLACK)
+        self.overhead_info.update(self.gGameInfo)
+        self.overhead_info.draw(surface)
+    elif (self.current_time - self.start_time) &lt; 7200:
+        surface.fill(gGameSettings.COLOR_RGB_BLACK)
+    elif (self.current_time - self.start_time) &lt; 7235:
+        surface.fill((106, 150, 252))
+    else:
+        self.done = True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="data.states.load_screen.LoadScreen"><code class="flex name class">
+<span>class <span class="ident">LoadScreen</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>This class contains the code needed to run the LoadScreen gamestate.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LoadScreen(tools.GameState_Initialize):
+    &#34;&#34;&#34;
+    This class contains the code needed to run the LoadScreen gamestate.
+    &#34;&#34;&#34;
+    def __init__(self):
+        tools.GameState_Initialize.__init__(self)
+
+    def startup(self, current_time, persist):
+        self.start_time = current_time
+        self.persist = persist
+        self.gGameInfo = self.persist
+        self.next = self.set_next_state()
+
+        info_state = self.set_overhead_info_state()
+
+        self.overhead_info = info.HeaderInfo(self.gGameInfo, info_state)
+        self.sound_manager = game_sound.Sound(self.overhead_info)
+
+
+    def set_next_state(self):
+
+        return gGameSettings.GLOBALSTATE_LEVEL1
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_LOAD_SCREEN
+
+
+    def update(self, surface, keys, current_time):
+
+        if (current_time - self.start_time) &lt; 2400:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+
+        elif (current_time - self.start_time) &lt; 2600:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+
+        elif (current_time - self.start_time) &lt; 2635:
+            surface.fill((106, 150, 252))
+
+        else:
+            self.done = True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="data.tools.GameState_Initialize" href="../tools.html#data.tools.GameState_Initialize">GameState_Initialize</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="data.states.load_screen.GameOver" href="#data.states.load_screen.GameOver">GameOver</a></li>
+<li><a title="data.states.load_screen.TimeOut" href="#data.states.load_screen.TimeOut">TimeOut</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="data.states.load_screen.LoadScreen.set_next_state"><code class="name flex">
+<span>def <span class="ident">set_next_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_next_state(self):
+
+    return gGameSettings.GLOBALSTATE_LEVEL1</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.LoadScreen.set_overhead_info_state"><code class="name flex">
+<span>def <span class="ident">set_overhead_info_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_overhead_info_state(self):
+
+    return gGameSettings.GLOBALSTATE_LOAD_SCREEN</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.LoadScreen.startup"><code class="name flex">
+<span>def <span class="ident">startup</span></span>(<span>self, current_time, persist)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def startup(self, current_time, persist):
+    self.start_time = current_time
+    self.persist = persist
+    self.gGameInfo = self.persist
+    self.next = self.set_next_state()
+
+    info_state = self.set_overhead_info_state()
+
+    self.overhead_info = info.HeaderInfo(self.gGameInfo, info_state)
+    self.sound_manager = game_sound.Sound(self.overhead_info)</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.LoadScreen.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, surface, keys, current_time)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, surface, keys, current_time):
+
+    if (current_time - self.start_time) &lt; 2400:
+        surface.fill(gGameSettings.COLOR_RGB_BLACK)
+        self.overhead_info.update(self.gGameInfo)
+        self.overhead_info.draw(surface)
+
+    elif (current_time - self.start_time) &lt; 2600:
+        surface.fill(gGameSettings.COLOR_RGB_BLACK)
+
+    elif (current_time - self.start_time) &lt; 2635:
+        surface.fill((106, 150, 252))
+
+    else:
+        self.done = True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="data.states.load_screen.TimeOut"><code class="flex name class">
+<span>class <span class="ident">TimeOut</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>This class contains the code needed to run the LoadScreen gamestate.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TimeOut(LoadScreen):
+
+    def __init__(self):
+        super(TimeOut, self).__init__()
+
+    def set_next_state(self):
+
+        if self.persist[gGameSettings.GLOBAL_LIVES] == 0:
+            return gGameSettings.GLOBALSTATE_GAME_OVER
+        else:
+            return gGameSettings.GLOBALSTATE_LOAD_SCREEN
+
+    def set_overhead_info_state(self):
+
+        return gGameSettings.GLOBALSTATE_TIME_OUT
+
+    def update(self, surface, keys, current_time):
+        self.current_time = current_time
+
+        if (self.current_time - self.start_time) &lt; 2400:
+            surface.fill(gGameSettings.COLOR_RGB_BLACK)
+            self.overhead_info.update(self.gGameInfo)
+            self.overhead_info.draw(surface)
+        else:
+            self.done = True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="data.states.load_screen.LoadScreen" href="#data.states.load_screen.LoadScreen">LoadScreen</a></li>
+<li><a title="data.tools.GameState_Initialize" href="../tools.html#data.tools.GameState_Initialize">GameState_Initialize</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="data.states.load_screen.TimeOut.set_next_state"><code class="name flex">
+<span>def <span class="ident">set_next_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_next_state(self):
+
+    if self.persist[gGameSettings.GLOBAL_LIVES] == 0:
+        return gGameSettings.GLOBALSTATE_GAME_OVER
+    else:
+        return gGameSettings.GLOBALSTATE_LOAD_SCREEN</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.TimeOut.set_overhead_info_state"><code class="name flex">
+<span>def <span class="ident">set_overhead_info_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_overhead_info_state(self):
+
+    return gGameSettings.GLOBALSTATE_TIME_OUT</code></pre>
+</details>
+</dd>
+<dt id="data.states.load_screen.TimeOut.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, surface, keys, current_time)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, surface, keys, current_time):
+    self.current_time = current_time
+
+    if (self.current_time - self.start_time) &lt; 2400:
+        surface.fill(gGameSettings.COLOR_RGB_BLACK)
+        self.overhead_info.update(self.gGameInfo)
+        self.overhead_info.draw(surface)
+    else:
+        self.done = True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="data.states" href="index.html">data.states</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="data.states.load_screen.GameOver" href="#data.states.load_screen.GameOver">GameOver</a></code></h4>
+<ul class="">
+<li><code><a title="data.states.load_screen.GameOver.set_next_state" href="#data.states.load_screen.GameOver.set_next_state">set_next_state</a></code></li>
+<li><code><a title="data.states.load_screen.GameOver.set_overhead_info_state" href="#data.states.load_screen.GameOver.set_overhead_info_state">set_overhead_info_state</a></code></li>
+<li><code><a title="data.states.load_screen.GameOver.update" href="#data.states.load_screen.GameOver.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="data.states.load_screen.LoadScreen" href="#data.states.load_screen.LoadScreen">LoadScreen</a></code></h4>
+<ul class="">
+<li><code><a title="data.states.load_screen.LoadScreen.set_next_state" href="#data.states.load_screen.LoadScreen.set_next_state">set_next_state</a></code></li>
+<li><code><a title="data.states.load_screen.LoadScreen.set_overhead_info_state" href="#data.states.load_screen.LoadScreen.set_overhead_info_state">set_overhead_info_state</a></code></li>
+<li><code><a title="data.states.load_screen.LoadScreen.startup" href="#data.states.load_screen.LoadScreen.startup">startup</a></code></li>
+<li><code><a title="data.states.load_screen.LoadScreen.update" href="#data.states.load_screen.LoadScreen.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="data.states.load_screen.TimeOut" href="#data.states.load_screen.TimeOut">TimeOut</a></code></h4>
+<ul class="">
+<li><code><a title="data.states.load_screen.TimeOut.set_next_state" href="#data.states.load_screen.TimeOut.set_next_state">set_next_state</a></code></li>
+<li><code><a title="data.states.load_screen.TimeOut.set_overhead_info_state" href="#data.states.load_screen.TimeOut.set_overhead_info_state">set_overhead_info_state</a></code></li>
+<li><code><a title="data.states.load_screen.TimeOut.update" href="#data.states.load_screen.TimeOut.update">update</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

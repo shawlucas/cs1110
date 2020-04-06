@@ -1,0 +1,115 @@
+"""
+gGameSettings.py
+This file contains all global, read only data that will be used during the game.
+"""
+
+scr_height = 600
+scr_width = 800
+SCREEN_SIZE = (scr_width,scr_height)
+ORIGINAL_TITLE = "SMB 1.0"
+#                          R    G    B
+
+COLOR_RGB_GRAY         = (100, 100, 100)
+COLOR_RGB_NAVYBLUE     = ( 60,  60, 100)
+COLOR_RGB_WHITE        = (255, 255, 255)
+COLOR_RGB_RED          = (255,   0,   0)
+COLOR_RGB_GREEN        = (  0, 255,   0)
+COLOR_RGB_FOREST_GREEN = ( 31, 162,  35)
+COLOR_RGB_BLUE         = (  0,   0, 255)
+COLOR_RGB_SKY_BLUE     = ( 39, 145, 251)
+COLOR_RGB_YELLOW       = (255, 255,   0)
+COLOR_RGB_ORANGE       = (255, 128,   0)
+COLOR_RGB_PURPLE       = (255,   0, 255)
+COLOR_RGB_CYAN         = (  0, 255, 255)
+COLOR_RGB_BLACK        = (  0,   0,   0)
+COLOR_RGB_NEAR_BLACK    = ( 19,  15,  48)
+COLOR_RGB_COMBLUE      = (233, 232, 255)
+COLOR_RGB_GOLD         = (255, 215,   0)
+
+BGCOLOR = COLOR_RGB_WHITE
+SIZE_MULTIPLIER = 2.5
+BRICK_SIZE_MULTIPLIER = 2.69
+BACKGROUND_MULTIPLER = 2.679
+gr_height = scr_height - 62
+
+MARIO_WALK_ACCELERATION = .15
+MARIO_RUN_ACCELERATION = 20
+MARIO_SMALL_TURNAROUND_SPEED = .35
+WORLD_GRAVITY = 1.01
+MARIO_JUMP_GRAVITY = .31
+MARIO_JUMP_VELOCITY = -12
+MARIO_QUICK_JUMP_VELOCITY = -14.5
+MARIO_MAX_Y_VELOCITY = 11
+MARIO_MAX_RUN_SPEED = 800
+MARIO_MAX_WALK_SPEED = 6
+
+
+MARIO_STATE_STANDING = 'standing'
+MARIO_STATE_WALK = 'walk'
+MARIO_STATE_JUMP = 'jump'
+MARIO_STATE_FALL = 'fall'
+MARIO_STATE_SMALL_TO_BIG = 'small to big'
+MARIO_STATE_BIG_TO_FIRE = 'big to fire'
+MARIO_STATE_BIG_TO_SMALL = 'big to small'
+MARIO_STATE_ON_FLAGPOLE = 'flag pole'
+MARIO_STATE_WALKING_TO_CASTLE = 'walking to castle'
+MARIO_STATE_END_OF_LEVEL = 'end of level fall'
+GOOMBA_STATE_MOVING_LEFT = 'left'
+GOOMBA_STATE_MOVING_RIGHT = 'right'
+GOOMBA_STATE_JUMPED = 'jumped on'
+GOOMBA_STATE_DEATH = 'death jump'
+KOOPA_STATE_SLIDING_SHELL = 'sliding shell'
+BRICK_STATE_RESTING = 'resting'
+BRICK_STATE_BUMPED = 'bumped'
+COIN_STATE_OPENED = 'opened'
+COIN_STATE_SPIN = 'spin'
+MUSHROOM_STATE_REVEAL = 'reveal'
+MUSHROOM_STATE_SLIDING = 'sliding'
+STAR_STATE_BOUNCING = 'bounce'
+FIRE_STATE_FLYING = 'flying'
+FIRE_STATE_BOUNCING = 'bouncing'
+FIRE_STATE_EXPLODING = 'exploding'
+BRICK_CONTENTS_MUSHROOM = 'mushroom'
+BRICK_CONTENTS_STAR = 'star'
+BRICK_CONTENTS_FIREFLOWER = 'fireflower'
+BRICK_CONTAINS_SIX_COINS = '6coins'
+BRICK_CONTENTS_COIN = 'coin'
+BRICK_CONTENTS_1UP = '1up_mushroom'
+BRICK_CONTENTS_FIREBALL = 'fireball'
+ENEMY_GOOMBA = 'goomba'
+ENEMY_KOOPA = 'koopa'
+GLOBALSTATE_PAUSED = 'paused'
+GLOBALSTATE_GAME_PLAY = 'game_play'
+GLOBALSTATE_IN_CASTLE = 'in castle'
+GLOBALSTATE_FLAG_AND_FIREWORKS = 'flag and fireworks'
+FLAGSTATE_TOP_OF_POLE = 'top of pole'
+FLAGSTATE_SLIDE_DOWN = 'slide down'
+FLAGSTATE_BOTTOM_OF_POLE = 'bottom of pole'
+SCORE_ONEUP = '379'
+CURSORSTATE_PLAYER1 = '1 player'
+CURSORSTATE_PLAYER2 = '2 player'
+GLOBALSTATE_MAIN_MENU = 'main menu'
+GLOBALSTATE_LOAD_SCREEN = 'loading screen'
+GLOBAL_CURRENT_LEVEL = 'level'
+GLOBALSTATE_GAME_OVER = 'game over'
+GLOBAL_FAST_COUNT_DOWN = 'fast count down'
+GLOBAL_END_OF_LEVEL = 'end of level'
+GLOBAL_COIN_TOTAL = 'coin total'
+GLOBAL_SCORE = 'score'
+GLOBAL_TOP_SCORE = 'top score'
+GLOBAL_LIVES = 'lives'
+GLOBAL_TIME = 'current time'
+GLOBAL_LEVEL_STATE = 'level state'
+CAMERA_START_X = 'camera start x'
+MARIO_STATE_DEAD = 'mario dead'
+GLOBALSTATE_MAIN_MENU = 'main menu'
+GLOBALSTATE_LOAD_SCREEN = 'load screen'
+GLOBALSTATE_TIME_OUT = 'time out'
+GLOBALSTATE_GAME_OVER = 'game over'
+GLOBALSTATE_LEVEL1 = 'level1'
+SOUNDSTATE_DEFAULT = 'default'
+SOUNDSTATE_CLEARSTAGE = 'stage clear'
+SOUNDSTATE_CLEARWORLD = 'world clear'
+SOUNDSTATE_WARNING = 'time warning'
+SOUNDSTATE_SPED_UP_DEFAULT = 'sped up default'
+SOUNDSTATE_MARIO_STARPOWER = 'mario starpower'

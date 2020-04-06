@@ -3,7 +3,7 @@ from __future__ import division
 
 import pygame
 from .. import setup, tools
-from .. import csts
+from .. import gGameSettings
 from .. import game_sound
 from .. components import mario
 from .. components import collider
@@ -17,25 +17,29 @@ from .. components import score
 from .. components import castle_flag
 
 
-class Level1(tools._st):
+class Level1(tools.GameState_Initialize):
+    """
+    This function contains all code needed to execute Level1. 
+    It mostly consists of animation data, which was primarily generated through a C program that parsed level data.
+    """
     def __init__(self):
-        tools._st.__init__(self)
+        tools.GameState_Initialize.__init__(self)
 
     def startup(self, current_time, persist):
-        self.ginfo = persist
-        self.persist = self.ginfo
-        self.ginfo[csts.CURRENT_TIME] = current_time
-        self.ginfo[csts.LEVEL_STATE] = csts.NOT_FROZEN
-        self.ginfo[csts.MARIO_DEAD] = False
+        self.gGameInfo = persist
+        self.persist = self.gGameInfo
+        self.gGameInfo[gGameSettings.GLOBAL_TIME] = current_time
+        self.gGameInfo[gGameSettings.GLOBAL_LEVEL_STATE] = gGameSettings.GLOBALSTATE_GAME_PLAY
+        self.gGameInfo[gGameSettings.MARIO_STATE_DEAD] = False
 
-        self.state = csts.NOT_FROZEN
+        self.state = gGameSettings.GLOBALSTATE_GAME_PLAY
         self.death_timer = 0
         self.flag_timer = 0
         self.flag_score = None
         self.flag_score_total = 0
 
         self.moving_score_list = []
-        self.overhead_info_display = info.OverheadInfo(self.ginfo, csts.LEVEL)
+        self.overhead_info_display = info.HeaderInfo(self.gGameInfo, gGameSettings.GLOBAL_CURRENT_LEVEL)
         self.sound_manager = game_sound.Sound(self.overhead_info_display)
 
         self.bgSetup()
@@ -55,8 +59,8 @@ class Level1(tools._st):
         self.background = setup.GFX['level_1']
         self.back_rect = self.background.get_rect()
         self.background = pygame.transform.scale(self.background,
-                                  (int(self.back_rect.width*csts.BACKGROUND_MULTIPLER),
-                                  int(self.back_rect.height*csts.BACKGROUND_MULTIPLER)))
+                                  (int(self.back_rect.width*gGameSettings.BACKGROUND_MULTIPLER),
+                                  int(self.back_rect.height*gGameSettings.BACKGROUND_MULTIPLER)))
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
         height = self.back_rect.height
@@ -64,14 +68,14 @@ class Level1(tools._st):
         self.level = pygame.Surface((width, height)).convert()
         self.level_rect = self.level.get_rect()
         self.viewport = setup.SCREEN.get_rect(bottom=self.level_rect.bottom)
-        self.viewport.x = self.ginfo[csts.CAMERA_START_X]
+        self.viewport.x = self.gGameInfo[gGameSettings.CAMERA_START_X]
 
 
     def groundSetup(self):
-        ground_rect1 = collider.Collider(0, csts.gr_height,    2953, 60)
-        ground_rect2 = collider.Collider(3048, csts.gr_height,  635, 60)
-        ground_rect3 = collider.Collider(3819, csts.gr_height, 2735, 60)
-        ground_rect4 = collider.Collider(6647, csts.gr_height, 2300, 60)
+        ground_rect1 = collider.Collider(0, gGameSettings.gr_height,    2953, 60)
+        ground_rect2 = collider.Collider(3048, gGameSettings.gr_height,  635, 60)
+        ground_rect3 = collider.Collider(3819, gGameSettings.gr_height, 2735, 60)
+        ground_rect4 = collider.Collider(6647, gGameSettings.gr_height, 2300, 60)
 
         self.ground_group = pygame.sprite.Group(ground_rect1,
                                            ground_rect2,
@@ -147,7 +151,7 @@ class Level1(tools._st):
     def brickSetup(self):
 
         self.coin_group = pygame.sprite.Group()
-        self.powerup_group = pygame.sprite.Group()
+        self.powerups = pygame.sprite.Group()
         self.brick_pieces_group = pygame.sprite.Group()
 
         brick1  = bricks.Brick(858,  365)
@@ -166,9 +170,9 @@ class Level1(tools._st):
         brick14 = bricks.Brick(3901, 193)
         brick15 = bricks.Brick(3944, 193)
         brick16 = bricks.Brick(3987, 193)
-        brick17 = bricks.Brick(4030, 365, csts.SIXCOINS, self.coin_group)
+        brick17 = bricks.Brick(4030, 365, gGameSettings.BRICK_CONTAINS_SIX_COINS, self.coin_group)
         brick18 = bricks.Brick(4287, 365)
-        brick19 = bricks.Brick(4330, 365, csts.STAR, self.powerup_group)
+        brick19 = bricks.Brick(4330, 365, gGameSettings.BRICK_CONTENTS_STAR, self.powerups)
         brick20 = bricks.Brick(5058, 365)
         brick21 = bricks.Brick(5187, 193)
         brick22 = bricks.Brick(5230, 193)
@@ -202,18 +206,18 @@ class Level1(tools._st):
 
     def coinBoxSetup(self):
 
-        coin_box1  = coin_box.Coin_box(685, 365, csts.COIN, self.coin_group)
-        coin_box2  = coin_box.Coin_box(901, 365, csts.MUSHROOM, self.powerup_group)
-        coin_box3  = coin_box.Coin_box(987, 365, csts.COIN, self.coin_group)
-        coin_box4  = coin_box.Coin_box(943, 193, csts.COIN, self.coin_group)
-        coin_box5  = coin_box.Coin_box(3342, 365, csts.MUSHROOM, self.powerup_group)
-        coin_box6  = coin_box.Coin_box(4030, 193, csts.COIN, self.coin_group)
-        coin_box7  = coin_box.Coin_box(4544, 365, csts.COIN, self.coin_group)
-        coin_box8  = coin_box.Coin_box(4672, 365, csts.COIN, self.coin_group)
-        coin_box9  = coin_box.Coin_box(4672, 193, csts.MUSHROOM, self.powerup_group)
-        coin_box10 = coin_box.Coin_box(4800, 365, csts.COIN, self.coin_group)
-        coin_box11 = coin_box.Coin_box(5531, 193, csts.COIN, self.coin_group)
-        coin_box12 = coin_box.Coin_box(7288, 365, csts.COIN, self.coin_group)
+        coin_box1  = coin_box.Coin_box(685, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box2  = coin_box.Coin_box(901, 365, gGameSettings.BRICK_CONTENTS_MUSHROOM, self.powerups)
+        coin_box3  = coin_box.Coin_box(987, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box4  = coin_box.Coin_box(943, 193, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box5  = coin_box.Coin_box(3342, 365, gGameSettings.BRICK_CONTENTS_MUSHROOM, self.powerups)
+        coin_box6  = coin_box.Coin_box(4030, 193, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box7  = coin_box.Coin_box(4544, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box8  = coin_box.Coin_box(4672, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box9  = coin_box.Coin_box(4672, 193, gGameSettings.BRICK_CONTENTS_MUSHROOM, self.powerups)
+        coin_box10 = coin_box.Coin_box(4800, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box11 = coin_box.Coin_box(5531, 193, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
+        coin_box12 = coin_box.Coin_box(7288, 365, gGameSettings.BRICK_CONTENTS_COIN, self.coin_group)
 
         self.coin_box_group = pygame.sprite.Group(coin_box1,  coin_box2,
                                               coin_box3,  coin_box4,
@@ -302,7 +306,7 @@ class Level1(tools._st):
 
         self.mario = mario.Mario()
         self.mario.rect.x = self.viewport.x + 110
-        self.mario.rect.bottom = csts.gr_height
+        self.mario.rect.bottom = gGameSettings.gr_height
 
 
     def checkpointSetup(self):
@@ -344,71 +348,71 @@ class Level1(tools._st):
 
     def update(self, surface, keys, current_time):
 
-        self.ginfo[csts.CURRENT_TIME] = self.current_time = current_time
+        self.gGameInfo[gGameSettings.GLOBAL_TIME] = self.current_time = current_time
         self.standHandlers(keys)
         self.check_if_time_out()
         self.blitScr(surface)
-        self.sound_manager.update(self.ginfo, self.mario)
+        self.sound_manager.update(self.gGameInfo, self.mario)
 
 
 
     def standHandlers(self, keys):
-        if self.state == csts.FROZEN:
+        if self.state == gGameSettings.GLOBALSTATE_PAUSED:
             self.update_during_transition_state(keys)
-        elif self.state == csts.NOT_FROZEN:
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_PLAY:
             self.update_all_sprites(keys)
-        elif self.state == csts.IN_CASTLE:
+        elif self.state == gGameSettings.GLOBALSTATE_IN_CASTLE:
             self.update_while_in_castle()
-        elif self.state == csts.FLAG_AND_FIREWORKS:
+        elif self.state == gGameSettings.GLOBALSTATE_FLAG_AND_FIREWORKS:
             self.update_flag_and_fireworks()
 
 
     def update_during_transition_state(self, keys):
-        self.mario.update(keys, self.ginfo, self.powerup_group)
+        self.mario.update(keys, self.gGameInfo, self.powerups)
         for score in self.moving_score_list:
-            score.update(self.moving_score_list, self.ginfo)
+            score.update(self.moving_score_list, self.gGameInfo)
         if self.flag_score:
-            self.flag_score.update(None, self.ginfo)
+            self.flag_score.update(None, self.gGameInfo)
             self.check_to_add_flag_score()
-        self.coin_box_group.update(self.ginfo)
-        self.flag_pole_group.update(self.ginfo)
+        self.coin_box_group.update(self.gGameInfo)
+        self.flag_pole_group.update(self.gGameInfo)
         self.check_if_mario_in_transition_state()
         self.check_flag()
         self.check_for_mario_death()
-        self.overhead_info_display.update(self.ginfo, self.mario)
+        self.overhead_info_display.update(self.gGameInfo, self.mario)
 
 
     def check_if_mario_in_transition_state(self):
         if self.mario.in_transition_state:
-            self.ginfo[csts.LEVEL_STATE] = self.state = csts.FROZEN
+            self.gGameInfo[gGameSettings.GLOBAL_LEVEL_STATE] = self.state = gGameSettings.GLOBALSTATE_PAUSED
         elif self.mario.in_transition_state == False:
-            if self.state == csts.FROZEN:
-                self.ginfo[csts.LEVEL_STATE] = self.state = csts.NOT_FROZEN
+            if self.state == gGameSettings.GLOBALSTATE_PAUSED:
+                self.gGameInfo[gGameSettings.GLOBAL_LEVEL_STATE] = self.state = gGameSettings.GLOBALSTATE_GAME_PLAY
 
 
     def update_all_sprites(self, keys):
 
-        self.mario.update(keys, self.ginfo, self.powerup_group)
+        self.mario.update(keys, self.gGameInfo, self.powerups)
         for score in self.moving_score_list:
-            score.update(self.moving_score_list, self.ginfo)
+            score.update(self.moving_score_list, self.gGameInfo)
         if self.flag_score:
-            self.flag_score.update(None, self.ginfo)
+            self.flag_score.update(None, self.gGameInfo)
             self.check_to_add_flag_score()
         self.flag_pole_group.update()
         self.check_points_check()
-        self.enemy_group.update(self.ginfo)
-        self.sprites_about_to_die_group.update(self.ginfo, self.viewport)
-        self.shell_group.update(self.ginfo)
+        self.enemy_group.update(self.gGameInfo)
+        self.sprites_about_to_die_group.update(self.gGameInfo, self.viewport)
+        self.shell_group.update(self.gGameInfo)
         self.brick_group.update()
-        self.coin_box_group.update(self.ginfo)
-        self.powerup_group.update(self.ginfo, self.viewport)
-        self.coin_group.update(self.ginfo, self.viewport)
+        self.coin_box_group.update(self.gGameInfo)
+        self.powerups.update(self.gGameInfo, self.viewport)
+        self.coin_group.update(self.gGameInfo, self.viewport)
         self.brick_pieces_group.update()
         self.adjust_sprite_positions()
         self.check_if_mario_in_transition_state()
         self.check_for_mario_death()
         self.update_viewport()
-        self.overhead_info_display.update(self.ginfo, self.mario)
+        self.overhead_info_display.update(self.gGameInfo, self.mario)
 
 
     def check_points_check(self):
@@ -425,52 +429,52 @@ class Level1(tools._st):
                     self.enemy_group.add(self.enemy_group_list[i-1])
 
             if checkpoint.name == '11':
-                self.mario.state = csts.FLAGPOLE
+                self.mario.state = gGameSettings.MARIO_STATE_ON_FLAGPOLE
                 self.mario.invincible = False
                 self.mario.flag_pole_right = checkpoint.rect.right
                 if self.mario.rect.bottom < self.flag.rect.y:
                     self.mario.rect.bottom = self.flag.rect.y
-                self.flag.state = csts.SLIDE_DOWN
+                self.flag.state = gGameSettings.FLAGSTATE_SLIDE_DOWN
                 self.create_flag_points()
 
             elif checkpoint.name == '12':
-                self.state = csts.IN_CASTLE
+                self.state = gGameSettings.GLOBALSTATE_IN_CASTLE
                 self.mario.kill()
-                self.mario.state == csts.STAND
+                self.mario.state == gGameSettings.MARIO_STATE_STANDING
                 self.mario.in_castle = True
-                self.overhead_info_display.state = csts.FAST_COUNT_DOWN
+                self.overhead_info_display.state = gGameSettings.GLOBAL_FAST_COUNT_DOWN
 
 
             elif checkpoint.name == 'secret_mushroom' and self.mario.y_vel < 0:
                 mushroom_box = coin_box.Coin_box(checkpoint.rect.x,
                                         checkpoint.rect.bottom - 40,
                                         '1up_mushroom',
-                                        self.powerup_group)
+                                        self.powerups)
                 mushroom_box.start_bump(self.moving_score_list)
                 self.coin_box_group.add(mushroom_box)
 
                 self.mario.y_vel = 7
                 self.mario.rect.y = mushroom_box.rect.bottom
-                self.mario.state = csts.FALL
+                self.mario.state = gGameSettings.MARIO_STATE_FALL
 
             self.mario_and_enemy_group.add(self.enemy_group)
 
 
     def create_flag_points(self):
         x = 8518
-        y = csts.gr_height - 60
+        y = gGameSettings.gr_height - 60
         mario_bottom = self.mario.rect.bottom
 
-        if mario_bottom > (csts.gr_height - 40 - 40):
+        if mario_bottom > (gGameSettings.gr_height - 40 - 40):
             self.flag_score = score.Score(x, y, 100, True)
             self.flag_score_total = 100
-        elif mario_bottom > (csts.gr_height - 40 - 160):
+        elif mario_bottom > (gGameSettings.gr_height - 40 - 160):
             self.flag_score = score.Score(x, y, 400, True)
             self.flag_score_total = 400
-        elif mario_bottom > (csts.gr_height - 40 - 240):
+        elif mario_bottom > (gGameSettings.gr_height - 40 - 240):
             self.flag_score = score.Score(x, y, 800, True)
             self.flag_score_total = 800
-        elif mario_bottom > (csts.gr_height - 40 - 360):
+        elif mario_bottom > (gGameSettings.gr_height - 40 - 360):
             self.flag_score = score.Score(x, y, 2000, True)
             self.flag_score_total = 2000
         else:
@@ -507,7 +511,7 @@ class Level1(tools._st):
         brick = pygame.sprite.spritecollideany(self.mario, self.brick_group)
         enemy = pygame.sprite.spritecollideany(self.mario, self.enemy_group)
         shell = pygame.sprite.spritecollideany(self.mario, self.shell_group)
-        powerup = pygame.sprite.spritecollideany(self.mario, self.powerup_group)
+        powerup = pygame.sprite.spritecollideany(self.mario, self.powerups)
 
         if coin_box:
             self.adjust_mario_for_x_collisions(coin_box)
@@ -521,93 +525,93 @@ class Level1(tools._st):
         elif enemy:
             if self.mario.invincible:
                 setup.SFX['kick'].play()
-                self.ginfo[csts.SCORE] += 100
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
                 self.moving_score_list.append(
                     score.Score(self.mario.rect.right - self.viewport.x,
                                 self.mario.rect.y, 100))
                 enemy.kill()
-                enemy.start_death_jump(csts.RIGHT)
+                enemy.start_death_jump(gGameSettings.GOOMBA_STATE_MOVING_RIGHT)
                 self.sprites_about_to_die_group.add(enemy)
             elif self.mario.big:
                 setup.SFX['pipe'].play()
                 self.mario.fire = False
                 self.mario.y_vel = -1
-                self.mario.state = csts.BIG_TO_SMALL
+                self.mario.state = gGameSettings.MARIO_STATE_BIG_TO_SMALL
                 self.convert_fireflowers_to_mushrooms()
             elif self.mario.hurt_invincible:
                 pass
             else:
-                self.mario.start_death_jump(self.ginfo)
-                self.state = csts.FROZEN
+                self.mario.InitializeDeathJump(self.gGameInfo)
+                self.state = gGameSettings.GLOBALSTATE_PAUSED
 
         elif shell:
             self.adjust_mario_for_x_shell_collisions(shell)
 
         elif powerup:
-            if powerup.name == csts.STAR:
-                self.ginfo[csts.SCORE] += 1000
+            if powerup.name == gGameSettings.BRICK_CONTENTS_STAR:
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 1000
 
                 self.moving_score_list.append(
                     score.Score(self.mario.rect.centerx - self.viewport.x,
                                 self.mario.rect.y, 1000))
                 self.mario.invincible = True
                 self.mario.invincible_start_timer = self.current_time
-            elif powerup.name == csts.MUSHROOM:
+            elif powerup.name == gGameSettings.BRICK_CONTENTS_MUSHROOM:
                 setup.SFX['powerup'].play()
-                self.ginfo[csts.SCORE] += 1000
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 1000
                 self.moving_score_list.append(
                     score.Score(self.mario.rect.centerx - self.viewport.x,
                                 self.mario.rect.y - 20, 1000))
 
                 self.mario.y_vel = -1
-                self.mario.state = csts.SMALL_TO_BIG
+                self.mario.state = gGameSettings.MARIO_STATE_SMALL_TO_BIG
                 self.mario.in_transition_state = True
                 self.convert_mushrooms_to_fireflowers()
-            elif powerup.name == csts.LIFE_MUSHROOM:
+            elif powerup.name == gGameSettings.BRICK_CONTENTS_1UP:
                 self.moving_score_list.append(
                     score.Score(powerup.rect.right - self.viewport.x,
                                 powerup.rect.y,
-                                csts.ONEUP))
+                                gGameSettings.SCORE_ONEUP))
 
-                self.ginfo[csts.LIVES] += 1
+                self.gGameInfo[gGameSettings.GLOBAL_LIVES] += 1
                 setup.SFX['one_up'].play()
-            elif powerup.name == csts.FIREFLOWER:
+            elif powerup.name == gGameSettings.BRICK_CONTENTS_FIREFLOWER:
                 setup.SFX['powerup'].play()
-                self.ginfo[csts.SCORE] += 1000
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 1000
                 self.moving_score_list.append(
                     score.Score(self.mario.rect.centerx - self.viewport.x,
                                 self.mario.rect.y, 1000))
 
                 if self.mario.big and self.mario.fire == False:
-                    self.mario.state = csts.BIG_TO_FIRE
+                    self.mario.state = gGameSettings.MARIO_STATE_BIG_TO_FIRE
                     self.mario.in_transition_state = True
                 elif self.mario.big == False:
-                    self.mario.state = csts.SMALL_TO_BIG
+                    self.mario.state = gGameSettings.MARIO_STATE_SMALL_TO_BIG
                     self.mario.in_transition_state = True
                     self.convert_mushrooms_to_fireflowers()
 
-            if powerup.name != csts.FIREBALL:
+            if powerup.name != gGameSettings.BRICK_CONTENTS_FIREBALL:
                 powerup.kill()
 
 
     def convert_mushrooms_to_fireflowers(self):
 
         for brick in self.brick_group:
-            if brick.contents == csts.MUSHROOM:
-                brick.contents = csts.FIREFLOWER
+            if brick.contents == gGameSettings.BRICK_CONTENTS_MUSHROOM:
+                brick.contents = gGameSettings.BRICK_CONTENTS_FIREFLOWER
         for coin_box in self.coin_box_group:
-            if coin_box.contents == csts.MUSHROOM:
-                coin_box.contents = csts.FIREFLOWER
+            if coin_box.contents == gGameSettings.BRICK_CONTENTS_MUSHROOM:
+                coin_box.contents = gGameSettings.BRICK_CONTENTS_FIREFLOWER
 
 
     def convert_fireflowers_to_mushrooms(self):
 
         for brick in self.brick_group:
-            if brick.contents == csts.FIREFLOWER:
-                brick.contents = csts.MUSHROOM
+            if brick.contents == gGameSettings.BRICK_CONTENTS_FIREFLOWER:
+                brick.contents = gGameSettings.BRICK_CONTENTS_MUSHROOM
         for coin_box in self.coin_box_group:
-            if coin_box.contents == csts.FIREFLOWER:
-                coin_box.contents = csts.MUSHROOM
+            if coin_box.contents == gGameSettings.BRICK_CONTENTS_FIREFLOWER:
+                coin_box.contents = gGameSettings.BRICK_CONTENTS_MUSHROOM
 
 
     def adjust_mario_for_x_collisions(self, collider):
@@ -622,41 +626,41 @@ class Level1(tools._st):
 
     def adjust_mario_for_x_shell_collisions(self, shell):
 
-        if shell.state == csts.JUMPED_ON:
+        if shell.state == gGameSettings.GOOMBA_STATE_JUMPED:
             if self.mario.rect.x < shell.rect.x:
-                self.ginfo[csts.SCORE] += 400
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 400
                 self.moving_score_list.append(
                     score.Score(shell.rect.centerx - self.viewport.x,
                                 shell.rect.y,
                                 400))
                 self.mario.rect.right = shell.rect.left
-                shell.direction = csts.RIGHT
+                shell.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
                 shell.x_vel = 5
                 shell.rect.x += 5
 
             else:
                 self.mario.rect.left = shell.rect.right
-                shell.direction = csts.LEFT
+                shell.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
                 shell.x_vel = -5
                 shell.rect.x += -5
 
-            shell.state = csts.SHELL_SLIDE
+            shell.state = gGameSettings.KOOPA_STATE_SLIDING_SHELL
 
-        elif shell.state == csts.SHELL_SLIDE:
+        elif shell.state == gGameSettings.KOOPA_STATE_SLIDING_SHELL:
             if self.mario.big and not self.mario.invincible:
-                self.mario.state = csts.BIG_TO_SMALL
+                self.mario.state = gGameSettings.MARIO_STATE_BIG_TO_SMALL
             elif self.mario.invincible:
-                self.ginfo[csts.SCORE] += 200
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 200
                 self.moving_score_list.append(
                     score.Score(shell.rect.right - self.viewport.x,
                                 shell.rect.y, 200))
                 shell.kill()
                 self.sprites_about_to_die_group.add(shell)
-                shell.start_death_jump(csts.RIGHT)
+                shell.start_death_jump(gGameSettings.GOOMBA_STATE_MOVING_RIGHT)
             else:
                 if not self.mario.hurt_invincible and not self.mario.invincible:
-                    self.state = csts.FROZEN
-                    self.mario.start_death_jump(self.ginfo)
+                    self.state = gGameSettings.GLOBALSTATE_PAUSED
+                    self.mario.InitializeDeathJump(self.gGameInfo)
 
 
     def check_mario_y_collisions(self):
@@ -666,7 +670,7 @@ class Level1(tools._st):
         shell = pygame.sprite.spritecollideany(self.mario, self.shell_group)
         brick = pygame.sprite.spritecollideany(self.mario, self.brick_group)
         coin_box = pygame.sprite.spritecollideany(self.mario, self.coin_box_group)
-        powerup = pygame.sprite.spritecollideany(self.mario, self.powerup_group)
+        powerup = pygame.sprite.spritecollideany(self.mario, self.powerups)
 
         brick, coin_box = self.prevent_collision_conflict(brick, coin_box)
 
@@ -684,7 +688,7 @@ class Level1(tools._st):
                 setup.SFX['kick'].play()
                 enemy.kill()
                 self.sprites_about_to_die_group.add(enemy)
-                enemy.start_death_jump(csts.RIGHT)
+                enemy.start_death_jump(gGameSettings.GOOMBA_STATE_MOVING_RIGHT)
             else:
                 self.adjust_mario_for_y_enemy_collisions(enemy)
 
@@ -692,7 +696,7 @@ class Level1(tools._st):
             self.adjust_mario_for_y_shell_collisions(shell)
 
         elif powerup:
-            if powerup.name == csts.STAR:
+            if powerup.name == gGameSettings.BRICK_CONTENTS_STAR:
                 setup.SFX['powerup'].play()
                 powerup.kill()
                 self.mario.invincible = True
@@ -722,31 +726,31 @@ class Level1(tools._st):
     def adjust_mario_for_y_coin_box_collisions(self, coin_box):
 
         if self.mario.rect.y > coin_box.rect.y:
-            if coin_box.state == csts.RESTING:
-                if coin_box.contents == csts.COIN:
-                    self.ginfo[csts.SCORE] += 200
+            if coin_box.state == gGameSettings.BRICK_STATE_RESTING:
+                if coin_box.contents == gGameSettings.BRICK_CONTENTS_COIN:
+                    self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 200
                     coin_box.start_bump(self.moving_score_list)
-                    if coin_box.contents == csts.COIN:
-                        self.ginfo[csts.COIN_TOTAL] += 1
+                    if coin_box.contents == gGameSettings.BRICK_CONTENTS_COIN:
+                        self.gGameInfo[gGameSettings.GLOBAL_COIN_TOTAL] += 1
                 else:
                     coin_box.start_bump(self.moving_score_list)
 
-            elif coin_box.state == csts.OPENED:
+            elif coin_box.state == gGameSettings.COIN_STATE_OPENED:
                 pass
             setup.SFX['bump'].play()
             self.mario.y_vel = 7
             self.mario.rect.y = coin_box.rect.bottom
-            self.mario.state = csts.FALL
+            self.mario.state = gGameSettings.MARIO_STATE_FALL
         else:
             self.mario.y_vel = 0
             self.mario.rect.bottom = coin_box.rect.top
-            self.mario.state = csts.WALK
+            self.mario.state = gGameSettings.MARIO_STATE_WALK
 
 
     def adjust_mario_for_y_brick_collisions(self, brick):
 
         if self.mario.rect.y > brick.rect.y:
-            if brick.state == csts.RESTING:
+            if brick.state == gGameSettings.BRICK_STATE_RESTING:
                 if self.mario.big and brick.contents is None:
                     setup.SFX['brick_smash'].play()
                     self.check_if_enemy_on_brick(brick)
@@ -767,20 +771,20 @@ class Level1(tools._st):
                 else:
                     setup.SFX['bump'].play()
                     if brick.coin_total > 0:
-                        self.ginfo[csts.COIN_TOTAL] += 1
-                        self.ginfo[csts.SCORE] += 200
+                        self.gGameInfo[gGameSettings.GLOBAL_COIN_TOTAL] += 1
+                        self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 200
                     self.check_if_enemy_on_brick(brick)
                     brick.start_bump(self.moving_score_list)
-            elif brick.state == csts.OPENED:
+            elif brick.state == gGameSettings.COIN_STATE_OPENED:
                 setup.SFX['bump'].play()
             self.mario.y_vel = 7
             self.mario.rect.y = brick.rect.bottom
-            self.mario.state = csts.FALL
+            self.mario.state = gGameSettings.MARIO_STATE_FALL
 
         else:
             self.mario.y_vel = 0
             self.mario.rect.bottom = brick.rect.top
-            self.mario.state = csts.WALK
+            self.mario.state = gGameSettings.MARIO_STATE_WALK
 
 
     def check_if_enemy_on_brick(self, brick):
@@ -791,7 +795,7 @@ class Level1(tools._st):
 
         if enemy:
             setup.SFX['kick'].play()
-            self.ginfo[csts.SCORE] += 100
+            self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
             self.moving_score_list.append(
                 score.Score(enemy.rect.centerx - self.viewport.x,
                             enemy.rect.y,
@@ -812,14 +816,14 @@ class Level1(tools._st):
         if collider.rect.bottom > self.mario.rect.bottom:
             self.mario.y_vel = 0
             self.mario.rect.bottom = collider.rect.top
-            if self.mario.state == csts.END_OF_LEVEL_FALL:
-                self.mario.state = csts.WALKING_TO_CASTLE
+            if self.mario.state == gGameSettings.MARIO_STATE_END_OF_LEVEL:
+                self.mario.state = gGameSettings.MARIO_STATE_WALKING_TO_CASTLE
             else:
-                self.mario.state = csts.WALK
+                self.mario.state = gGameSettings.MARIO_STATE_WALK
         elif collider.rect.top < self.mario.rect.top:
             self.mario.y_vel = 7
             self.mario.rect.top = collider.rect.bottom
-            self.mario.state = csts.FALL
+            self.mario.state = gGameSettings.MARIO_STATE_FALL
 
 
     def test_if_mario_is_falling(self):
@@ -831,18 +835,18 @@ class Level1(tools._st):
 
 
         if pygame.sprite.spritecollideany(self.mario, test_collide_group) is None:
-            if self.mario.state != csts.JUMP \
-                and self.mario.state != csts.DEATH_JUMP \
-                and self.mario.state != csts.SMALL_TO_BIG \
-                and self.mario.state != csts.BIG_TO_FIRE \
-                and self.mario.state != csts.BIG_TO_SMALL \
-                and self.mario.state != csts.FLAGPOLE \
-                and self.mario.state != csts.WALKING_TO_CASTLE \
-                and self.mario.state != csts.END_OF_LEVEL_FALL:
-                self.mario.state = csts.FALL
-            elif self.mario.state == csts.WALKING_TO_CASTLE or \
-                self.mario.state == csts.END_OF_LEVEL_FALL:
-                self.mario.state = csts.END_OF_LEVEL_FALL
+            if self.mario.state != gGameSettings.MARIO_STATE_JUMP \
+                and self.mario.state != gGameSettings.GOOMBA_STATE_DEATH \
+                and self.mario.state != gGameSettings.MARIO_STATE_SMALL_TO_BIG \
+                and self.mario.state != gGameSettings.MARIO_STATE_BIG_TO_FIRE \
+                and self.mario.state != gGameSettings.MARIO_STATE_BIG_TO_SMALL \
+                and self.mario.state != gGameSettings.MARIO_STATE_ON_FLAGPOLE \
+                and self.mario.state != gGameSettings.MARIO_STATE_WALKING_TO_CASTLE \
+                and self.mario.state != gGameSettings.MARIO_STATE_END_OF_LEVEL:
+                self.mario.state = gGameSettings.MARIO_STATE_FALL
+            elif self.mario.state == gGameSettings.MARIO_STATE_WALKING_TO_CASTLE or \
+                self.mario.state == gGameSettings.MARIO_STATE_END_OF_LEVEL:
+                self.mario.state = gGameSettings.MARIO_STATE_END_OF_LEVEL
 
         self.mario.rect.y -= 1
 
@@ -851,20 +855,20 @@ class Level1(tools._st):
 
         if self.mario.y_vel > 0:
             setup.SFX['stomp'].play()
-            self.ginfo[csts.SCORE] += 100
+            self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
             self.moving_score_list.append(
                 score.Score(enemy.rect.centerx - self.viewport.x,
                             enemy.rect.y, 100))
-            enemy.state = csts.JUMPED_ON
+            enemy.state = gGameSettings.GOOMBA_STATE_JUMPED
             enemy.kill()
-            if enemy.name == csts.GOOMBA:
+            if enemy.name == gGameSettings.ENEMY_GOOMBA:
                 enemy.death_timer = self.current_time
                 self.sprites_about_to_die_group.add(enemy)
-            elif enemy.name == csts.KOOPA:
+            elif enemy.name == gGameSettings.ENEMY_KOOPA:
                 self.shell_group.add(enemy)
 
             self.mario.rect.bottom = enemy.rect.top
-            self.mario.state = csts.JUMP
+            self.mario.state = gGameSettings.MARIO_STATE_JUMP
             self.mario.y_vel = -7
 
 
@@ -872,21 +876,21 @@ class Level1(tools._st):
     def adjust_mario_for_y_shell_collisions(self, shell):
 
         if self.mario.y_vel > 0:
-            self.ginfo[csts.SCORE] += 400
+            self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 400
             self.moving_score_list.append(
                 score.Score(self.mario.rect.centerx - self.viewport.x,
                             self.mario.rect.y, 400))
-            if shell.state == csts.JUMPED_ON:
+            if shell.state == gGameSettings.GOOMBA_STATE_JUMPED:
                 setup.SFX['kick'].play()
-                shell.state = csts.SHELL_SLIDE
+                shell.state = gGameSettings.KOOPA_STATE_SLIDING_SHELL
                 if self.mario.rect.centerx < shell.rect.centerx:
-                    shell.direction = csts.RIGHT
+                    shell.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
                     shell.rect.left = self.mario.rect.right + 5
                 else:
-                    shell.direction = csts.LEFT
+                    shell.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
                     shell.rect.right = self.mario.rect.left - 5
             else:
-                shell.state = csts.JUMPED_ON
+                shell.state = gGameSettings.GOOMBA_STATE_JUMPED
 
 
     def adjust_enemy_position(self):
@@ -908,27 +912,27 @@ class Level1(tools._st):
         enemy_collider = pygame.sprite.spritecollideany(enemy, self.enemy_group)
 
         if collider:
-            if enemy.direction == csts.RIGHT:
+            if enemy.direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
                 enemy.rect.right = collider.rect.left
-                enemy.direction = csts.LEFT
+                enemy.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
                 enemy.x_vel = -2
-            elif enemy.direction == csts.LEFT:
+            elif enemy.direction == gGameSettings.GOOMBA_STATE_MOVING_LEFT:
                 enemy.rect.left = collider.rect.right
-                enemy.direction = csts.RIGHT
+                enemy.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
                 enemy.x_vel = 2
 
 
         elif enemy_collider:
-            if enemy.direction == csts.RIGHT:
+            if enemy.direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
                 enemy.rect.right = enemy_collider.rect.left
-                enemy.direction = csts.LEFT
-                enemy_collider.direction = csts.RIGHT
+                enemy.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
+                enemy_collider.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
                 enemy.x_vel = -2
                 enemy_collider.x_vel = 2
-            elif enemy.direction == csts.LEFT:
+            elif enemy.direction == gGameSettings.GOOMBA_STATE_MOVING_LEFT:
                 enemy.rect.left = enemy_collider.rect.right
-                enemy.direction = csts.RIGHT
-                enemy_collider.direction = csts.LEFT
+                enemy.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
+                enemy_collider.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
                 enemy.x_vel = 2
                 enemy_collider.x_vel = -2
 
@@ -946,15 +950,15 @@ class Level1(tools._st):
             if enemy.rect.bottom > collider.rect.bottom:
                 enemy.y_vel = 7
                 enemy.rect.top = collider.rect.bottom
-                enemy.state = csts.FALL
+                enemy.state = gGameSettings.MARIO_STATE_FALL
             elif enemy.rect.bottom < collider.rect.bottom:
 
                 enemy.y_vel = 0
                 enemy.rect.bottom = collider.rect.top
-                enemy.state = csts.WALK
+                enemy.state = gGameSettings.MARIO_STATE_WALK
 
         elif brick:
-            if brick.state == csts.BUMPED:
+            if brick.state == gGameSettings.BRICK_STATE_BUMPED:
                 enemy.kill()
                 self.sprites_about_to_die_group.add(enemy)
                 if self.mario.rect.centerx > brick.rect.centerx:
@@ -965,15 +969,15 @@ class Level1(tools._st):
             elif enemy.rect.x > brick.rect.x:
                 enemy.y_vel = 7
                 enemy.rect.top = brick.rect.bottom
-                enemy.state = csts.FALL
+                enemy.state = gGameSettings.MARIO_STATE_FALL
             else:
                 enemy.y_vel = 0
                 enemy.rect.bottom = brick.rect.top
-                enemy.state = csts.WALK
+                enemy.state = gGameSettings.MARIO_STATE_WALK
 
         elif coin_box:
-            if coin_box.state == csts.BUMPED:
-                self.ginfo[csts.SCORE] += 100
+            if coin_box.state == gGameSettings.BRICK_STATE_BUMPED:
+                self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
                 self.moving_score_list.append(
                     score.Score(enemy.rect.centerx - self.viewport.x,
                                 enemy.rect.y, 100))
@@ -987,11 +991,11 @@ class Level1(tools._st):
             elif enemy.rect.x > coin_box.rect.x:
                 enemy.y_vel = 7
                 enemy.rect.top = coin_box.rect.bottom
-                enemy.state = csts.FALL
+                enemy.state = gGameSettings.MARIO_STATE_FALL
             else:
                 enemy.y_vel = 0
                 enemy.rect.bottom = coin_box.rect.top
-                enemy.state = csts.WALK
+                enemy.state = gGameSettings.MARIO_STATE_WALK
 
 
         else:
@@ -1000,8 +1004,8 @@ class Level1(tools._st):
                                          self.coin_box_group,
                                          self.brick_group)
             if pygame.sprite.spritecollideany(enemy, test_group) is None:
-                if enemy.state != csts.JUMP:
-                    enemy.state = csts.FALL
+                if enemy.state != gGameSettings.MARIO_STATE_JUMP:
+                    enemy.state = gGameSettings.MARIO_STATE_FALL
 
             enemy.rect.y -= 1
 
@@ -1025,15 +1029,15 @@ class Level1(tools._st):
         if collider:
             setup.SFX['bump'].play()
             if shell.x_vel > 0:
-                shell.direction = csts.LEFT
+                shell.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
                 shell.rect.right = collider.rect.left
             else:
-                shell.direction = csts.RIGHT
+                shell.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
                 shell.rect.left = collider.rect.right
 
         if enemy:
             setup.SFX['kick'].play()
-            self.ginfo[csts.SCORE] += 100
+            self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
             self.moving_score_list.append(
                 score.Score(enemy.rect.right - self.viewport.x,
                             enemy.rect.y, 100))
@@ -1049,23 +1053,23 @@ class Level1(tools._st):
         if collider:
             shell.y_vel = 0
             shell.rect.bottom = collider.rect.top
-            shell.state = csts.SHELL_SLIDE
+            shell.state = gGameSettings.KOOPA_STATE_SLIDING_SHELL
 
         else:
             shell.rect.y += 1
             if pygame.sprite.spritecollideany(shell, self.ground_step_pipe_group) is None:
-                shell.state = csts.FALL
+                shell.state = gGameSettings.MARIO_STATE_FALL
             shell.rect.y -= 1
 
 
     def adjust_powerup_position(self):
 
-        for powerup in self.powerup_group:
-            if powerup.name == csts.MUSHROOM:
+        for powerup in self.powerups:
+            if powerup.name == gGameSettings.BRICK_CONTENTS_MUSHROOM:
                 self.adjust_mushroom_position(powerup)
-            elif powerup.name == csts.STAR:
+            elif powerup.name == gGameSettings.BRICK_CONTENTS_STAR:
                 self.adjust_star_position(powerup)
-            elif powerup.name == csts.FIREBALL:
+            elif powerup.name == gGameSettings.BRICK_CONTENTS_FIREBALL:
                 self.adjust_fireball_position(powerup)
             elif powerup.name == '1up_mushroom':
                 self.adjust_mushroom_position(powerup)
@@ -1073,7 +1077,7 @@ class Level1(tools._st):
 
     def adjust_mushroom_position(self, mushroom):
 
-        if mushroom.state != csts.REVEAL:
+        if mushroom.state != gGameSettings.MUSHROOM_STATE_REVEAL:
             mushroom.rect.x += mushroom.x_vel
             self.check_mushroom_x_collisions(mushroom)
 
@@ -1120,22 +1124,22 @@ class Level1(tools._st):
 
         if item.rect.x < collider.rect.x:
             item.rect.right = collider.rect.x
-            item.direction = csts.LEFT
+            item.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
         else:
             item.rect.x = collider.rect.right
-            item.direction = csts.RIGHT
+            item.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
 
 
     def adjust_mushroom_for_collision_y(self, item, collider):
 
         item.rect.bottom = collider.rect.y
-        item.state = csts.SLIDE
+        item.state = gGameSettings.MUSHROOM_STATE_SLIDING
         item.y_vel = 0
 
 
     def adjust_star_position(self, star):
 
-        if star.state == csts.BOUNCE:
+        if star.state == gGameSettings.STAR_STATE_BOUNCING:
             star.rect.x += star.x_vel
             self.check_mushroom_x_collisions(star)
             star.rect.y += star.y_vel
@@ -1170,12 +1174,12 @@ class Level1(tools._st):
 
     def adjust_fireball_position(self, fireball):
 
-        if fireball.state == csts.FLYING:
+        if fireball.state == gGameSettings.FIRE_STATE_FLYING:
             fireball.rect.x += fireball.x_vel
             self.check_fireball_x_collisions(fireball)
             fireball.rect.y += fireball.y_vel
             self.check_fireball_y_collisions(fireball)
-        elif fireball.state == csts.BOUNCING:
+        elif fireball.state == gGameSettings.FIRE_STATE_BOUNCING:
             fireball.rect.x += fireball.x_vel
             self.check_fireball_x_collisions(fireball)
             fireball.rect.y += fireball.y_vel
@@ -1187,13 +1191,13 @@ class Level1(tools._st):
     def bounce_fireball(self, fireball):
 
         fireball.y_vel = -8
-        if fireball.direction == csts.RIGHT:
+        if fireball.direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
             fireball.x_vel = 15
         else:
             fireball.x_vel = -15
 
-        if fireball in self.powerup_group:
-            fireball.state = csts.BOUNCING
+        if fireball in self.powerups:
+            fireball.state = gGameSettings.FIRE_STATE_BOUNCING
 
 
     def check_fireball_x_collisions(self, fireball):
@@ -1225,7 +1229,7 @@ class Level1(tools._st):
         enemy = pygame.sprite.spritecollideany(fireball, self.enemy_group)
         shell = pygame.sprite.spritecollideany(fireball, self.shell_group)
 
-        if collider and (fireball in self.powerup_group):
+        if collider and (fireball in self.powerups):
             fireball.rect.bottom = collider.rect.y
             self.bounce_fireball(fireball)
 
@@ -1239,7 +1243,7 @@ class Level1(tools._st):
     def fireball_kill(self, fireball, enemy):
 
         setup.SFX['kick'].play()
-        self.ginfo[csts.SCORE] += 100
+        self.gGameInfo[gGameSettings.GLOBAL_SCORE] += 100
         self.moving_score_list.append(
             score.Score(enemy.rect.centerx - self.viewport.x,
                         enemy.rect.y,100))
@@ -1255,8 +1259,8 @@ class Level1(tools._st):
         sprite.rect.y += 1
 
         if pygame.sprite.spritecollideany(sprite, sprite_group) is None:
-            if sprite.state != csts.JUMP:
-                sprite.state = csts.FALL
+            if sprite.state != gGameSettings.MARIO_STATE_JUMP:
+                sprite.state = gGameSettings.MARIO_STATE_FALL
 
         sprite.rect.y -= 1
 
@@ -1269,32 +1273,32 @@ class Level1(tools._st):
         elif enemy.rect.y > (self.viewport.bottom):
             enemy.kill()
 
-        elif enemy.state == csts.SHELL_SLIDE:
+        elif enemy.state == gGameSettings.KOOPA_STATE_SLIDING_SHELL:
             if enemy.rect.x > (self.viewport.right + 500):
                 enemy.kill()
 
 
     def check_flag(self):
 
-        if (self.flag.state == csts.BOTTOM_OF_POLE
-            and self.mario.state == csts.FLAGPOLE):
-            self.mario.set_state_to_bottom_of_pole()
+        if (self.flag.state == gGameSettings.FLAGSTATE_BOTTOM_OF_POLE
+            and self.mario.state == gGameSettings.MARIO_STATE_ON_FLAGPOLE):
+            self.mario.Mario_BottomOfPoleState()
 
 
     def check_to_add_flag_score(self):
 
         if self.flag_score.y_vel == 0:
-            self.ginfo[csts.SCORE] += self.flag_score_total
+            self.gGameInfo[gGameSettings.GLOBAL_SCORE] += self.flag_score_total
             self.flag_score_total = 0
 
 
     def check_for_mario_death(self):
 
-        if self.mario.rect.y > csts.scr_height and not self.mario.in_castle:
+        if self.mario.rect.y > gGameSettings.scr_height and not self.mario.in_castle:
             self.mario.dead = True
             self.mario.x_vel = 0
-            self.state = csts.FROZEN
-            self.ginfo[csts.MARIO_DEAD] = True
+            self.state = gGameSettings.GLOBALSTATE_PAUSED
+            self.gGameInfo[gGameSettings.MARIO_STATE_DEAD] = True
 
         if self.mario.dead:
             self.play_death_song()
@@ -1310,24 +1314,24 @@ class Level1(tools._st):
 
     def set_ginfo_values(self):
 
-        if self.ginfo[csts.SCORE] > self.persist[csts.TOP_SCORE]:
-            self.persist[csts.TOP_SCORE] = self.ginfo[csts.SCORE]
+        if self.gGameInfo[gGameSettings.GLOBAL_SCORE] > self.persist[gGameSettings.GLOBAL_TOP_SCORE]:
+            self.persist[gGameSettings.GLOBAL_TOP_SCORE] = self.gGameInfo[gGameSettings.GLOBAL_SCORE]
         if self.mario.dead:
-            self.persist[csts.LIVES] -= 1
+            self.persist[gGameSettings.GLOBAL_LIVES] -= 1
 
-        if self.persist[csts.LIVES] == 0:
-            self.next = csts.GAME_OVER
-            self.ginfo[csts.CAMERA_START_X] = 0
+        if self.persist[gGameSettings.GLOBAL_LIVES] == 0:
+            self.next = gGameSettings.GLOBALSTATE_GAME_OVER
+            self.gGameInfo[gGameSettings.CAMERA_START_X] = 0
         elif self.mario.dead == False:
-            self.next = csts.MAIN_MENU
-            self.ginfo[csts.CAMERA_START_X] = 0
+            self.next = gGameSettings.GLOBALSTATE_MAIN_MENU
+            self.gGameInfo[gGameSettings.CAMERA_START_X] = 0
         elif self.overhead_info_display.time == 0:
-            self.next = csts.TIME_OUT
+            self.next = gGameSettings.GLOBALSTATE_TIME_OUT
         else:
             if self.mario.rect.x > 3670 \
-                    and self.ginfo[csts.CAMERA_START_X] == 0:
-                self.ginfo[csts.CAMERA_START_X] = 3440
-            self.next = csts.LOAD_SCREEN
+                    and self.gGameInfo[gGameSettings.CAMERA_START_X] == 0:
+                self.gGameInfo[gGameSettings.CAMERA_START_X] = 3440
+            self.next = gGameSettings.GLOBALSTATE_LOAD_SCREEN
 
 
     def check_if_time_out(self):
@@ -1335,8 +1339,8 @@ class Level1(tools._st):
         if self.overhead_info_display.time <= 0 \
                 and not self.mario.dead \
                 and not self.mario.in_castle:
-            self.state = csts.FROZEN
-            self.mario.start_death_jump(self.ginfo)
+            self.state = gGameSettings.GLOBALSTATE_PAUSED
+            self.mario.InitializeDeathJump(self.gGameInfo)
 
 
     def update_viewport(self):
@@ -1355,19 +1359,19 @@ class Level1(tools._st):
     def update_while_in_castle(self):
 
         for score in self.moving_score_list:
-            score.update(self.moving_score_list, self.ginfo)
-        self.overhead_info_display.update(self.ginfo)
+            score.update(self.moving_score_list, self.gGameInfo)
+        self.overhead_info_display.update(self.gGameInfo)
 
-        if self.overhead_info_display.state == csts.END_OF_LEVEL:
-            self.state = csts.FLAG_AND_FIREWORKS
+        if self.overhead_info_display.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.state = gGameSettings.GLOBALSTATE_FLAG_AND_FIREWORKS
             self.flag_pole_group.add(castle_flag.Flag(8745, 322))
 
 
     def update_flag_and_fireworks(self):
 
         for score in self.moving_score_list:
-            score.update(self.moving_score_list, self.ginfo)
-        self.overhead_info_display.update(self.ginfo)
+            score.update(self.moving_score_list, self.gGameInfo)
+        self.overhead_info_display.update(self.gGameInfo)
         self.flag_pole_group.update()
 
         self.end_game()
@@ -1379,8 +1383,8 @@ class Level1(tools._st):
             self.flag_timer = self.current_time
         elif (self.current_time - self.flag_timer) > 2000:
             self.set_ginfo_values()
-            self.next = csts.GAME_OVER
-            self.sound_manager.stop_music()
+            self.next = gGameSettings.GLOBALSTATE_GAME_OVER
+            self.sound_manager.Music_Stop()
             self.done = True
 
 
@@ -1389,13 +1393,12 @@ class Level1(tools._st):
         self.level.blit(self.background, self.viewport, self.viewport)
         if self.flag_score:
             self.flag_score.draw(self.level)
-        self.powerup_group.draw(self.level)
+        self.powerups.draw(self.level)
         self.coin_group.draw(self.level)
         self.brick_group.draw(self.level)
         self.coin_box_group.draw(self.level)
         self.sprites_about_to_die_group.draw(self.level)
         self.shell_group.draw(self.level)
-        #self.check_point_group.draw(self.level)
         self.brick_pieces_group.draw(self.level)
         self.flag_pole_group.draw(self.level)
         self.mario_and_enemy_group.draw(self.level)

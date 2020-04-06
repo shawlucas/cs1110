@@ -1,4 +1,7 @@
-
+"""
+tools.py
+This file contains the core tools that are needed to execute the game and run it. 
+"""
 
 import os
 import pygame
@@ -12,10 +15,20 @@ keybinding = {
 }
 
 class Control(object):
-    """Control class for entire project. Contains the game loop, and contains
+    """
+    This is the "Control" class for entire project. Contains the game loop, and contains
     the event_loop which passes events to States as needed. Logic for flipping
-    states is also found here."""
+    states is also found here.
+    """
+
     def __init__(self, caption):
+        """
+        The constructor for the Control class.
+        Sets attributes to their default values.
+
+        Parameters:
+            caption (string): This is the window caption, or what will be displayed at the top of the window. 
+        """
         self.screen = pygame.display.get_surface()
         self.done = False
         self.clock = pygame.time.Clock()
@@ -29,11 +42,28 @@ class Control(object):
         self.state = None
 
     def setup_states(self, state_dict, start_state):
+        """
+        The function to set the gamestate. 
+
+        Parameters:
+            state_dict: Dictionary containing all the gamestates.
+            start_state: Name of gamestate to switch to.
+        """
         self.state_dict = state_dict
         self.state_name = start_state
         self.state = self.state_dict[self.state_name]
 
     def update(self):
+        """
+        The function to update the game. Runs every frame.
+
+        if GAMESTATE == QUIT:
+            DONE = TRUE
+        ELSE IF GAMESTATE == DONE:
+            GO TO NEXT GAMESTATE
+        
+        UPDATE STATE
+        """
         self.current_time = pygame.time.get_ticks()
         if self.state.quit:
             self.done = True
@@ -42,7 +72,12 @@ class Control(object):
         self.state.update(self.screen, self.keys, self.current_time)
 
     def flip_state(self):
-        previous, self.state_name = self.state_name, self.state.next
+        """
+        The function to "flip the gamestate" or in other words, switch to the next state.
+        Sets the state_name to the next state, and indexes the state_dict in order to set the state.
+        """
+        previous = self.state_name
+        self.state_name = self.state.next
         persist = self.state.cleanup()
         self.state = self.state_dict[self.state_name]
         self.state.startup(self.current_time, persist)
@@ -50,6 +85,10 @@ class Control(object):
 
 
     def event_loop(self):
+        """
+        The function to loop events with the pygame module.
+        Checks every frame for key actions.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.done = True
@@ -62,6 +101,12 @@ class Control(object):
 
 
     def toggle_show_fps(self, key):
+        """
+        The function to toggle FPS if the pressed key is F5.
+        
+        Parameters:
+            key: ASCII value of key. Accessed using pygame.key.
+        """
         if key == pygame.K_F5:
             self.show_fps = not self.show_fps
             if not self.show_fps:
@@ -69,7 +114,10 @@ class Control(object):
 
 
     def main(self):
-        """Main loop for entire program"""
+        """
+        The main loop of the program.
+        In the form of a while loop, continues to execute the event_loop and update loop every frame while self.done is true.
+        """
         while not self.done:
             self.event_loop()
             self.update()
@@ -81,7 +129,10 @@ class Control(object):
                 pygame.display.set_caption(with_fps)
 
 
-class _st(object):
+class GameState_Initialize(object):
+    """
+    This class initializes a game state. 
+    """
     def __init__(self):
         self.start_time = 0.0
         self.current_time = 0.0
@@ -105,9 +156,16 @@ class _st(object):
     def update(self, surface, keys, current_time):
         pass
 
+def Gfx_LoadIntoRAM(directory, colorkey=(255,0,255), accept=('.png', 'jpg', 'bmp')):
+    """
+    Loads all graphics in the resource folder into RAM for the game to use. 
 
+    Parameters:
+        directory (string): String containing the directory of the assets.
 
-def load_all_gfx(directory, colorkey=(255,0,255), accept=('.png', 'jpg', 'bmp')):
+    Returns:
+        graphics: An array containing each graphic file.
+    """
     graphics = {}
     for pic in os.listdir(directory):
         name, ext = os.path.splitext(pic)
@@ -122,7 +180,16 @@ def load_all_gfx(directory, colorkey=(255,0,255), accept=('.png', 'jpg', 'bmp'))
     return graphics
 
 
-def load_all_music(directory, accept=('.wav', '.mp3', '.ogg', '.mdi')):
+def Music_LoadIntoRAM(directory, accept=('.wav', '.mp3', '.ogg', '.mdi')):
+    """
+    Loads all music in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        songs: An array containing each music file.
+    """
     songs = {}
     for song in os.listdir(directory):
         name,ext = os.path.splitext(song)
@@ -131,14 +198,37 @@ def load_all_music(directory, accept=('.wav', '.mp3', '.ogg', '.mdi')):
     return songs
 
 
-def load_all_fonts(directory, accept=('.ttf')):
-    return load_all_music(directory, accept)
+def Fonts_LoadIntoRAM(directory, accept=('.ttf')):
+    """
+    Loads all fonts in the resource folder into RAM for the game to use.
 
-
-def load_all_sfx(directory, accept=('.wav','.mpe','.ogg','.mdi')):
-    effects = {}
-    for fx in os.listdir(directory):
-        name, ext = os.path.splitext(fx)
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        fonts: An array containing each font file.
+    """
+    fonts = {}
+    for font in os.listdir(directory):
+        name, ext = os.path.splitext(font)
         if ext.lower() in accept:
-            effects[name] = pygame.mixer.Sound(os.path.join(directory, fx))
-    return effects
+            fonts[name] = os.path.join(directory, font)
+    return fonts
+
+
+def Sfx_LoadIntoRAM(directory, accept=('.wav','.mpe','.ogg','.mdi')):
+    """
+    Loads all sound effects in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the audio files.
+
+    Returns:
+        sounds: An array containing each sound file.
+    """
+    sounds = {}
+    for effects in os.listdir(directory):
+        name, ext = os.path.splitext(effects)
+        if ext.lower() in accept:
+            sounds[name] = pygame.mixer.Sound(os.path.join(directory, effects))
+    return sounds

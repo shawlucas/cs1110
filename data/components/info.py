@@ -2,31 +2,36 @@
 
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 from . import flashing_coin
 
 
 class Character(pygame.sprite.Sprite):
-
+    """
+    This class handles the large character (CHR) sprites that appear in the game's header, displaying the player name, score, coin count, and time remaining.
+    """
     def __init__(self, image):
         super(Character, self).__init__()
         self.image = image
         self.rect = self.image.get_rect()
 
 
-class OverheadInfo(object):
-    def __init__(self, ginfo, state):
+class HeaderInfo(object):
+    """
+    The HeaderInfo class stores level information such as coin total, player score, and remaining time on the clock.
+    """
+    def __init__(self, gGameInfo, state):
         self.spr_sheet = setup.GFX['text_images']
-        self.coin_total = ginfo[csts.COIN_TOTAL]
+        self.coin_total = gGameInfo[gGameSettings.GLOBAL_COIN_TOTAL]
         self.time = 401
         self.current_time = 0
-        self.total_lives = ginfo[csts.LIVES]
-        self.top_score = ginfo[csts.TOP_SCORE]
+        self.total_lives = gGameInfo[gGameSettings.GLOBAL_LIVES]
+        self.top_score = gGameInfo[gGameSettings.GLOBAL_TOP_SCORE]
         self.state = state
         self.special_state = None
-        self.ginfo = ginfo
+        self.gGameInfo = gGameInfo
 
-        self.create_image_dict()
+        self.HeaderInfo_CreateImageDictionary()
         self.create_score_group()
         self.create_info_labels()
         self.create_load_screen_labels()
@@ -39,51 +44,54 @@ class OverheadInfo(object):
         self.create_main_menu_labels()
 
 
-    def create_image_dict(self):
+    def HeaderInfo_CreateImageDictionary(self):
+        """
+        This function creates a dictionary of all possible header info values.
+        """
         self.image_dict = {}
         image_list = []
 
-        image_list.append(self.imageGetter(3, 230, 7, 7))
-        image_list.append(self.imageGetter(12, 230, 7, 7))
-        image_list.append(self.imageGetter(19, 230, 7, 7))
-        image_list.append(self.imageGetter(27, 230, 7, 7))
-        image_list.append(self.imageGetter(35, 230, 7, 7))
-        image_list.append(self.imageGetter(43, 230, 7, 7))
-        image_list.append(self.imageGetter(51, 230, 7, 7))
-        image_list.append(self.imageGetter(59, 230, 7, 7))
-        image_list.append(self.imageGetter(67, 230, 7, 7))
-        image_list.append(self.imageGetter(75, 230, 7, 7))
+        image_list.append(self.getImage(3, 230, 7, 7))
+        image_list.append(self.getImage(12, 230, 7, 7))
+        image_list.append(self.getImage(19, 230, 7, 7))
+        image_list.append(self.getImage(27, 230, 7, 7))
+        image_list.append(self.getImage(35, 230, 7, 7))
+        image_list.append(self.getImage(43, 230, 7, 7))
+        image_list.append(self.getImage(51, 230, 7, 7))
+        image_list.append(self.getImage(59, 230, 7, 7))
+        image_list.append(self.getImage(67, 230, 7, 7))
+        image_list.append(self.getImage(75, 230, 7, 7))
 
-        image_list.append(self.imageGetter(83, 230, 7, 7))
-        image_list.append(self.imageGetter(91, 230, 7, 7))
-        image_list.append(self.imageGetter(99, 230, 7, 7))
-        image_list.append(self.imageGetter(107, 230, 7, 7))
-        image_list.append(self.imageGetter(115, 230, 7, 7))
-        image_list.append(self.imageGetter(123, 230, 7, 7))
-        image_list.append(self.imageGetter(3, 238, 7, 7))
-        image_list.append(self.imageGetter(11, 238, 7, 7))
-        image_list.append(self.imageGetter(20, 238, 7, 7))
-        image_list.append(self.imageGetter(27, 238, 7, 7))
-        image_list.append(self.imageGetter(35, 238, 7, 7))
-        image_list.append(self.imageGetter(44, 238, 7, 7))
-        image_list.append(self.imageGetter(51, 238, 7, 7))
-        image_list.append(self.imageGetter(59, 238, 7, 7))
-        image_list.append(self.imageGetter(67, 238, 7, 7))
-        image_list.append(self.imageGetter(75, 238, 7, 7))
-        image_list.append(self.imageGetter(83, 238, 7, 7))
-        image_list.append(self.imageGetter(91, 238, 7, 7))
-        image_list.append(self.imageGetter(99, 238, 7, 7))
-        image_list.append(self.imageGetter(108, 238, 7, 7))
-        image_list.append(self.imageGetter(115, 238, 7, 7))
-        image_list.append(self.imageGetter(123, 238, 7, 7))
-        image_list.append(self.imageGetter(3, 246, 7, 7))
-        image_list.append(self.imageGetter(11, 246, 7, 7))
-        image_list.append(self.imageGetter(20, 246, 7, 7))
-        image_list.append(self.imageGetter(27, 246, 7, 7))
-        image_list.append(self.imageGetter(48, 248, 7, 7))
+        image_list.append(self.getImage(83, 230, 7, 7))
+        image_list.append(self.getImage(91, 230, 7, 7))
+        image_list.append(self.getImage(99, 230, 7, 7))
+        image_list.append(self.getImage(107, 230, 7, 7))
+        image_list.append(self.getImage(115, 230, 7, 7))
+        image_list.append(self.getImage(123, 230, 7, 7))
+        image_list.append(self.getImage(3, 238, 7, 7))
+        image_list.append(self.getImage(11, 238, 7, 7))
+        image_list.append(self.getImage(20, 238, 7, 7))
+        image_list.append(self.getImage(27, 238, 7, 7))
+        image_list.append(self.getImage(35, 238, 7, 7))
+        image_list.append(self.getImage(44, 238, 7, 7))
+        image_list.append(self.getImage(51, 238, 7, 7))
+        image_list.append(self.getImage(59, 238, 7, 7))
+        image_list.append(self.getImage(67, 238, 7, 7))
+        image_list.append(self.getImage(75, 238, 7, 7))
+        image_list.append(self.getImage(83, 238, 7, 7))
+        image_list.append(self.getImage(91, 238, 7, 7))
+        image_list.append(self.getImage(99, 238, 7, 7))
+        image_list.append(self.getImage(108, 238, 7, 7))
+        image_list.append(self.getImage(115, 238, 7, 7))
+        image_list.append(self.getImage(123, 238, 7, 7))
+        image_list.append(self.getImage(3, 246, 7, 7))
+        image_list.append(self.getImage(11, 246, 7, 7))
+        image_list.append(self.getImage(20, 246, 7, 7))
+        image_list.append(self.getImage(27, 246, 7, 7))
+        image_list.append(self.getImage(48, 248, 7, 7))
 
-        image_list.append(self.imageGetter(68, 249, 6, 2))
-        image_list.append(self.imageGetter(75, 247, 6, 6))
+        image_list.append(self.getImage(68, 249, 6, 2))
+        image_list.append(self.getImage(75, 247, 6, 6))
 
 
 
@@ -93,7 +101,7 @@ class OverheadInfo(object):
             self.image_dict[character] = image
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
         image = pygame.Surface([width, height])
         rect = image.get_rect()
 
@@ -169,14 +177,14 @@ class OverheadInfo(object):
 
 
     def create_mario_image(self):
-        self.life_times_image = self.imageGetter(75, 247, 6, 6)
+        self.life_times_image = self.getImage(75, 247, 6, 6)
         self.life_times_rect = self.life_times_image.get_rect(center=(378, 295))
         self.life_total_label = []
         self.create_label(self.life_total_label, str(self.total_lives),
                           450, 285)
 
         self.spr_sheet = setup.GFX['mario_bros']
-        self.mario_image = self.imageGetter(178, 32, 12, 16)
+        self.mario_image = self.getImage(178, 32, 12, 16)
         self.mario_rect = self.mario_image.get_rect(center=(320, 290))
 
 
@@ -218,51 +226,51 @@ class OverheadInfo(object):
 
 
     def handle_level_state(self, level_info):
-        if self.state == csts.MAIN_MENU:
-            self.score = level_info[csts.SCORE]
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_score_images(self.score_images, self.score)
             self.update_score_images(self.main_menu_labels[3], self.top_score)
             self.update_coin_total(level_info)
-            self.flashing_coin.update(level_info[csts.CURRENT_TIME])
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
 
-        elif self.state == csts.LOAD_SCREEN:
-            self.score = level_info[csts.SCORE]
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_score_images(self.score_images, self.score)
             self.update_coin_total(level_info)
 
-        elif self.state == csts.LEVEL:
-            self.score = level_info[csts.SCORE]
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_score_images(self.score_images, self.score)
-            if level_info[csts.LEVEL_STATE] != csts.FROZEN \
-                    and self.mario.state != csts.WALKING_TO_CASTLE \
-                    and self.mario.state != csts.END_OF_LEVEL_FALL \
+            if level_info[gGameSettings.GLOBAL_LEVEL_STATE] != gGameSettings.GLOBALSTATE_PAUSED \
+                    and self.mario.state != gGameSettings.MARIO_STATE_WALKING_TO_CASTLE \
+                    and self.mario.state != gGameSettings.MARIO_STATE_END_OF_LEVEL \
                     and not self.mario.dead:
                 self.update_count_down_clock(level_info)
             self.update_coin_total(level_info)
-            self.flashing_coin.update(level_info[csts.CURRENT_TIME])
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
 
-        elif self.state == csts.TIME_OUT:
-            self.score = level_info[csts.SCORE]
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_score_images(self.score_images, self.score)
             self.update_coin_total(level_info)
 
-        elif self.state == csts.GAME_OVER:
-            self.score = level_info[csts.SCORE]
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_score_images(self.score_images, self.score)
             self.update_coin_total(level_info)
 
-        elif self.state == csts.FAST_COUNT_DOWN:
-            level_info[csts.SCORE] += 50
-            self.score = level_info[csts.SCORE]
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
+            level_info[gGameSettings.GLOBAL_SCORE] += 50
+            self.score = level_info[gGameSettings.GLOBAL_SCORE]
             self.update_count_down_clock(level_info)
             self.update_score_images(self.score_images, self.score)
             self.update_coin_total(level_info)
-            self.flashing_coin.update(level_info[csts.CURRENT_TIME])
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
             if self.time == 0:
-                self.state = csts.END_OF_LEVEL
+                self.state = gGameSettings.GLOBAL_END_OF_LEVEL
 
-        elif self.state == csts.END_OF_LEVEL:
-            self.flashing_coin.update(level_info[csts.CURRENT_TIME])
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
+            self.flashing_coin.update(level_info[gGameSettings.GLOBAL_TIME])
 
 
     def update_score_images(self, images, score):
@@ -276,11 +284,11 @@ class OverheadInfo(object):
 
 
     def update_count_down_clock(self, level_info):
-        if self.state == csts.FAST_COUNT_DOWN:
+        if self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
             self.time -= 1
 
-        elif (level_info[csts.CURRENT_TIME] - self.current_time) > 400:
-            self.current_time = level_info[csts.CURRENT_TIME]
+        elif (level_info[gGameSettings.GLOBAL_TIME] - self.current_time) > 400:
+            self.current_time = level_info[gGameSettings.GLOBAL_TIME]
             self.time -= 1
         self.count_down_images = []
         self.create_label(self.count_down_images, str(self.time), 645, 55)
@@ -294,7 +302,7 @@ class OverheadInfo(object):
 
 
     def update_coin_total(self, level_info):
-        self.coin_total = level_info[csts.COIN_TOTAL]
+        self.coin_total = level_info[gGameSettings.GLOBAL_COIN_TOTAL]
 
         coin_string = str(self.coin_total)
         if len(coin_string) < 2:
@@ -313,19 +321,19 @@ class OverheadInfo(object):
 
 
     def draw(self, surface):
-        if self.state == csts.MAIN_MENU:
+        if self.state == gGameSettings.GLOBALSTATE_MAIN_MENU:
             self.draw_main_menu_info(surface)
-        elif self.state == csts.LOAD_SCREEN:
+        elif self.state == gGameSettings.GLOBALSTATE_LOAD_SCREEN:
             self.draw_loading_screen_info(surface)
-        elif self.state == csts.LEVEL:
+        elif self.state == gGameSettings.GLOBAL_CURRENT_LEVEL:
             self.draw_level_screen_info(surface)
-        elif self.state == csts.GAME_OVER:
+        elif self.state == gGameSettings.GLOBALSTATE_GAME_OVER:
             self.draw_game_over_screen_info(surface)
-        elif self.state == csts.FAST_COUNT_DOWN:
+        elif self.state == gGameSettings.GLOBAL_FAST_COUNT_DOWN:
             self.draw_level_screen_info(surface)
-        elif self.state == csts.END_OF_LEVEL:
+        elif self.state == gGameSettings.GLOBAL_END_OF_LEVEL:
             self.draw_level_screen_info(surface)
-        elif self.state == csts.TIME_OUT:
+        elif self.state == gGameSettings.GLOBALSTATE_TIME_OUT:
             self.draw_time_out_screen_info(surface)
         else:
             pass

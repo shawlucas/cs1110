@@ -1,12 +1,15 @@
 import pygame
 from .. import setup
-from .. import csts
+from .. import gGameSettings
 from . import powerups
 from . import coin
 
 
 
 class Coin_box(pygame.sprite.Sprite):
+    """
+    This class handles a question box with coins in it.
+    """
     def __init__(self, x, y, contents='coin', group=None):
         pygame.sprite.Sprite.__init__(self)
         self.spr_sheet = setup.GFX['tile_set']
@@ -20,7 +23,7 @@ class Coin_box(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_timer = 0
         self.first_half = True   # First half of animation cycle
-        self.state = csts.RESTING
+        self.state = gGameSettings.BRICK_STATE_RESTING
         self.rest_height = y
         self.gravity = 1.2
         self.y_vel = 0
@@ -28,41 +31,41 @@ class Coin_box(pygame.sprite.Sprite):
         self.group = group
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
         image = pygame.Surface([width, height]).convert()
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
 
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.BRICK_SIZE_MULTIPLIER),
-                                    int(rect.height*csts.BRICK_SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.BRICK_SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.BRICK_SIZE_MULTIPLIER)))
         return image
 
 
     def setup_frames(self):
         self.frames.append(
-            self.imageGetter(384, 0, 16, 16))
+            self.getImage(384, 0, 16, 16))
         self.frames.append(
-            self.imageGetter(400, 0, 16, 16))
+            self.getImage(400, 0, 16, 16))
         self.frames.append(
-            self.imageGetter(416, 0, 16, 16))
+            self.getImage(416, 0, 16, 16))
         self.frames.append(
-            self.imageGetter(432, 0, 16, 16))
+            self.getImage(432, 0, 16, 16))
 
 
-    def update(self, ginfo):
-        self.current_time = ginfo[csts.CURRENT_TIME]
+    def update(self, gGameInfo):
+        self.current_time = gGameInfo[gGameSettings.GLOBAL_TIME]
         self.standHandlers()
 
 
     def standHandlers(self):
-        if self.state == csts.RESTING:
+        if self.state == gGameSettings.BRICK_STATE_RESTING:
             self.resting()
-        elif self.state == csts.BUMPED:
+        elif self.state == gGameSettings.BRICK_STATE_BUMPED:
             self.bumped()
-        elif self.state == csts.OPENED:
+        elif self.state == gGameSettings.COIN_STATE_OPENED:
             self.opened()
 
 
@@ -97,7 +100,7 @@ class Coin_box(pygame.sprite.Sprite):
 
         if self.rect.y > self.rest_height + 5:
             self.rect.y = self.rest_height
-            self.state = csts.OPENED
+            self.state = gGameSettings.COIN_STATE_OPENED
             if self.contents == 'mushroom':
                 self.group.add(powerups.Mushroom(self.rect.centerx, self.rect.y))
             elif self.contents == 'fireflower':
@@ -112,7 +115,7 @@ class Coin_box(pygame.sprite.Sprite):
 
     def start_bump(self, score_group):
         self.y_vel = -6
-        self.state = csts.BUMPED
+        self.state = gGameSettings.BRICK_STATE_BUMPED
 
         if self.contents == 'coin':
             self.group.add(coin.Coin(self.rect.centerx,

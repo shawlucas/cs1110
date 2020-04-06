@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>data.tools API documentation</title>
+<meta name="description" content="tools.py
+This file contains the core tools that are needed to execute the game and run it." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>data.tools</code></h1>
+</header>
+<section id="section-intro">
+<p>tools.py
+This file contains the core tools that are needed to execute the game and run it.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+tools.py
+This file contains the core tools that are needed to execute the game and run it. 
+&#34;&#34;&#34;
+
+import os
+import pygame
+
+keybinding = {
+    &#39;action&#39;:pygame.K_s,
+    &#39;jump&#39;:pygame.K_a,
+    &#39;left&#39;:pygame.K_LEFT,
+    &#39;right&#39;:pygame.K_RIGHT,
+    &#39;down&#39;:pygame.K_DOWN
+}
+
+class Control(object):
+    &#34;&#34;&#34;
+    This is the &#34;Control&#34; class for entire project. Contains the game loop, and contains
+    the event_loop which passes events to States as needed. Logic for flipping
+    states is also found here.
+    &#34;&#34;&#34;
+
+    def __init__(self, caption):
+        &#34;&#34;&#34;
+        The constructor for the Control class.
+        Sets attributes to their default values.
+
+        Parameters:
+            caption (string): This is the window caption, or what will be displayed at the top of the window. 
+        &#34;&#34;&#34;
+        self.screen = pygame.display.get_surface()
+        self.done = False
+        self.clock = pygame.time.Clock()
+        self.caption = caption
+        self.fps = 60
+        self.show_fps = False
+        self.current_time = 0.0
+        self.keys = pygame.key.get_pressed()
+        self.state_dict = {}
+        self.state_name = None
+        self.state = None
+
+    def setup_states(self, state_dict, start_state):
+        &#34;&#34;&#34;
+        The function to set the gamestate. 
+
+        Parameters:
+            state_dict: Dictionary containing all the gamestates.
+            start_state: Name of gamestate to switch to.
+        &#34;&#34;&#34;
+        self.state_dict = state_dict
+        self.state_name = start_state
+        self.state = self.state_dict[self.state_name]
+
+    def update(self):
+        &#34;&#34;&#34;
+        The function to update the game. Runs every frame.
+
+        if GAMESTATE == QUIT:
+            DONE = TRUE
+        ELSE IF GAMESTATE == DONE:
+            GO TO NEXT GAMESTATE
+        
+        UPDATE STATE
+        &#34;&#34;&#34;
+        self.current_time = pygame.time.get_ticks()
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(self.screen, self.keys, self.current_time)
+
+    def flip_state(self):
+        &#34;&#34;&#34;
+        The function to &#34;flip the gamestate&#34; or in other words, switch to the next state.
+        Sets the state_name to the next state, and indexes the state_dict in order to set the state.
+        &#34;&#34;&#34;
+        previous = self.state_name
+        self.state_name = self.state.next
+        persist = self.state.cleanup()
+        self.state = self.state_dict[self.state_name]
+        self.state.startup(self.current_time, persist)
+        self.state.previous = previous
+
+
+    def event_loop(self):
+        &#34;&#34;&#34;
+        The function to loop events with the pygame module.
+        Checks every frame for key actions.
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.done = True
+            elif event.type == pygame.KEYDOWN:
+                self.keys = pygame.key.get_pressed()
+                self.toggle_show_fps(event.key)
+            elif event.type == pygame.KEYUP:
+                self.keys = pygame.key.get_pressed()
+            self.state.get_event(event)
+
+
+    def toggle_show_fps(self, key):
+        &#34;&#34;&#34;
+        The function to toggle FPS if the pressed key is F5.
+        
+        Parameters:
+            key: ASCII value of key. Accessed using pygame.key.
+        &#34;&#34;&#34;
+        if key == pygame.K_F5:
+            self.show_fps = not self.show_fps
+            if not self.show_fps:
+                pygame.display.set_caption(self.caption)
+
+
+    def main(self):
+        &#34;&#34;&#34;
+        The main loop of the program.
+        In the form of a while loop, continues to execute the event_loop and update loop every frame while self.done is true.
+        &#34;&#34;&#34;
+        while not self.done:
+            self.event_loop()
+            self.update()
+            pygame.display.update()
+            self.clock.tick(self.fps)
+            if self.show_fps:
+                fps = self.clock.get_fps()
+                with_fps = &#34;{} - {:.2f} FPS&#34;.format(self.caption, fps)
+                pygame.display.set_caption(with_fps)
+
+
+class GameState_Initialize(object):
+    &#34;&#34;&#34;
+    This class initializes a game state. 
+    &#34;&#34;&#34;
+    def __init__(self):
+        self.start_time = 0.0
+        self.current_time = 0.0
+        self.done = False
+        self.quit = False
+        self.next = None
+        self.previous = None
+        self.persist = {}
+
+    def get_event(self, event):
+        pass
+
+    def startup(self, current_time, persistant):
+        self.persist = persistant
+        self.start_time = current_time
+
+    def cleanup(self):
+        self.done = False
+        return self.persist
+
+    def update(self, surface, keys, current_time):
+        pass
+
+def Gfx_LoadIntoRAM(directory, colorkey=(255,0,255), accept=(&#39;.png&#39;, &#39;jpg&#39;, &#39;bmp&#39;)):
+    &#34;&#34;&#34;
+    Loads all graphics in the resource folder into RAM for the game to use. 
+
+    Parameters:
+        directory (string): String containing the directory of the assets.
+
+    Returns:
+        graphics: An array containing each graphic file.
+    &#34;&#34;&#34;
+    graphics = {}
+    for pic in os.listdir(directory):
+        name, ext = os.path.splitext(pic)
+        if ext.lower() in accept:
+            img = pygame.image.load(os.path.join(directory, pic))
+            if img.get_alpha():
+                img = img.convert_alpha()
+            else:
+                img = img.convert()
+                img.set_colorkey(colorkey)
+            graphics[name]=img
+    return graphics
+
+
+def Music_LoadIntoRAM(directory, accept=(&#39;.wav&#39;, &#39;.mp3&#39;, &#39;.ogg&#39;, &#39;.mdi&#39;)):
+    &#34;&#34;&#34;
+    Loads all music in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        songs: An array containing each music file.
+    &#34;&#34;&#34;
+    songs = {}
+    for song in os.listdir(directory):
+        name,ext = os.path.splitext(song)
+        if ext.lower() in accept:
+            songs[name] = os.path.join(directory, song)
+    return songs
+
+
+def Fonts_LoadIntoRAM(directory, accept=(&#39;.ttf&#39;)):
+    &#34;&#34;&#34;
+    Loads all fonts in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        fonts: An array containing each font file.
+    &#34;&#34;&#34;
+    fonts = {}
+    for font in os.listdir(directory):
+        name, ext = os.path.splitext(font)
+        if ext.lower() in accept:
+            fonts[name] = os.path.join(directory, font)
+    return fonts
+
+
+def Sfx_LoadIntoRAM(directory, accept=(&#39;.wav&#39;,&#39;.mpe&#39;,&#39;.ogg&#39;,&#39;.mdi&#39;)):
+    &#34;&#34;&#34;
+    Loads all sound effects in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the audio files.
+
+    Returns:
+        sounds: An array containing each sound file.
+    &#34;&#34;&#34;
+    sounds = {}
+    for effects in os.listdir(directory):
+        name, ext = os.path.splitext(effects)
+        if ext.lower() in accept:
+            sounds[name] = pygame.mixer.Sound(os.path.join(directory, effects))
+    return sounds</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="data.tools.Fonts_LoadIntoRAM"><code class="name flex">
+<span>def <span class="ident">Fonts_LoadIntoRAM</span></span>(<span>directory, accept='.ttf')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads all fonts in the resource folder into RAM for the game to use.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>directory</code></strong> :&ensp;<code>string</code></dt>
+<dd>String containing the directory of the music files.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>fonts</code></strong></dt>
+<dd>An array containing each font file.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Fonts_LoadIntoRAM(directory, accept=(&#39;.ttf&#39;)):
+    &#34;&#34;&#34;
+    Loads all fonts in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        fonts: An array containing each font file.
+    &#34;&#34;&#34;
+    fonts = {}
+    for font in os.listdir(directory):
+        name, ext = os.path.splitext(font)
+        if ext.lower() in accept:
+            fonts[name] = os.path.join(directory, font)
+    return fonts</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Gfx_LoadIntoRAM"><code class="name flex">
+<span>def <span class="ident">Gfx_LoadIntoRAM</span></span>(<span>directory, colorkey=(255, 0, 255), accept=('.png', 'jpg', 'bmp'))</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads all graphics in the resource folder into RAM for the game to use. </p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>directory</code></strong> :&ensp;<code>string</code></dt>
+<dd>String containing the directory of the assets.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>graphics</code></strong></dt>
+<dd>An array containing each graphic file.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Gfx_LoadIntoRAM(directory, colorkey=(255,0,255), accept=(&#39;.png&#39;, &#39;jpg&#39;, &#39;bmp&#39;)):
+    &#34;&#34;&#34;
+    Loads all graphics in the resource folder into RAM for the game to use. 
+
+    Parameters:
+        directory (string): String containing the directory of the assets.
+
+    Returns:
+        graphics: An array containing each graphic file.
+    &#34;&#34;&#34;
+    graphics = {}
+    for pic in os.listdir(directory):
+        name, ext = os.path.splitext(pic)
+        if ext.lower() in accept:
+            img = pygame.image.load(os.path.join(directory, pic))
+            if img.get_alpha():
+                img = img.convert_alpha()
+            else:
+                img = img.convert()
+                img.set_colorkey(colorkey)
+            graphics[name]=img
+    return graphics</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Music_LoadIntoRAM"><code class="name flex">
+<span>def <span class="ident">Music_LoadIntoRAM</span></span>(<span>directory, accept=('.wav', '.mp3', '.ogg', '.mdi'))</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads all music in the resource folder into RAM for the game to use.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>directory</code></strong> :&ensp;<code>string</code></dt>
+<dd>String containing the directory of the music files.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>songs</code></strong></dt>
+<dd>An array containing each music file.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Music_LoadIntoRAM(directory, accept=(&#39;.wav&#39;, &#39;.mp3&#39;, &#39;.ogg&#39;, &#39;.mdi&#39;)):
+    &#34;&#34;&#34;
+    Loads all music in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the music files.
+    
+    Returns:
+        songs: An array containing each music file.
+    &#34;&#34;&#34;
+    songs = {}
+    for song in os.listdir(directory):
+        name,ext = os.path.splitext(song)
+        if ext.lower() in accept:
+            songs[name] = os.path.join(directory, song)
+    return songs</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Sfx_LoadIntoRAM"><code class="name flex">
+<span>def <span class="ident">Sfx_LoadIntoRAM</span></span>(<span>directory, accept=('.wav', '.mpe', '.ogg', '.mdi'))</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads all sound effects in the resource folder into RAM for the game to use.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>directory</code></strong> :&ensp;<code>string</code></dt>
+<dd>String containing the directory of the audio files.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>sounds</code></strong></dt>
+<dd>An array containing each sound file.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Sfx_LoadIntoRAM(directory, accept=(&#39;.wav&#39;,&#39;.mpe&#39;,&#39;.ogg&#39;,&#39;.mdi&#39;)):
+    &#34;&#34;&#34;
+    Loads all sound effects in the resource folder into RAM for the game to use.
+
+    Parameters:
+        directory (string): String containing the directory of the audio files.
+
+    Returns:
+        sounds: An array containing each sound file.
+    &#34;&#34;&#34;
+    sounds = {}
+    for effects in os.listdir(directory):
+        name, ext = os.path.splitext(effects)
+        if ext.lower() in accept:
+            sounds[name] = pygame.mixer.Sound(os.path.join(directory, effects))
+    return sounds</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="data.tools.Control"><code class="flex name class">
+<span>class <span class="ident">Control</span></span>
+<span>(</span><span>caption)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This is the "Control" class for entire project. Contains the game loop, and contains
+the event_loop which passes events to States as needed. Logic for flipping
+states is also found here.</p>
+<p>The constructor for the Control class.
+Sets attributes to their default values.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>caption</code></strong> :&ensp;<code>string</code></dt>
+<dd>This is the window caption, or what will be displayed at the top of the window.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Control(object):
+    &#34;&#34;&#34;
+    This is the &#34;Control&#34; class for entire project. Contains the game loop, and contains
+    the event_loop which passes events to States as needed. Logic for flipping
+    states is also found here.
+    &#34;&#34;&#34;
+
+    def __init__(self, caption):
+        &#34;&#34;&#34;
+        The constructor for the Control class.
+        Sets attributes to their default values.
+
+        Parameters:
+            caption (string): This is the window caption, or what will be displayed at the top of the window. 
+        &#34;&#34;&#34;
+        self.screen = pygame.display.get_surface()
+        self.done = False
+        self.clock = pygame.time.Clock()
+        self.caption = caption
+        self.fps = 60
+        self.show_fps = False
+        self.current_time = 0.0
+        self.keys = pygame.key.get_pressed()
+        self.state_dict = {}
+        self.state_name = None
+        self.state = None
+
+    def setup_states(self, state_dict, start_state):
+        &#34;&#34;&#34;
+        The function to set the gamestate. 
+
+        Parameters:
+            state_dict: Dictionary containing all the gamestates.
+            start_state: Name of gamestate to switch to.
+        &#34;&#34;&#34;
+        self.state_dict = state_dict
+        self.state_name = start_state
+        self.state = self.state_dict[self.state_name]
+
+    def update(self):
+        &#34;&#34;&#34;
+        The function to update the game. Runs every frame.
+
+        if GAMESTATE == QUIT:
+            DONE = TRUE
+        ELSE IF GAMESTATE == DONE:
+            GO TO NEXT GAMESTATE
+        
+        UPDATE STATE
+        &#34;&#34;&#34;
+        self.current_time = pygame.time.get_ticks()
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(self.screen, self.keys, self.current_time)
+
+    def flip_state(self):
+        &#34;&#34;&#34;
+        The function to &#34;flip the gamestate&#34; or in other words, switch to the next state.
+        Sets the state_name to the next state, and indexes the state_dict in order to set the state.
+        &#34;&#34;&#34;
+        previous = self.state_name
+        self.state_name = self.state.next
+        persist = self.state.cleanup()
+        self.state = self.state_dict[self.state_name]
+        self.state.startup(self.current_time, persist)
+        self.state.previous = previous
+
+
+    def event_loop(self):
+        &#34;&#34;&#34;
+        The function to loop events with the pygame module.
+        Checks every frame for key actions.
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.done = True
+            elif event.type == pygame.KEYDOWN:
+                self.keys = pygame.key.get_pressed()
+                self.toggle_show_fps(event.key)
+            elif event.type == pygame.KEYUP:
+                self.keys = pygame.key.get_pressed()
+            self.state.get_event(event)
+
+
+    def toggle_show_fps(self, key):
+        &#34;&#34;&#34;
+        The function to toggle FPS if the pressed key is F5.
+        
+        Parameters:
+            key: ASCII value of key. Accessed using pygame.key.
+        &#34;&#34;&#34;
+        if key == pygame.K_F5:
+            self.show_fps = not self.show_fps
+            if not self.show_fps:
+                pygame.display.set_caption(self.caption)
+
+
+    def main(self):
+        &#34;&#34;&#34;
+        The main loop of the program.
+        In the form of a while loop, continues to execute the event_loop and update loop every frame while self.done is true.
+        &#34;&#34;&#34;
+        while not self.done:
+            self.event_loop()
+            self.update()
+            pygame.display.update()
+            self.clock.tick(self.fps)
+            if self.show_fps:
+                fps = self.clock.get_fps()
+                with_fps = &#34;{} - {:.2f} FPS&#34;.format(self.caption, fps)
+                pygame.display.set_caption(with_fps)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="data.tools.Control.event_loop"><code class="name flex">
+<span>def <span class="ident">event_loop</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The function to loop events with the pygame module.
+Checks every frame for key actions.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def event_loop(self):
+    &#34;&#34;&#34;
+    The function to loop events with the pygame module.
+    Checks every frame for key actions.
+    &#34;&#34;&#34;
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            self.done = True
+        elif event.type == pygame.KEYDOWN:
+            self.keys = pygame.key.get_pressed()
+            self.toggle_show_fps(event.key)
+        elif event.type == pygame.KEYUP:
+            self.keys = pygame.key.get_pressed()
+        self.state.get_event(event)</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Control.flip_state"><code class="name flex">
+<span>def <span class="ident">flip_state</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The function to "flip the gamestate" or in other words, switch to the next state.
+Sets the state_name to the next state, and indexes the state_dict in order to set the state.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flip_state(self):
+    &#34;&#34;&#34;
+    The function to &#34;flip the gamestate&#34; or in other words, switch to the next state.
+    Sets the state_name to the next state, and indexes the state_dict in order to set the state.
+    &#34;&#34;&#34;
+    previous = self.state_name
+    self.state_name = self.state.next
+    persist = self.state.cleanup()
+    self.state = self.state_dict[self.state_name]
+    self.state.startup(self.current_time, persist)
+    self.state.previous = previous</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Control.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The main loop of the program.
+In the form of a while loop, continues to execute the event_loop and update loop every frame while self.done is true.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main(self):
+    &#34;&#34;&#34;
+    The main loop of the program.
+    In the form of a while loop, continues to execute the event_loop and update loop every frame while self.done is true.
+    &#34;&#34;&#34;
+    while not self.done:
+        self.event_loop()
+        self.update()
+        pygame.display.update()
+        self.clock.tick(self.fps)
+        if self.show_fps:
+            fps = self.clock.get_fps()
+            with_fps = &#34;{} - {:.2f} FPS&#34;.format(self.caption, fps)
+            pygame.display.set_caption(with_fps)</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Control.setup_states"><code class="name flex">
+<span>def <span class="ident">setup_states</span></span>(<span>self, state_dict, start_state)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The function to set the gamestate. </p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>state_dict</code></strong></dt>
+<dd>Dictionary containing all the gamestates.</dd>
+<dt><strong><code>start_state</code></strong></dt>
+<dd>Name of gamestate to switch to.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setup_states(self, state_dict, start_state):
+    &#34;&#34;&#34;
+    The function to set the gamestate. 
+
+    Parameters:
+        state_dict: Dictionary containing all the gamestates.
+        start_state: Name of gamestate to switch to.
+    &#34;&#34;&#34;
+    self.state_dict = state_dict
+    self.state_name = start_state
+    self.state = self.state_dict[self.state_name]</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Control.toggle_show_fps"><code class="name flex">
+<span>def <span class="ident">toggle_show_fps</span></span>(<span>self, key)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The function to toggle FPS if the pressed key is F5.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>key</code></strong></dt>
+<dd>ASCII value of key. Accessed using pygame.key.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggle_show_fps(self, key):
+    &#34;&#34;&#34;
+    The function to toggle FPS if the pressed key is F5.
+    
+    Parameters:
+        key: ASCII value of key. Accessed using pygame.key.
+    &#34;&#34;&#34;
+    if key == pygame.K_F5:
+        self.show_fps = not self.show_fps
+        if not self.show_fps:
+            pygame.display.set_caption(self.caption)</code></pre>
+</details>
+</dd>
+<dt id="data.tools.Control.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The function to update the game. Runs every frame.</p>
+<p>if GAMESTATE == QUIT:
+DONE = TRUE
+ELSE IF GAMESTATE == DONE:
+GO TO NEXT GAMESTATE</p>
+<p>UPDATE STATE</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self):
+    &#34;&#34;&#34;
+    The function to update the game. Runs every frame.
+
+    if GAMESTATE == QUIT:
+        DONE = TRUE
+    ELSE IF GAMESTATE == DONE:
+        GO TO NEXT GAMESTATE
+    
+    UPDATE STATE
+    &#34;&#34;&#34;
+    self.current_time = pygame.time.get_ticks()
+    if self.state.quit:
+        self.done = True
+    elif self.state.done:
+        self.flip_state()
+    self.state.update(self.screen, self.keys, self.current_time)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="data.tools.GameState_Initialize"><code class="flex name class">
+<span>class <span class="ident">GameState_Initialize</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>This class initializes a game state.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameState_Initialize(object):
+    &#34;&#34;&#34;
+    This class initializes a game state. 
+    &#34;&#34;&#34;
+    def __init__(self):
+        self.start_time = 0.0
+        self.current_time = 0.0
+        self.done = False
+        self.quit = False
+        self.next = None
+        self.previous = None
+        self.persist = {}
+
+    def get_event(self, event):
+        pass
+
+    def startup(self, current_time, persistant):
+        self.persist = persistant
+        self.start_time = current_time
+
+    def cleanup(self):
+        self.done = False
+        return self.persist
+
+    def update(self, surface, keys, current_time):
+        pass</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="data.states.level1.Level1" href="states/level1.html#data.states.level1.Level1">Level1</a></li>
+<li><a title="data.states.load_screen.LoadScreen" href="states/load_screen.html#data.states.load_screen.LoadScreen">LoadScreen</a></li>
+<li><a title="data.states.main_menu.Menu" href="states/main_menu.html#data.states.main_menu.Menu">Menu</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="data.tools.GameState_Initialize.cleanup"><code class="name flex">
+<span>def <span class="ident">cleanup</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleanup(self):
+    self.done = False
+    return self.persist</code></pre>
+</details>
+</dd>
+<dt id="data.tools.GameState_Initialize.get_event"><code class="name flex">
+<span>def <span class="ident">get_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_event(self, event):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="data.tools.GameState_Initialize.startup"><code class="name flex">
+<span>def <span class="ident">startup</span></span>(<span>self, current_time, persistant)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def startup(self, current_time, persistant):
+    self.persist = persistant
+    self.start_time = current_time</code></pre>
+</details>
+</dd>
+<dt id="data.tools.GameState_Initialize.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self, surface, keys, current_time)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update(self, surface, keys, current_time):
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="data" href="index.html">data</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="data.tools.Fonts_LoadIntoRAM" href="#data.tools.Fonts_LoadIntoRAM">Fonts_LoadIntoRAM</a></code></li>
+<li><code><a title="data.tools.Gfx_LoadIntoRAM" href="#data.tools.Gfx_LoadIntoRAM">Gfx_LoadIntoRAM</a></code></li>
+<li><code><a title="data.tools.Music_LoadIntoRAM" href="#data.tools.Music_LoadIntoRAM">Music_LoadIntoRAM</a></code></li>
+<li><code><a title="data.tools.Sfx_LoadIntoRAM" href="#data.tools.Sfx_LoadIntoRAM">Sfx_LoadIntoRAM</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="data.tools.Control" href="#data.tools.Control">Control</a></code></h4>
+<ul class="two-column">
+<li><code><a title="data.tools.Control.event_loop" href="#data.tools.Control.event_loop">event_loop</a></code></li>
+<li><code><a title="data.tools.Control.flip_state" href="#data.tools.Control.flip_state">flip_state</a></code></li>
+<li><code><a title="data.tools.Control.main" href="#data.tools.Control.main">main</a></code></li>
+<li><code><a title="data.tools.Control.setup_states" href="#data.tools.Control.setup_states">setup_states</a></code></li>
+<li><code><a title="data.tools.Control.toggle_show_fps" href="#data.tools.Control.toggle_show_fps">toggle_show_fps</a></code></li>
+<li><code><a title="data.tools.Control.update" href="#data.tools.Control.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="data.tools.GameState_Initialize" href="#data.tools.GameState_Initialize">GameState_Initialize</a></code></h4>
+<ul class="">
+<li><code><a title="data.tools.GameState_Initialize.cleanup" href="#data.tools.GameState_Initialize.cleanup">cleanup</a></code></li>
+<li><code><a title="data.tools.GameState_Initialize.get_event" href="#data.tools.GameState_Initialize.get_event">get_event</a></code></li>
+<li><code><a title="data.tools.GameState_Initialize.startup" href="#data.tools.GameState_Initialize.startup">startup</a></code></li>
+<li><code><a title="data.tools.GameState_Initialize.update" href="#data.tools.GameState_Initialize.update">update</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

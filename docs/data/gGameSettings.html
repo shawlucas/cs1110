@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>data.gGameSettings API documentation</title>
+<meta name="description" content="gGameSettings.py
+This file contains all global, read only data that will be used during the game." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>data.gGameSettings</code></h1>
+</header>
+<section id="section-intro">
+<p>gGameSettings.py
+This file contains all global, read only data that will be used during the game.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+gGameSettings.py
+This file contains all global, read only data that will be used during the game.
+&#34;&#34;&#34;
+
+scr_height = 600
+scr_width = 800
+SCREEN_SIZE = (scr_width,scr_height)
+ORIGINAL_TITLE = &#34;SMB 1.0&#34;
+#                          R    G    B
+
+COLOR_RGB_GRAY         = (100, 100, 100)
+COLOR_RGB_NAVYBLUE     = ( 60,  60, 100)
+COLOR_RGB_WHITE        = (255, 255, 255)
+COLOR_RGB_RED          = (255,   0,   0)
+COLOR_RGB_GREEN        = (  0, 255,   0)
+COLOR_RGB_FOREST_GREEN = ( 31, 162,  35)
+COLOR_RGB_BLUE         = (  0,   0, 255)
+COLOR_RGB_SKY_BLUE     = ( 39, 145, 251)
+COLOR_RGB_YELLOW       = (255, 255,   0)
+COLOR_RGB_ORANGE       = (255, 128,   0)
+COLOR_RGB_PURPLE       = (255,   0, 255)
+COLOR_RGB_CYAN         = (  0, 255, 255)
+COLOR_RGB_BLACK        = (  0,   0,   0)
+COLOR_RGB_NEAR_BLACK    = ( 19,  15,  48)
+COLOR_RGB_COMBLUE      = (233, 232, 255)
+COLOR_RGB_GOLD         = (255, 215,   0)
+
+BGCOLOR = COLOR_RGB_WHITE
+SIZE_MULTIPLIER = 2.5
+BRICK_SIZE_MULTIPLIER = 2.69
+BACKGROUND_MULTIPLER = 2.679
+gr_height = scr_height - 62
+
+MARIO_WALK_ACCELERATION = .15
+MARIO_RUN_ACCELERATION = 20
+MARIO_SMALL_TURNAROUND_SPEED = .35
+WORLD_GRAVITY = 1.01
+MARIO_JUMP_GRAVITY = .31
+MARIO_JUMP_VELOCITY = -12
+MARIO_QUICK_JUMP_VELOCITY = -14.5
+MARIO_MAX_Y_VELOCITY = 11
+MARIO_MAX_RUN_SPEED = 800
+MARIO_MAX_WALK_SPEED = 6
+
+
+MARIO_STATE_STANDING = &#39;standing&#39;
+MARIO_STATE_WALK = &#39;walk&#39;
+MARIO_STATE_JUMP = &#39;jump&#39;
+MARIO_STATE_FALL = &#39;fall&#39;
+MARIO_STATE_SMALL_TO_BIG = &#39;small to big&#39;
+MARIO_STATE_BIG_TO_FIRE = &#39;big to fire&#39;
+MARIO_STATE_BIG_TO_SMALL = &#39;big to small&#39;
+MARIO_STATE_ON_FLAGPOLE = &#39;flag pole&#39;
+MARIO_STATE_WALKING_TO_CASTLE = &#39;walking to castle&#39;
+MARIO_STATE_END_OF_LEVEL = &#39;end of level fall&#39;
+GOOMBA_STATE_MOVING_LEFT = &#39;left&#39;
+GOOMBA_STATE_MOVING_RIGHT = &#39;right&#39;
+GOOMBA_STATE_JUMPED = &#39;jumped on&#39;
+GOOMBA_STATE_DEATH = &#39;death jump&#39;
+KOOPA_STATE_SLIDING_SHELL = &#39;sliding shell&#39;
+BRICK_STATE_RESTING = &#39;resting&#39;
+BRICK_STATE_BUMPED = &#39;bumped&#39;
+COIN_STATE_OPENED = &#39;opened&#39;
+COIN_STATE_SPIN = &#39;spin&#39;
+MUSHROOM_STATE_REVEAL = &#39;reveal&#39;
+MUSHROOM_STATE_SLIDING = &#39;sliding&#39;
+STAR_STATE_BOUNCING = &#39;bounce&#39;
+FIRE_STATE_FLYING = &#39;flying&#39;
+FIRE_STATE_BOUNCING = &#39;bouncing&#39;
+FIRE_STATE_EXPLODING = &#39;exploding&#39;
+BRICK_CONTENTS_MUSHROOM = &#39;mushroom&#39;
+BRICK_CONTENTS_STAR = &#39;star&#39;
+BRICK_CONTENTS_FIREFLOWER = &#39;fireflower&#39;
+BRICK_CONTAINS_SIX_COINS = &#39;6coins&#39;
+BRICK_CONTENTS_COIN = &#39;coin&#39;
+BRICK_CONTENTS_1UP = &#39;1up_mushroom&#39;
+BRICK_CONTENTS_FIREBALL = &#39;fireball&#39;
+ENEMY_GOOMBA = &#39;goomba&#39;
+ENEMY_KOOPA = &#39;koopa&#39;
+GLOBALSTATE_PAUSED = &#39;paused&#39;
+GLOBALSTATE_GAME_PLAY = &#39;game_play&#39;
+GLOBALSTATE_IN_CASTLE = &#39;in castle&#39;
+GLOBALSTATE_FLAG_AND_FIREWORKS = &#39;flag and fireworks&#39;
+FLAGSTATE_TOP_OF_POLE = &#39;top of pole&#39;
+FLAGSTATE_SLIDE_DOWN = &#39;slide down&#39;
+FLAGSTATE_BOTTOM_OF_POLE = &#39;bottom of pole&#39;
+SCORE_ONEUP = &#39;379&#39;
+CURSORSTATE_PLAYER1 = &#39;1 player&#39;
+CURSORSTATE_PLAYER2 = &#39;2 player&#39;
+GLOBALSTATE_MAIN_MENU = &#39;main menu&#39;
+GLOBALSTATE_LOAD_SCREEN = &#39;loading screen&#39;
+GLOBAL_CURRENT_LEVEL = &#39;level&#39;
+GLOBALSTATE_GAME_OVER = &#39;game over&#39;
+GLOBAL_FAST_COUNT_DOWN = &#39;fast count down&#39;
+GLOBAL_END_OF_LEVEL = &#39;end of level&#39;
+GLOBAL_COIN_TOTAL = &#39;coin total&#39;
+GLOBAL_SCORE = &#39;score&#39;
+GLOBAL_TOP_SCORE = &#39;top score&#39;
+GLOBAL_LIVES = &#39;lives&#39;
+GLOBAL_TIME = &#39;current time&#39;
+GLOBAL_LEVEL_STATE = &#39;level state&#39;
+CAMERA_START_X = &#39;camera start x&#39;
+MARIO_STATE_DEAD = &#39;mario dead&#39;
+GLOBALSTATE_MAIN_MENU = &#39;main menu&#39;
+GLOBALSTATE_LOAD_SCREEN = &#39;load screen&#39;
+GLOBALSTATE_TIME_OUT = &#39;time out&#39;
+GLOBALSTATE_GAME_OVER = &#39;game over&#39;
+GLOBALSTATE_LEVEL1 = &#39;level1&#39;
+SOUNDSTATE_DEFAULT = &#39;default&#39;
+SOUNDSTATE_CLEARSTAGE = &#39;stage clear&#39;
+SOUNDSTATE_CLEARWORLD = &#39;world clear&#39;
+SOUNDSTATE_WARNING = &#39;time warning&#39;
+SOUNDSTATE_SPED_UP_DEFAULT = &#39;sped up default&#39;
+SOUNDSTATE_MARIO_STARPOWER = &#39;mario starpower&#39;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="data" href="index.html">data</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

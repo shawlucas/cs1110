@@ -1,5 +1,5 @@
 import pygame
-from .. import csts
+from .. import gGameSettings
 from .. import setup
 
 
@@ -17,10 +17,10 @@ class Powerup(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.y = y
-        self.state = csts.REVEAL
+        self.state = gGameSettings.MUSHROOM_STATE_REVEAL
         self.y_vel = -1
         self.x_vel = 0
-        self.direction = csts.RIGHT
+        self.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
         self.box_height = y
         self.gravity = 1
         self.max_y_vel = 8
@@ -28,29 +28,29 @@ class Powerup(pygame.sprite.Sprite):
         self.name = name
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
 
 
         image = pygame.Surface([width, height]).convert()
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
 
 
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.SIZE_MULTIPLIER),
-                                    int(rect.height*csts.SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.SIZE_MULTIPLIER)))
         return image
 
 
-    def update(self, ginfo, *args):
+    def update(self, gGameInfo, *args):
 
-        self.current_time = ginfo[csts.CURRENT_TIME]
-        self.standHandler()
+        self.current_time = gGameInfo[gGameSettings.GLOBAL_TIME]
+        self.stateHandler()
 
 
-    def standHandler(self):
+    def stateHandler(self):
         pass
 
 
@@ -61,12 +61,12 @@ class Powerup(pygame.sprite.Sprite):
         if self.rect.bottom <= self.box_height:
             self.rect.bottom = self.box_height
             self.y_vel = 0
-            self.state = csts.SLIDE
+            self.state = gGameSettings.MUSHROOM_STATE_SLIDING
 
 
     def sliding(self):
 
-        if self.direction == csts.RIGHT:
+        if self.direction == gGameSettings.GOOMBA_STATE_MOVING_RIGHT:
             self.x_vel = 3
         else:
             self.x_vel = -3
@@ -87,16 +87,16 @@ class Mushroom(Powerup):
 
     def setup_frames(self):
 
-        self.frames.append(self.imageGetter(0, 0, 16, 16))
+        self.frames.append(self.getImage(0, 0, 16, 16))
 
 
-    def standHandler(self):
+    def stateHandler(self):
 
-        if self.state == csts.REVEAL:
+        if self.state == gGameSettings.MUSHROOM_STATE_REVEAL:
             self.revealing()
-        elif self.state == csts.SLIDE:
+        elif self.state == gGameSettings.MUSHROOM_STATE_SLIDING:
             self.sliding()
-        elif self.state == csts.FALL:
+        elif self.state == gGameSettings.MARIO_STATE_FALL:
             self.falling()
 
 
@@ -107,12 +107,12 @@ class LifeMushroom(Mushroom):
         self.setup_powerup(x, y, name, self.setup_frames)
 
     def setup_frames(self):
-        self.frames.append(self.imageGetter(16, 0, 16, 16))
+        self.frames.append(self.getImage(16, 0, 16, 16))
 
 
 class FireFlower(Powerup):
 
-    def __init__(self, x, y, name=csts.FIREFLOWER):
+    def __init__(self, x, y, name=gGameSettings.BRICK_CONTENTS_FIREFLOWER):
         super(FireFlower, self).__init__(x, y)
         self.setup_powerup(x, y, name, self.setup_frames)
 
@@ -120,20 +120,20 @@ class FireFlower(Powerup):
     def setup_frames(self):
 
         self.frames.append(
-            self.imageGetter(0, 32, 16, 16))
+            self.getImage(0, 32, 16, 16))
         self.frames.append(
-            self.imageGetter(16, 32, 16, 16))
+            self.getImage(16, 32, 16, 16))
         self.frames.append(
-            self.imageGetter(32, 32, 16, 16))
+            self.getImage(32, 32, 16, 16))
         self.frames.append(
-            self.imageGetter(48, 32, 16, 16))
+            self.getImage(48, 32, 16, 16))
 
 
-    def standHandler(self):
+    def stateHandler(self):
 
-        if self.state == csts.REVEAL:
+        if self.state == gGameSettings.MUSHROOM_STATE_REVEAL:
             self.revealing()
-        elif self.state == csts.RESTING:
+        elif self.state == gGameSettings.BRICK_STATE_RESTING:
             self.resting()
 
 
@@ -143,7 +143,7 @@ class FireFlower(Powerup):
 
         if self.rect.bottom <= self.box_height:
             self.rect.bottom = self.box_height
-            self.state = csts.RESTING
+            self.state = gGameSettings.BRICK_STATE_RESTING
 
         self.animation()
 
@@ -171,23 +171,23 @@ class Star(Powerup):
         super(Star, self).__init__(x, y)
         self.setup_powerup(x, y, name, self.setup_frames)
         self.animate_timer = 0
-        self.rect.y += 1  #looks more centered offset one pixel
+        self.rect.y += 1  #looks more centeCOLOR_RGB_RED offset one pixel
         self.gravity = .4
 
 
     def setup_frames(self):
 
-        self.frames.append(self.imageGetter(1, 48, 15, 16))
-        self.frames.append(self.imageGetter(17, 48, 15, 16))
-        self.frames.append(self.imageGetter(33, 48, 15, 16))
-        self.frames.append(self.imageGetter(49, 48, 15, 16))
+        self.frames.append(self.getImage(1, 48, 15, 16))
+        self.frames.append(self.getImage(17, 48, 15, 16))
+        self.frames.append(self.getImage(33, 48, 15, 16))
+        self.frames.append(self.getImage(49, 48, 15, 16))
 
 
-    def standHandler(self):
+    def stateHandler(self):
 
-        if self.state == csts.REVEAL:
+        if self.state == gGameSettings.MUSHROOM_STATE_REVEAL:
             self.revealing()
-        elif self.state == csts.BOUNCE:
+        elif self.state == gGameSettings.STAR_STATE_BOUNCING:
             self.bouncing()
 
 
@@ -198,7 +198,7 @@ class Star(Powerup):
         if self.rect.bottom <= self.box_height:
             self.rect.bottom = self.box_height
             self.start_bounce(-2)
-            self.state = csts.BOUNCE
+            self.state = gGameSettings.STAR_STATE_BOUNCING
 
         self.animation()
 
@@ -223,7 +223,7 @@ class Star(Powerup):
 
         self.animation()
 
-        if self.direction == csts.LEFT:
+        if self.direction == gGameSettings.GOOMBA_STATE_MOVING_LEFT:
             self.x_vel = -5
         else:
             self.x_vel = 5
@@ -232,21 +232,21 @@ class Star(Powerup):
 
 class FireBall(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, facing_right, name=csts.FIREBALL):
+    def __init__(self, x, y, facing_right, name=gGameSettings.BRICK_CONTENTS_FIREBALL):
         super(FireBall, self).__init__()
         self.spr_sheet = setup.GFX['item_objects']
         self.setup_frames()
         if facing_right:
-            self.direction = csts.RIGHT
+            self.direction = gGameSettings.GOOMBA_STATE_MOVING_RIGHT
             self.x_vel = 12
         else:
-            self.direction = csts.LEFT
+            self.direction = gGameSettings.GOOMBA_STATE_MOVING_LEFT
             self.x_vel = -12
         self.y_vel = 10
         self.gravity = .9
         self.frame_index = 0
         self.animation_timer = 0
-        self.state = csts.FLYING
+        self.state = gGameSettings.FIRE_STATE_FLYING
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.right = x
@@ -259,57 +259,57 @@ class FireBall(pygame.sprite.Sprite):
         self.frames = []
 
         self.frames.append(
-            self.imageGetter(96, 144, 8, 8)) #Frame 1 of flying
+            self.getImage(96, 144, 8, 8)) #Frame 1 of flying
         self.frames.append(
-            self.imageGetter(104, 144, 8, 8))  #Frame 2 of Flying
+            self.getImage(104, 144, 8, 8))  #Frame 2 of Flying
         self.frames.append(
-            self.imageGetter(96, 152, 8, 8))   #Frame 3 of Flying
+            self.getImage(96, 152, 8, 8))   #Frame 3 of Flying
         self.frames.append(
-            self.imageGetter(104, 152, 8, 8))  #Frame 4 of flying
+            self.getImage(104, 152, 8, 8))  #Frame 4 of flying
         self.frames.append(
-            self.imageGetter(112, 144, 16, 16))   #frame 1 of exploding
+            self.getImage(112, 144, 16, 16))   #frame 1 of exploding
         self.frames.append(
-            self.imageGetter(112, 160, 16, 16))  #frame 2 of exploding
+            self.getImage(112, 160, 16, 16))  #frame 2 of exploding
         self.frames.append(
-            self.imageGetter(112, 176, 16, 16))  #frame 3 of exploding
+            self.getImage(112, 176, 16, 16))  #frame 3 of exploding
 
 
-    def imageGetter(self, x, y, width, height):
+    def getImage(self, x, y, width, height):
 
 
         image = pygame.Surface([width, height]).convert()
         rect = image.get_rect()
 
         image.blit(self.spr_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(csts.BLACK)
+        image.set_colorkey(gGameSettings.COLOR_RGB_BLACK)
 
 
         image = pygame.transform.scale(image,
-                                   (int(rect.width*csts.SIZE_MULTIPLIER),
-                                    int(rect.height*csts.SIZE_MULTIPLIER)))
+                                   (int(rect.width*gGameSettings.SIZE_MULTIPLIER),
+                                    int(rect.height*gGameSettings.SIZE_MULTIPLIER)))
         return image
 
 
-    def update(self, ginfo, viewport):
+    def update(self, gGameInfo, viewport):
 
-        self.current_time = ginfo[csts.CURRENT_TIME]
-        self.standHandler()
+        self.current_time = gGameInfo[gGameSettings.GLOBAL_TIME]
+        self.stateHandler()
         self.check_if_off_screen(viewport)
 
 
-    def standHandler(self):
+    def stateHandler(self):
 
-        if self.state == csts.FLYING:
+        if self.state == gGameSettings.FIRE_STATE_FLYING:
             self.animation()
-        elif self.state == csts.BOUNCING:
+        elif self.state == gGameSettings.FIRE_STATE_BOUNCING:
             self.animation()
-        elif self.state == csts.EXPLODING:
+        elif self.state == gGameSettings.FIRE_STATE_EXPLODING:
             self.animation()
 
 
     def animation(self):
 
-        if self.state == csts.FLYING or self.state == csts.BOUNCING:
+        if self.state == gGameSettings.FIRE_STATE_FLYING or self.state == gGameSettings.FIRE_STATE_BOUNCING:
             if (self.current_time - self.animation_timer) > 200:
                 if self.frame_index < 3:
                     self.frame_index += 1
@@ -319,7 +319,7 @@ class FireBall(pygame.sprite.Sprite):
                 self.image = self.frames[self.frame_index]
 
 
-        elif self.state == csts.EXPLODING:
+        elif self.state == gGameSettings.FIRE_STATE_EXPLODING:
             if (self.current_time - self.animation_timer) > 50:
                 if self.frame_index < 6:
                     self.frame_index += 1
@@ -335,7 +335,7 @@ class FireBall(pygame.sprite.Sprite):
         centerx = self.rect.centerx
         self.image = self.frames[self.frame_index]
         self.rect.centerx = centerx
-        self.state = csts.EXPLODING
+        self.state = gGameSettings.FIRE_STATE_EXPLODING
 
 
     def check_if_off_screen(self, viewport):
